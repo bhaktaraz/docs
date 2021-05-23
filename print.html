@@ -1,0 +1,642 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Gorse推荐系统文档</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="第一章系统介绍"><a class="header" href="#第一章系统介绍">第一章：系统介绍</a></h1>
+<p>推荐系统本身是非常成熟的技术，网络上已经有很多的推荐算法工具包、各种各样的推荐算法在各个顶级会议上发表。即便推荐系统相关的公开资料非常多，但是却缺少一个开箱即用的开源推荐系统。这样的现象其实是推荐系统本身的特性造成，推荐系统的构建过程涉及了不同的技术包括存储、计算、业务。推荐系统一般捆绑了技术选型和业务知识，这导致推荐系统很难被解耦出来形成一套具有普适性的开源系统。Gorse就是希望成为一个具有普适性开源推荐系统，可以方便地引入到各种各样的在线服务中。</p>
+<h2 id="a-hrefch01-01-principlehtml推荐原理a"><a class="header" href="#a-hrefch01-01-principlehtml推荐原理a"><a href="ch01-01-principle.html">推荐原理</a></a></h2>
+<p>Gorse推荐物品的过程由<strong>召回</strong>和<strong>排序</strong>两个阶段构成。召回阶段从全体物品中寻找出一个候选物品集合用于后续排序。由于物品的数量庞大，推荐系统无法完成对全体物品进行排序的计算量，因此召回阶段主要使用一些简单的策略或者模型去搜集候选物品。目前，系统已经实现了“最近热门物品”、“最新物品”和“协同过滤”三种召回方式。排序阶段将召回物品去掉重复物品和历史物品之后进行排序，排序阶段会结合物品和用户的特征进行推荐，通过更加精准。</p>
+<center><img src="img/dataflow.png" height="150"></center>
+<h2 id="a-hrefch01-02-architecthtml系统架构a"><a class="header" href="#a-hrefch01-02-architecthtml系统架构a"><a href="ch01-02-architect.html">系统架构</a></a></h2>
+<p>Gorse是一个单机训练分布式预测的推荐系统。Gorse将数据存储在MySQL或者MongoDB中，中间数据缓存在Redis中。集群又一个主节点、多个工作节点和服务节点构成。主节点负责排序模型训练、协同过滤模型训练、非个性化物品召回、配置管理和成员管理。服务节点负责暴露系统的HTTP接口，以及负责在线实时推荐。工作节点负责为每个用户进行个性化召回——目前仅支持协同过滤召回。另外，运维人员可以通过CLI进行模型调参、数据导入导出和系统状态查看。</p>
+<center><img src="img/arch.png" height="200"></center>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="推荐原理"><a class="header" href="#推荐原理">推荐原理</a></h1>
+<p>推荐由两阶段构成：召回和排序。推荐系统中的物品数量通常非常庞大，如果对全体物料进行排序是不现实的。因此需要召回阶段从物料库中筛选出一些物品，再由排序模型结合物品标签进行更加精准的排序。</p>
+<center><img src="img/dataflow.png" height="150"></center>
+<h2 id="召回机制"><a class="header" href="#召回机制">召回机制</a></h2>
+<p>目前系统了三种召回策略：最新物品、最近热门物品和协同过滤召回。实际上，召回策略不限于这三种，还可以是根据用户感兴趣的标签进行召回、召回和用户喜欢的物品相似的物品等等，欢迎在<a href="https://github.com/zhenghaoz/gorse/issues">issues</a>中交流。</p>
+<ul>
+<li>
+<p><strong>最新物品：</strong> 直接将最新物品加入排序过程，这样可以给予新物品曝光机会。</p>
+</li>
+<li>
+<p><strong>最近热门物品：</strong> 用户喜欢热门物品的可能性比较大，但是需要设置时间限制避免推荐“过时”的热门。</p>
+</li>
+<li>
+<p><strong>协同过滤召回：</strong> 使用协同过滤推荐算法从全体物料库中筛选召回物品。由于协同过滤不使用物品标签，因此计算量较小，适合召回场景。系统中实现了BPR、ALS和CCD这三种协同过滤推荐算法。</p>
+</li>
+</ul>
+<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<tr><td>ALS</td><td>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</td></tr>
+<tr><td>BPR</td><td>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; arXiv preprint arXiv:1205.2618 (2012).</td></tr>
+<tr><td>CCD</td><td>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</td></tr>
+</tbody></table>
+<h2 id="排序机制"><a class="header" href="#排序机制">排序机制</a></h2>
+<p>排序模型会考虑物品的标签信息，尤其对于新物品来说，标签是决定是否将新物品推送给用户的依据。本系统的排序模型选择了因子分解机：</p>
+<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
+</tbody></table>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="系统架构"><a class="header" href="#系统架构">系统架构</a></h1>
+<p>本章会介绍数据存储和缓存存储的设计，以及主节点、服务节点和工作节点的分工合作。HTTP接口和CLI工具的使用可以参考<a href="ch02-03-api.html">接口介绍</a>和<a href="ch02-02-command.html">命令介绍</a>。</p>
+<center><img src="img/arch.png" height="200"></center>
+<h2 id="数据存储"><a class="header" href="#数据存储">数据存储</a></h2>
+<p>数据存储由三张表构成（在MongoDB中就是三个集合）：物品库、用户库和交互记录库。</p>
+<ul>
+<li><strong>物品库</strong></li>
+</ul>
+<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
+<tr><td><code>time_stamp</code></td><td>时间</td><td>物品更新日期</td></tr>
+<tr><td><code>labels</code></td><td>字符串数组</td><td>物品标签</td></tr>
+</tbody></table>
+<ul>
+<li><strong>用户库</strong></li>
+</ul>
+<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
+<tr><td><code>labels</code></td><td>字符串数组</td><td>用户标签</td></tr>
+</tbody></table>
+<ul>
+<li><strong>反馈记录库</strong></li>
+</ul>
+<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>feedback_type</code></td><td>字符串</td><td>反馈类型</td></tr>
+<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
+<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
+<tr><td><code>time_stamp</code></td><td>时间</td><td>反馈时间</td></tr>
+</tbody></table>
+<p>所有的操作都在这三张表（三个集合）上进行，必要的时候借助索引加快速度。<code>feedback_type</code>指定了反馈类型：例如B站的点赞、收藏、投币是不同的反馈类型。在插入反馈的时候，会遇到相关的用户或者物品在用户库和物品库中不存在，这个时候<code>auto_insert_user</code>和<code>auto_insert_item</code>就可以控制插入行为，可以选择自动插入用户或者物品，也可以选择放弃插入反馈。</p>
+<h2 id="缓存存储"><a class="header" href="#缓存存储">缓存存储</a></h2>
+<p>缓存数据库存储键-字符串和键-列表两者类型的键值对。键由两部分组成：前缀和名称，在Redis实现中，前缀和名称会拼接成为最终的键。由于所有对缓存的操作都是点查询，因此缓存存储很容易就可以扩展成分布式的形式。</p>
+<h2 id="主节点"><a class="header" href="#主节点">主节点</a></h2>
+<center><img src="img/master.png" height="320"></center>
+<p>主节点主要负责以下工作：</p>
+<ul>
+<li><strong>元数据管理：</strong> 主要管理系统配置和集群成员，集群节点心跳超时时间为<code>cluster_meta_timeout</code>秒。</li>
+<li><strong>非个性化召回：</strong> 搜集最新物品以及最近热门物品，更新频率由<code>update_period</code>确定。</li>
+<li><strong>协同过滤模型训练：</strong> 每间隔<code>fit_period</code>分钟训练协同过滤模型，供工作节点使用。</li>
+<li><strong>排序模型训练：</strong> 每间隔<code>fit_period</code>分钟训练排序模型，供服务节点使用。</li>
+</ul>
+<h2 id="服务节点"><a class="header" href="#服务节点">服务节点</a></h2>
+<center><img src="img/server.png" height="320"></center>
+<p>服务节点主要提供两个功能：</p>
+<ul>
+<li><strong>暴露HTTP接口：</strong> 用户/物品/反馈的读写都通过HTTP请求的形式完成，服务节点接收HTTP请求后对数据库进行操作，然后返回HTTP响应。</li>
+<li><strong>进行实时推荐：</strong> 此时服务节点从缓存数据库读取召回物品，然后去除重复物品和用户查看过的物品，从数据库获取物品和用户特征之后将召回物品进行排序，然后将排序前<code>n</code>个物品返回。服务节点需要在后台不断检查更新排序模型，从而达到最好的推荐准确率。</li>
+</ul>
+<h2 id="工作节点"><a class="header" href="#工作节点">工作节点</a></h2>
+<center><img src="img/worker.png" height="240"></center>
+<p>工作节点的任务更加简单一些——就是为用户生成个性化的召回物品集合。连接上主节点之后，工作节点会不断检查更新协同过滤模型。每隔一段时间（这个时间为<code>predict_period</code>）拉取集群中的工作节点地址计算出自己负责的用户标签范围，然后为负责的用户范围生成召回无物品写入到缓存数据库中。</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="第二章使用手册"><a class="header" href="#第二章使用手册">第二章：使用手册</a></h1>
+<p>本章将介绍Gorse推荐系统的使用方法，包括编写配置文件、启动系统以及调用暴露的HTTP接口。</p>
+<h2 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h2>
+<p>在使用Gorse之前，需要完成以下准备工作：</p>
+<ul>
+<li>
+<p><strong>数据库：</strong> Gorse需要两个服务器，一个用于数据存储，另外一个用于缓存存储。数据存储目前支持MySQL和MongoDB，而缓存存储只支持Redis。</p>
+</li>
+<li>
+<p><strong>服务器：</strong> Gorse系统使用了单机训练和分布式预测的架构。主节点训练好模型后分发给服务节点和工作节点，多个服务节点和工作节点使用训练好的模型进行预测。Gorse推荐系统对服务器配置要求如下</p>
+<ul>
+<li>处理器：多核处理器可以通过并行处理加快各类任务</li>
+<li>内存：服务节点和工作节点内存需要满足模型存储、主节点内存需要满足数据和模型的存储</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a class="header" href="#安装">安装</a></h2>
+<p>可以以下的不同方式安装Gorse</p>
+<ul>
+<li>从<a href="https://github.com/zhenghaoz/gorse/releases">Release</a>下载预编译的二进制可执行文件。</li>
+<li>从DockerHub获取镜像</li>
+</ul>
+<table><thead><tr><th>镜像</th><th>编译状态</th></tr></thead><tbody>
+<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-master" alt="" /></a></td></tr>
+<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-server" alt="" /></a></td></tr>
+<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
+<tr><td>gorse-cli</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-cli"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-cli" alt="" /></a></td></tr>
+</tbody></table>
+<ul>
+<li>从源码编译</li>
+</ul>
+<p>需要首先安装Go 编译器，然后使用 <code>go get</code> 安装</p>
+<pre><code>$ go get github.com/zhenghaoz/gorse/...
+</code></pre>
+<p>项目代码会被自动下载到本地， <code>gorse-cli</code> 、<code>gorse-leader</code>、<code>gorse-worker</code>和<code>gorse-server</code>四个程序被安装在<code> $GOBIN</code> 路径指定的文件夹中。</p>
+<h2 id="启动"><a class="header" href="#启动">启动</a></h2>
+<p>首先需要编写配置文件，在<a href="chapter_1.html">第一章</a>中已经详细介绍了Gorse的工作方式，参考文档中的<a href="ch02-01-config.html">配置介绍</a>编写推荐系统的配置文件为<code>config.toml</code>。文档中的<a href="ch02-02-command.html">命令介绍</a>一节介绍了每个命令的用法，下面使用命令逐个启动Gorse的组件。</p>
+<ul>
+<li><strong>启动主节点</strong></li>
+</ul>
+<p>启动主节点需要指定配置文件，其他节点从主节点再获取配置。</p>
+<pre><code class="language-bash">$ gorse-master -c config.toml
+</code></pre>
+<ul>
+<li><strong>启动工作节点</strong></li>
+</ul>
+<p>工作节点需要指定主节点的地址和端口，以及工作的线程数量。</p>
+<pre><code class="language-bash">$ gorse-worker --master-host 127.0.0.1 --master-port 8086 -j 4
+</code></pre>
+<ul>
+<li><strong>启动服务节点</strong></li>
+</ul>
+<p>工作节点需要指定主节点的地址和端口，另外还要指定HTTP接口的地址和端口。</p>
+<pre><code class="language-bash">$ gorse-server --master-host 127.0.0.1 --master-port 8086 \
+    --host 127.0.0.1 --port 8087
+</code></pre>
+<h2 id="使用"><a class="header" href="#使用">使用</a></h2>
+<ul>
+<li><strong>命令行工具</strong></li>
+</ul>
+<p>在使用命令行工具<code>gorse-cli</code>之前，需要将主节点的地址和端口信息保存在<code>~/.gorse/cli.toml</code>目录下：</p>
+<pre><code class="language-toml">[master]
+port = 8086         # master port
+host = &quot;127.0.0.1&quot;  # master host
+</code></pre>
+<p><strong>第一步：检查集群状态。</strong> </p>
+<pre><code class="language-bash">$ gorse-cli cluster
++--------+-----------------+
+|  ROLE  |     ADDRESS     |
++--------+-----------------+
+| master | 127.0.0.1:8086  |
+| server | 127.0.0.1:14778 |
+| worker | 127.0.0.1:1238  |
++--------+-----------------+
+</code></pre>
+<p><code>gorse-cli cluster</code>命令展示了集群中的节点，<code>ADDRESS</code>字段表示的是节点和主节点连接的地址端口。</p>
+<p><strong>第二步：导入物品数据。</strong> </p>
+<p>假设推荐的物品是GitHub上的仓库，原始数据文件<code>repos.csv</code>如下：</p>
+<pre><code>01org/cc-oci-runtime,2021-01-25 14:32:01 +0000 UTC,containers|container|docker|kvm|oci|security
+02sh/4chanMarkovText,2021-02-08 14:38:55 +0000 UTC,scrapper|data-mining|markov-chain
+05bit/peewee-async,2021-01-25 09:35:57 +0000 UTC,peewee|python|asyncio|mysql|postgresql|orm
+...
+</code></pre>
+<p>每个字段从左到右分别为：仓库、更新时间、标签，那么导入数据的命令行为：</p>
+<pre><code class="language-bash">$ gorse-cli import items repos.csv
++---------------------------------+--------------------------------+--------------------------------+
+|             ITEM ID             |           TIMESTAMP            |             LABEL              |
++---------------------------------+--------------------------------+--------------------------------+
+| 01org/cc-oci-runtime            | 2021-01-25 14:32:01 +0000      | [containers container          |
+|                                 | +0000                          | docker kvm oci security        |
+|                                 |                                | virtual-machine                |
+|                                 |                                | virtualization]                |
+| 02sh/4chanMarkovText            | 2021-02-08 14:38:55 +0000      | [scrapper data-mining          |
+|                                 | +0000                          | markov-chain]                  |
++---------------------------------+--------------------------------+--------------------------------+
+Import items to database? [Y/n] 
+</code></pre>
+<p>命令行工具能够识别了数据，确认之后即可导入数据库。</p>
+<p><strong>第三步：导入交互数据。</strong> </p>
+<p>假设交互数据就是用户给仓库的点赞行为，原始数据文件<code>stars.csv</code>如下：</p>
+<pre><code>0xAX,0xAX/erlang-bookmarks,2013-08-31 19:48:01 +0000 UTC
+0xAX,abo-abo/hydra,2020-12-27 17:35:57 +0000 UTC
+0xAX,alebcay/awesome-shell,2015-06-16 17:17:17 +0000 UTC
+0xAX,angrave/SystemProgramming,2015-02-22 16:47:33 +0000 UTC
+0xAX,binhnguyennus/awesome-scalability,2018-01-27 18:00:00 +0000 UTC
+...
+</code></pre>
+<p>每个字段从左到右分别为：用户、仓库、点赞时间。那么导入数据的命令行为：</p>
+<pre><code class="language-bash">$ gorse-cli import feedback
++------+---------+-----------------------------------+--------------------------------+
+| TYPE | USER ID |              ITEM ID              |           TIMESTAMP            |
++------+---------+-----------------------------------+--------------------------------+
+|      | 0xAX    | 0xAX/erlang-bookmarks             | 2013-08-31 19:48:01 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | abo-abo/hydra                     | 2020-12-27 17:35:57 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | alebcay/awesome-shell             | 2015-06-16 17:17:17 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | angrave/SystemProgramming         | 2015-02-22 16:47:33 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | binhnguyennus/awesome-scalability | 2018-01-27 18:00:00 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | bitwalker/conform                 | 2015-06-10 13:32:03 +0000      |
+|      |         |                                   | +0000                          |
++------+---------+-----------------------------------+--------------------------------+
+Import feedback into database (type = &quot;&quot;, auto_insert_user = true, auto_insert_item = false) [Y/n] 
+</code></pre>
+<p>数据文件同样成功识别，可以看到交互数据类型<code>TYPE</code>一栏是空的，因为命令没有设置交互类型。需要注意，导入数据时候设置的数据类型需要和配置文件中的召回反馈类型或者排序反馈类型对应，否则反馈数据将无法被利用。</p>
+<p><strong>第四步：生成推荐。</strong> </p>
+<p>如果一切顺利，Gorse会在一段时间后加载数据，训练模型。</p>
+<pre><code class="language-bash">time=&quot;2021-03-03T14:00:27+08:00&quot; level=info msg=&quot;master: load data from database&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: data loaded (#user = 982, #item = 45247, #feedback = 5922)&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: collect latest items&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collect latest items&quot;
+time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train set size (positive) = 3432, test set size = 1716&quot;
+...
+</code></pre>
+<ul>
+<li><strong>HTTP服务</strong></li>
+</ul>
+<p>服务节点开放了<a href="ch02-03-api.html">HTTP接口</a>，方便其他程度和Gorse进行交互。服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
+<p><img src="img/swagger.png" alt="" /></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="配置介绍"><a class="header" href="#配置介绍">配置介绍</a></h1>
+<h2 id="数据库配置"><a class="header" href="#数据库配置">数据库配置</a></h2>
+<p>数据库配置位于<code>[database]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>cache_store</code></td><td>string</td><td>数据存储数据库（支持MySQL/MongoDB）</td><td>redis://127.0.0.1:6379</td></tr>
+<tr><td><code>data_store</code></td><td>string</td><td>缓存存储数据库（支持Redis）</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
+<tr><td><code>auto_insert_user</code></td><td>bool</td><td>在插入新反馈的时候自动插入新用户</td><td>true</td></tr>
+<tr><td><code>auto_insert_item</code></td><td>bool</td><td>在插入新反馈的时候自动插入新物品</td><td>true</td></tr>
+</tbody></table>
+<p><code>data_store</code>和<code>cache_store</code>设置数据库的DSN（Database Source Name）格式如下：</p>
+<ul>
+<li>Redis：<code>redis://主机名:端口</code></li>
+<li>MySQL：<code>mysql://[用户名[:密码]@][协议[(地址)]]/数据库[?配置项1=值1&amp;...¶配置项N=值N]</code></li>
+<li>MongoDB：<code>mongodb://[用户名:密码@]主机名1[:端口1][,...主机名N[:端口N]]][/[数据库][?选项]]</code></li>
+</ul>
+<h2 id="相似物品更新配置"><a class="header" href="#相似物品更新配置">相似物品更新配置</a></h2>
+<p>相似物品召回配置位于<code>[similar]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>n_similar</code></td><td>int</td><td>缓存相似物品的数量，0表示禁用</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>更新相似物品时间间隔（分钟）</td><td>60</td></tr>
+</tbody></table>
+<h2 id="最新物品召回配置"><a class="header" href="#最新物品召回配置">最新物品召回配置</a></h2>
+<p>最新物品召回配置位于<code>[latest]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>n_latest</code></td><td>int</td><td>召回最新物品的数量，0表示禁用</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>更新最新物品时间间隔（分钟）</td><td>10</td></tr>
+</tbody></table>
+<h2 id="热门物品召回配置"><a class="header" href="#热门物品召回配置">热门物品召回配置</a></h2>
+<p>热门物品召回配置位于<code>[popular]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>n_popular</code></td><td>int</td><td>召回热门物品的数量，0表示禁用</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>更新热门物品时间间隔（分钟）</td><td>1440</td></tr>
+<tr><td><code>time_window</code></td><td>int</td><td>召回前N天之内的热门物品</td><td>365</td></tr>
+</tbody></table>
+<h2 id="协同过滤召回配置"><a class="header" href="#协同过滤召回配置">协同过滤召回配置</a></h2>
+<p>协同过滤召回配置位于<code>[cf]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>n_cf</code></td><td>int</td><td>协同过滤召回物品的数量，0表示禁用</td><td>800</td></tr>
+<tr><td><code>cf_model</code></td><td>string</td><td>协同过滤模型（从<code>als</code>、<code>bpr</code>和<code>ccd</code>选择）</td><td>als</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>更新协同过滤推荐模型时间间隔（分钟）</td><td>1440</td></tr>
+<tr><td><code>predict_period</code></td><td>int</td><td>更新协同过滤推荐物品时间间隔（分钟）</td><td>60</td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>协同过滤推荐使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和推荐准确率的迭代间隔</td><td>10</td></tr>
+<tr><td><code>n_candidates</code></td><td>int</td><td>计算推荐准确率使用候选物品数量</td><td>100</td></tr>
+<tr><td><code>top_k</code></td><td>int</td><td>计算推荐准确率的推荐列表长度，也就是NDCG@N中的N</td><td>10</td></tr>
+<tr><td><code>n_test_users</code></td><td>int</td><td>测试集用户数量（0表示使用全体用户测试）</td><td>0</td></tr>
+</tbody></table>
+<p>模型参数相关的配置如下，模型参数的默认值取决于具体的模型设定：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>对应模型</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>学习率</td><td>BPR</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>alpha</code></td><td>float</td><td>负样本权重</td><td>ALS/CCD</td></tr>
+</tbody></table>
+<h2 id="个性化排序模型配置"><a class="header" href="#个性化排序模型配置">个性化排序模型配置</a></h2>
+<p>个性化排序模型配置位于<code>[rank]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>task</code></td><td>int</td><td>排序任务类型（r表示回归，c表示分类）</td><td>r</td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>排序使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>更新排序模型时间间隔（分钟）</td><td>1440</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和预测准确率的迭代间隔</td><td>10</td></tr>
+</tbody></table>
+<p>模型参数相关的配置如下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>学习率</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td></tr>
+</tbody></table>
+<h2 id="主节点配置"><a class="header" href="#主节点配置">主节点配置</a></h2>
+<p>主节点配置位于<code>[cf]</code>之下：</p>
+<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
+<tr><td><code>host</code></td><td>string</td><td>主节点监听地址</td><td>127.0.0.1</td></tr>
+<tr><td><code>port</code></td><td>int</td><td>主节点监听端口</td><td>8086</td></tr>
+<tr><td><code>jobs</code></td><td>int</td><td>主节点工作线程数量</td><td>1</td></tr>
+<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>元数据超时时间</td><td>60</td></tr>
+</tbody></table>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="命令介绍"><a class="header" href="#命令介绍">命令介绍</a></h1>
+<h2 id="主节点程序"><a class="header" href="#主节点程序">主节点程序</a></h2>
+<pre><code>$ gorse-master -h
+The master node of gorse recommender system.
+
+Usage:
+  gorse-master [flags]
+
+Flags:
+  -c, --config string   configuration file path (default &quot;/etc/gorse.toml&quot;)
+  -h, --help            help for gorse-master
+      --host string     host of master node (default &quot;127.0.0.1&quot;)
+      --port int        port of master node (default 8086)
+  -v, --version         gorse version
+</code></pre>
+<p>主节点程序需要指定配置文件路径，另外可以使用命令行设置监听的地址和端口，命令行中指定的地址和端口会覆盖配置文件中的地址和端口设置。</p>
+<h2 id="服务节点程序"><a class="header" href="#服务节点程序">服务节点程序</a></h2>
+<pre><code>$ gorse-server -h
+The server node of gorse recommender system.
+
+Usage:
+  gorse-server [flags]
+
+Flags:
+  -h, --help                  help for gorse-server
+      --host string           host of server node (default &quot;127.0.0.1&quot;)
+      --master-host string   host of master node (default &quot;127.0.0.1&quot;)
+      --master-port int       port of master node (default 8086)
+      --port int              port of server node (default 8087)
+  -v, --version               gorse version
+</code></pre>
+<p>服务节点程序需要指定主节点的地址和端口，以及开启HTTP服务的地址和端口。</p>
+<h2 id="工作节点程序"><a class="header" href="#工作节点程序">工作节点程序</a></h2>
+<pre><code>$ gorse-worker -h
+The worker node of gorse recommender system.
+
+Usage:
+  gorse-worker [flags]
+
+Flags:
+  -h, --help                 help for gorse-worker
+  -j, --jobs int             number of working jobs. (default 4)
+      --master-host string   host of master node (default &quot;127.0.0.1&quot;)
+      --master-port int      port of master node (default 8086)
+</code></pre>
+<p>工作节点程序需要指定主节点的地址和端口，以及工作线程数量。</p>
+<h2 id="控制台程序"><a class="header" href="#控制台程序">控制台程序</a></h2>
+<pre><code>$ gorse-cli -h
+CLI for gorse recommender system.
+
+Usage:
+  gorse-cli [command]
+
+Available Commands:
+  cluster     cluster information
+  export      export data
+  help        Help about any command
+  import      import data
+  status      status of recommender system
+  test        test recommendation model
+  tune        tune recommendation model by random search
+  version     gorse version
+
+Flags:
+  -h, --help   help for gorse-cli
+
+Use &quot;gorse-cli [command] --help&quot; for more information about a command.
+</code></pre>
+<p>控制台程序能够列出集群成员、查看系统状态、导入/导出数据、测试模型推荐准去率以及随即搜索模型最佳参数。</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="接口介绍"><a class="header" href="#接口介绍">接口介绍</a></h1>
+<p>服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
+<p><img src="img/swagger.png" alt="" /></p>
+<h2 id="数据接口"><a class="header" href="#数据接口">数据接口</a></h2>
+<p>数据接口中涉及原始数据的操作。</p>
+<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
+<tr><td>POST</td><td>/user</td><td>插入一个用户</td></tr>
+<tr><td>DELETE</td><td>/user</td><td>删除一个用户，同时删除所有相关的反馈</td></tr>
+<tr><td>GET</td><td>/user/{user-id}</td><td>获取一个用户</td></tr>
+<tr><td>GET</td><td>/users</td><td>获取所有用户</td></tr>
+<tr><td>POST</td><td>/item</td><td>插入一个物品</td></tr>
+<tr><td>DELETE</td><td>/item</td><td>删除一个物品</td></tr>
+<tr><td>GET</td><td>/item/{item-id}</td><td>获取一个物品，同时删除所有相关的反馈</td></tr>
+<tr><td>GET</td><td>/items</td><td>获取所有物品</td></tr>
+<tr><td>POST</td><td>/feedback</td><td>批量插入反馈，可以选择是否自动插入新用户/物品</td></tr>
+<tr><td>GET</td><td>/feedback</td><td>获取所有反馈</td></tr>
+<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>获取用户反馈</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>获取物品反馈</td></tr>
+</tbody></table>
+<h2 id="缓存接口"><a class="header" href="#缓存接口">缓存接口</a></h2>
+<p>缓存接口的数据都是从原始数据处理之后得到的。</p>
+<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
+<tr><td>GET</td><td>/latest</td><td>获取最新物品</td></tr>
+<tr><td>GET</td><td>/popular</td><td>获取最近热门物品</td></tr>
+<tr><td>GET</td><td>/neighbors/{item-id}</td><td>获取相似物品</td></tr>
+<tr><td>GET</td><td>/cf/{user-id}</td><td>获取协同过滤推荐物品</td></tr>
+</tbody></table>
+<h2 id="推荐接口"><a class="header" href="#推荐接口">推荐接口</a></h2>
+<p>实时推荐由服务节点实时计算生成。</p>
+<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
+<tr><td>GET</td><td>/recommend/{user-id}</td><td>获取实时推荐</td></tr>
+</tbody></table>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>

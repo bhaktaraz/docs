@@ -1,0 +1,378 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>第二章：使用手册 - Gorse推荐系统文档</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="第二章使用手册"><a class="header" href="#第二章使用手册">第二章：使用手册</a></h1>
+<p>本章将介绍Gorse推荐系统的使用方法，包括编写配置文件、启动系统以及调用暴露的HTTP接口。</p>
+<h2 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h2>
+<p>在使用Gorse之前，需要完成以下准备工作：</p>
+<ul>
+<li>
+<p><strong>数据库：</strong> Gorse需要两个服务器，一个用于数据存储，另外一个用于缓存存储。数据存储目前支持MySQL和MongoDB，而缓存存储只支持Redis。</p>
+</li>
+<li>
+<p><strong>服务器：</strong> Gorse系统使用了单机训练和分布式预测的架构。主节点训练好模型后分发给服务节点和工作节点，多个服务节点和工作节点使用训练好的模型进行预测。Gorse推荐系统对服务器配置要求如下</p>
+<ul>
+<li>处理器：多核处理器可以通过并行处理加快各类任务</li>
+<li>内存：服务节点和工作节点内存需要满足模型存储、主节点内存需要满足数据和模型的存储</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a class="header" href="#安装">安装</a></h2>
+<p>可以以下的不同方式安装Gorse</p>
+<ul>
+<li>从<a href="https://github.com/zhenghaoz/gorse/releases">Release</a>下载预编译的二进制可执行文件。</li>
+<li>从DockerHub获取镜像</li>
+</ul>
+<table><thead><tr><th>镜像</th><th>编译状态</th></tr></thead><tbody>
+<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-master" alt="" /></a></td></tr>
+<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-server" alt="" /></a></td></tr>
+<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
+<tr><td>gorse-cli</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-cli"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-cli" alt="" /></a></td></tr>
+</tbody></table>
+<ul>
+<li>从源码编译</li>
+</ul>
+<p>需要首先安装Go 编译器，然后使用 <code>go get</code> 安装</p>
+<pre><code>$ go get github.com/zhenghaoz/gorse/...
+</code></pre>
+<p>项目代码会被自动下载到本地， <code>gorse-cli</code> 、<code>gorse-leader</code>、<code>gorse-worker</code>和<code>gorse-server</code>四个程序被安装在<code> $GOBIN</code> 路径指定的文件夹中。</p>
+<h2 id="启动"><a class="header" href="#启动">启动</a></h2>
+<p>首先需要编写配置文件，在<a href="chapter_1.html">第一章</a>中已经详细介绍了Gorse的工作方式，参考文档中的<a href="ch02-01-config.html">配置介绍</a>编写推荐系统的配置文件为<code>config.toml</code>。文档中的<a href="ch02-02-command.html">命令介绍</a>一节介绍了每个命令的用法，下面使用命令逐个启动Gorse的组件。</p>
+<ul>
+<li><strong>启动主节点</strong></li>
+</ul>
+<p>启动主节点需要指定配置文件，其他节点从主节点再获取配置。</p>
+<pre><code class="language-bash">$ gorse-master -c config.toml
+</code></pre>
+<ul>
+<li><strong>启动工作节点</strong></li>
+</ul>
+<p>工作节点需要指定主节点的地址和端口，以及工作的线程数量。</p>
+<pre><code class="language-bash">$ gorse-worker --master-host 127.0.0.1 --master-port 8086 -j 4
+</code></pre>
+<ul>
+<li><strong>启动服务节点</strong></li>
+</ul>
+<p>工作节点需要指定主节点的地址和端口，另外还要指定HTTP接口的地址和端口。</p>
+<pre><code class="language-bash">$ gorse-server --master-host 127.0.0.1 --master-port 8086 \
+    --host 127.0.0.1 --port 8087
+</code></pre>
+<h2 id="使用"><a class="header" href="#使用">使用</a></h2>
+<ul>
+<li><strong>命令行工具</strong></li>
+</ul>
+<p>在使用命令行工具<code>gorse-cli</code>之前，需要将主节点的地址和端口信息保存在<code>~/.gorse/cli.toml</code>目录下：</p>
+<pre><code class="language-toml">[master]
+port = 8086         # master port
+host = &quot;127.0.0.1&quot;  # master host
+</code></pre>
+<p><strong>第一步：检查集群状态。</strong> </p>
+<pre><code class="language-bash">$ gorse-cli cluster
++--------+-----------------+
+|  ROLE  |     ADDRESS     |
++--------+-----------------+
+| master | 127.0.0.1:8086  |
+| server | 127.0.0.1:14778 |
+| worker | 127.0.0.1:1238  |
++--------+-----------------+
+</code></pre>
+<p><code>gorse-cli cluster</code>命令展示了集群中的节点，<code>ADDRESS</code>字段表示的是节点和主节点连接的地址端口。</p>
+<p><strong>第二步：导入物品数据。</strong> </p>
+<p>假设推荐的物品是GitHub上的仓库，原始数据文件<code>repos.csv</code>如下：</p>
+<pre><code>01org/cc-oci-runtime,2021-01-25 14:32:01 +0000 UTC,containers|container|docker|kvm|oci|security
+02sh/4chanMarkovText,2021-02-08 14:38:55 +0000 UTC,scrapper|data-mining|markov-chain
+05bit/peewee-async,2021-01-25 09:35:57 +0000 UTC,peewee|python|asyncio|mysql|postgresql|orm
+...
+</code></pre>
+<p>每个字段从左到右分别为：仓库、更新时间、标签，那么导入数据的命令行为：</p>
+<pre><code class="language-bash">$ gorse-cli import items repos.csv
++---------------------------------+--------------------------------+--------------------------------+
+|             ITEM ID             |           TIMESTAMP            |             LABEL              |
++---------------------------------+--------------------------------+--------------------------------+
+| 01org/cc-oci-runtime            | 2021-01-25 14:32:01 +0000      | [containers container          |
+|                                 | +0000                          | docker kvm oci security        |
+|                                 |                                | virtual-machine                |
+|                                 |                                | virtualization]                |
+| 02sh/4chanMarkovText            | 2021-02-08 14:38:55 +0000      | [scrapper data-mining          |
+|                                 | +0000                          | markov-chain]                  |
++---------------------------------+--------------------------------+--------------------------------+
+Import items to database? [Y/n] 
+</code></pre>
+<p>命令行工具能够识别了数据，确认之后即可导入数据库。</p>
+<p><strong>第三步：导入交互数据。</strong> </p>
+<p>假设交互数据就是用户给仓库的点赞行为，原始数据文件<code>stars.csv</code>如下：</p>
+<pre><code>0xAX,0xAX/erlang-bookmarks,2013-08-31 19:48:01 +0000 UTC
+0xAX,abo-abo/hydra,2020-12-27 17:35:57 +0000 UTC
+0xAX,alebcay/awesome-shell,2015-06-16 17:17:17 +0000 UTC
+0xAX,angrave/SystemProgramming,2015-02-22 16:47:33 +0000 UTC
+0xAX,binhnguyennus/awesome-scalability,2018-01-27 18:00:00 +0000 UTC
+...
+</code></pre>
+<p>每个字段从左到右分别为：用户、仓库、点赞时间。那么导入数据的命令行为：</p>
+<pre><code class="language-bash">$ gorse-cli import feedback
++------+---------+-----------------------------------+--------------------------------+
+| TYPE | USER ID |              ITEM ID              |           TIMESTAMP            |
++------+---------+-----------------------------------+--------------------------------+
+|      | 0xAX    | 0xAX/erlang-bookmarks             | 2013-08-31 19:48:01 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | abo-abo/hydra                     | 2020-12-27 17:35:57 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | alebcay/awesome-shell             | 2015-06-16 17:17:17 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | angrave/SystemProgramming         | 2015-02-22 16:47:33 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | binhnguyennus/awesome-scalability | 2018-01-27 18:00:00 +0000      |
+|      |         |                                   | +0000                          |
+|      | 0xAX    | bitwalker/conform                 | 2015-06-10 13:32:03 +0000      |
+|      |         |                                   | +0000                          |
++------+---------+-----------------------------------+--------------------------------+
+Import feedback into database (type = &quot;&quot;, auto_insert_user = true, auto_insert_item = false) [Y/n] 
+</code></pre>
+<p>数据文件同样成功识别，可以看到交互数据类型<code>TYPE</code>一栏是空的，因为命令没有设置交互类型。需要注意，导入数据时候设置的数据类型需要和配置文件中的召回反馈类型或者排序反馈类型对应，否则反馈数据将无法被利用。</p>
+<p><strong>第四步：生成推荐。</strong> </p>
+<p>如果一切顺利，Gorse会在一段时间后加载数据，训练模型。</p>
+<pre><code class="language-bash">time=&quot;2021-03-03T14:00:27+08:00&quot; level=info msg=&quot;master: load data from database&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: data loaded (#user = 982, #item = 45247, #feedback = 5922)&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: collect latest items&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collect latest items&quot;
+time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train set size (positive) = 3432, test set size = 1716&quot;
+...
+</code></pre>
+<ul>
+<li><strong>HTTP服务</strong></li>
+</ul>
+<p>服务节点开放了<a href="ch02-03-api.html">HTTP接口</a>，方便其他程度和Gorse进行交互。服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
+<p><img src="img/swagger.png" alt="" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="ch01-02-architect.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="ch02-01-config.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="ch01-02-architect.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="ch02-01-config.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
