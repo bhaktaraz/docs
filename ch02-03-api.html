@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>接口介绍 - Gorse推荐系统文档</title>
+        <title>RESTful API - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html" class="active"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html" class="active"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,37 +165,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="接口介绍"><a class="header" href="#接口介绍">接口介绍</a></h1>
-<p>服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
+                        <h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
+<p>The server node provides RESTful APIs with documents under the <code>apidocs</code> path. If the address of the server's RESTful API service is <code>127.0.0.1:8087</code>, then the URL of the document is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
 <p><img src="img/swagger.png" alt="" /></p>
-<h2 id="数据接口"><a class="header" href="#数据接口">数据接口</a></h2>
-<p>数据接口中涉及原始数据的操作。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>POST</td><td>/user</td><td>插入一个用户</td></tr>
-<tr><td>DELETE</td><td>/user</td><td>删除一个用户，同时删除所有相关的反馈</td></tr>
-<tr><td>GET</td><td>/user/{user-id}</td><td>获取一个用户</td></tr>
-<tr><td>GET</td><td>/users</td><td>获取所有用户</td></tr>
-<tr><td>POST</td><td>/item</td><td>插入一个物品</td></tr>
-<tr><td>DELETE</td><td>/item</td><td>删除一个物品</td></tr>
-<tr><td>GET</td><td>/item/{item-id}</td><td>获取一个物品，同时删除所有相关的反馈</td></tr>
-<tr><td>GET</td><td>/items</td><td>获取所有物品</td></tr>
-<tr><td>POST</td><td>/feedback</td><td>批量插入反馈，可以选择是否自动插入新用户/物品</td></tr>
-<tr><td>GET</td><td>/feedback</td><td>获取所有反馈</td></tr>
-<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>获取用户反馈</td></tr>
-<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>获取物品反馈</td></tr>
+<h2 id="data-interfaces"><a class="header" href="#data-interfaces">Data Interfaces</a></h2>
+<p>There are operations on user/item/feedback data.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>POST</td><td>/user</td><td>Insert a user</td></tr>
+<tr><td>DELETE</td><td>/user</td><td>Delete a user and all associated feedback</td></tr>
+<tr><td>GET</td><td>/user/{user-id}</td><td>Get a user</td></tr>
+<tr><td>GET</td><td>/users</td><td>Get all users</td></tr>
+<tr><td>POST</td><td>/item</td><td>Insert an item</td></tr>
+<tr><td>DELETE</td><td>/item</td><td>Delete an item</td></tr>
+<tr><td>GET</td><td>/item/{item-id}</td><td>Get an item and delete all related feedback</td></tr>
+<tr><td>GET</td><td>/items</td><td>Get all items</td></tr>
+<tr><td>POST</td><td>/feedback</td><td>Batch insert feedbacks</td></tr>
+<tr><td>GET</td><td>/feedback</td><td>Get all feedbacks</td></tr>
+<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>Get user feedback</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>Get item feedback</td></tr>
 </tbody></table>
-<h2 id="缓存接口"><a class="header" href="#缓存接口">缓存接口</a></h2>
-<p>缓存接口的数据都是从原始数据处理之后得到的。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>GET</td><td>/latest</td><td>获取最新物品</td></tr>
-<tr><td>GET</td><td>/popular</td><td>获取最近热门物品</td></tr>
-<tr><td>GET</td><td>/neighbors/{item-id}</td><td>获取相似物品</td></tr>
-<tr><td>GET</td><td>/cf/{user-id}</td><td>获取协同过滤推荐物品</td></tr>
+<h2 id="caching-apis"><a class="header" href="#caching-apis">Caching APIs</a></h2>
+<p>Get matched items.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/latest</td><td>Get the latest items</td></tr>
+<tr><td>GET</td><td>/popular</td><td>Get recent popular items</td></tr>
+<tr><td>GET</td><td>/neighbors/{item-id}</td><td>Get similar items</td></tr>
+<tr><td>GET</td><td>/cf/{user-id}</td><td>Get collaborative filtering recommended items</td></tr>
 </tbody></table>
-<h2 id="推荐接口"><a class="header" href="#推荐接口">推荐接口</a></h2>
-<p>实时推荐由服务节点实时计算生成。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>GET</td><td>/recommend/{user-id}</td><td>获取实时推荐</td></tr>
+<h2 id="recommendation-apis"><a class="header" href="#recommendation-apis">Recommendation APIs</a></h2>
+<p>Online recommendations are generated by the server node in real-time.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/recommend/{user-id}</td><td>Online recommendations</td></tr>
 </tbody></table>
 
                     </main>

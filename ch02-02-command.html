@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>命令介绍 - Gorse推荐系统文档</title>
+        <title>Commands - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html" class="active"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html" class="active"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,8 +165,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="命令介绍"><a class="header" href="#命令介绍">命令介绍</a></h1>
-<h2 id="主节点程序"><a class="header" href="#主节点程序">主节点程序</a></h2>
+                        <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
+<h2 id="master-node-commands"><a class="header" href="#master-node-commands">Master Node Commands</a></h2>
 <pre><code>$ gorse-master -h
 The master node of gorse recommender system.
 
@@ -180,8 +180,8 @@ Flags:
       --port int        port of master node (default 8086)
   -v, --version         gorse version
 </code></pre>
-<p>主节点程序需要指定配置文件路径，另外可以使用命令行设置监听的地址和端口，命令行中指定的地址和端口会覆盖配置文件中的地址和端口设置。</p>
-<h2 id="服务节点程序"><a class="header" href="#服务节点程序">服务节点程序</a></h2>
+<p>The master node needs to specify the configuration file path, in addition, you can use the command line to set the listening host and port, the host and port specified in the command line will override the host and port settings in the configuration file.</p>
+<h2 id="service-node-commands"><a class="header" href="#service-node-commands">Service Node Commands</a></h2>
 <pre><code>$ gorse-server -h
 The server node of gorse recommender system.
 
@@ -196,8 +196,8 @@ Flags:
       --port int              port of server node (default 8087)
   -v, --version               gorse version
 </code></pre>
-<p>服务节点程序需要指定主节点的地址和端口，以及开启HTTP服务的地址和端口。</p>
-<h2 id="工作节点程序"><a class="header" href="#工作节点程序">工作节点程序</a></h2>
+<p>The server node needs to specify the host and port of the master node, as well as the host and port to open the HTTP service.</p>
+<h2 id="work-node-commands"><a class="header" href="#work-node-commands">Work Node Commands</a></h2>
 <pre><code>$ gorse-worker -h
 The worker node of gorse recommender system.
 
@@ -210,8 +210,8 @@ Flags:
       --master-host string   host of master node (default &quot;127.0.0.1&quot;)
       --master-port int      port of master node (default 8086)
 </code></pre>
-<p>工作节点程序需要指定主节点的地址和端口，以及工作线程数量。</p>
-<h2 id="控制台程序"><a class="header" href="#控制台程序">控制台程序</a></h2>
+<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
+<h2 id="cli-tools"><a class="header" href="#cli-tools">CLI Tools</a></h2>
 <pre><code>$ gorse-cli -h
 CLI for gorse recommender system.
 
@@ -233,7 +233,7 @@ Flags:
 
 Use &quot;gorse-cli [command] --help&quot; for more information about a command.
 </code></pre>
-<p>控制台程序能够列出集群成员、查看系统状态、导入/导出数据、测试模型推荐准去率以及随即搜索模型最佳参数。</p>
+<p>The CLI tools can list cluster members, view system status, import/export data, test model, and search for model optimal hyper-parameters.</p>
 
                     </main>
 

@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>配置介绍 - Gorse推荐系统文档</title>
+        <title>Configuration - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html" class="active"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html" class="active"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,89 +165,89 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="配置介绍"><a class="header" href="#配置介绍">配置介绍</a></h1>
-<h2 id="数据库配置"><a class="header" href="#数据库配置">数据库配置</a></h2>
-<p>数据库配置位于<code>[database]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>cache_store</code></td><td>string</td><td>数据存储数据库（支持MySQL/MongoDB）</td><td>redis://127.0.0.1:6379</td></tr>
-<tr><td><code>data_store</code></td><td>string</td><td>缓存存储数据库（支持Redis）</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
-<tr><td><code>auto_insert_user</code></td><td>bool</td><td>在插入新反馈的时候自动插入新用户</td><td>true</td></tr>
-<tr><td><code>auto_insert_item</code></td><td>bool</td><td>在插入新反馈的时候自动插入新物品</td><td>true</td></tr>
+                        <h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<h2 id="database-configuration"><a class="header" href="#database-configuration">Database Configuration</a></h2>
+<p>The database configuration is located under <code>[database]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>cache_store</code></td><td>string</td><td>Database for data (supports MySQL/MongoDB)</td><td>redis://127.0.0.1:6379</td></tr>
+<tr><td><code>data_store</code></td><td>string</td><td>Database for cache (supports Redis)</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
+<tr><td><code>auto_insert_user</code></td><td>bool</td><td>Automatically insert new users when inserting new feedback</td><td>true</td></tr>
+<tr><td><code>auto_insert_item</code></td><td>bool</td><td>Automatically insert new items when inserting new feedback</td><td>true</td></tr>
 </tbody></table>
-<p><code>data_store</code>和<code>cache_store</code>设置数据库的DSN（Database Source Name）格式如下：</p>
+<p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
-<li>Redis：<code>redis://主机名:端口</code></li>
-<li>MySQL：<code>mysql://[用户名[:密码]@][协议[(地址)]]/数据库[?配置项1=值1&amp;...¶配置项N=值N]</code></li>
-<li>MongoDB：<code>mongodb://[用户名:密码@]主机名1[:端口1][,...主机名N[:端口N]]][/[数据库][?选项]]</code></li>
+<li>Redis: <code>redis://hostname:port</code></li>
+<li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
+<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
 </ul>
-<h2 id="相似物品更新配置"><a class="header" href="#相似物品更新配置">相似物品更新配置</a></h2>
-<p>相似物品召回配置位于<code>[similar]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_similar</code></td><td>int</td><td>缓存相似物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新相似物品时间间隔（分钟）</td><td>60</td></tr>
+<h2 id="similar-item-configuration"><a class="header" href="#similar-item-configuration">Similar Item Configuration</a></h2>
+<p>Similar item configurations are located under <code>[similar]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_similar</code></td><td>int</td><td>Number of similar items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval (in minutes) to update similar items</td><td>60</td></tr>
 </tbody></table>
-<h2 id="最新物品召回配置"><a class="header" href="#最新物品召回配置">最新物品召回配置</a></h2>
-<p>最新物品召回配置位于<code>[latest]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_latest</code></td><td>int</td><td>召回最新物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新最新物品时间间隔（分钟）</td><td>10</td></tr>
+<h2 id="latest-item-configuration"><a class="header" href="#latest-item-configuration">Latest Item Configuration</a></h2>
+<p>The latest item configuration is located under <code>[latest]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_latest</code></td><td>int</td><td>Number of latest items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update the latest items (in minutes)</td><td>10</td></tr>
 </tbody></table>
-<h2 id="热门物品召回配置"><a class="header" href="#热门物品召回配置">热门物品召回配置</a></h2>
-<p>热门物品召回配置位于<code>[popular]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_popular</code></td><td>int</td><td>召回热门物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新热门物品时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>time_window</code></td><td>int</td><td>召回前N天之内的热门物品</td><td>365</td></tr>
+<h2 id="popular-item-configuration"><a class="header" href="#popular-item-configuration">Popular Item Configuration</a></h2>
+<p>The popular item configuration is located under <code>[popular]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_popular</code></td><td>int</td><td>Number of popular items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update popular items (in minutes)</td><td>1440</td></tr>
+<tr><td><code>time_window</code></td><td>int</td><td>Popular items within the previous N days</td><td>365</td></tr>
 </tbody></table>
-<h2 id="协同过滤召回配置"><a class="header" href="#协同过滤召回配置">协同过滤召回配置</a></h2>
-<p>协同过滤召回配置位于<code>[cf]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_cf</code></td><td>int</td><td>协同过滤召回物品的数量，0表示禁用</td><td>800</td></tr>
-<tr><td><code>cf_model</code></td><td>string</td><td>协同过滤模型（从<code>als</code>、<code>bpr</code>和<code>ccd</code>选择）</td><td>als</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>更新协同过滤推荐模型时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>predict_period</code></td><td>int</td><td>更新协同过滤推荐物品时间间隔（分钟）</td><td>60</td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>协同过滤推荐使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和推荐准确率的迭代间隔</td><td>10</td></tr>
-<tr><td><code>n_candidates</code></td><td>int</td><td>计算推荐准确率使用候选物品数量</td><td>100</td></tr>
-<tr><td><code>top_k</code></td><td>int</td><td>计算推荐准确率的推荐列表长度，也就是NDCG@N中的N</td><td>10</td></tr>
-<tr><td><code>n_test_users</code></td><td>int</td><td>测试集用户数量（0表示使用全体用户测试）</td><td>0</td></tr>
+<h2 id="collaborative-filtering-configuration"><a class="header" href="#collaborative-filtering-configuration">Collaborative Filtering Configuration</a></h2>
+<p>The collaborative filtering configuration is located under <code>[cf]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_cf</code></td><td>int</td><td>Number of collaborative filtering matched items, 0 means disabled</td><td>800</td></tr>
+<tr><td><code>cf_model</code></td><td>string</td><td>Collaborative filtering model (select from <code>als</code>, <code>bpr</code> and <code>ccd</code>)</td><td>als</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>Interval (in minutes) to update the collaborative filtering model</td><td>1440</td></tr>
+<tr><td><code>predict_period</code></td><td>int</td><td>Update collaborative filtering matched items interval (in minutes)</td><td>60</td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>Feedback types used by collaborative filtering model</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of model training threads</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and recommendation accuracy</td><td>10</td></tr>
+<tr><td><code>n_candidates</code></td><td>int</td><td>Number of candidates used to estimate the recommendation accuracy</td><td>100</td></tr>
+<tr><td><code>top_k</code></td><td>int</td><td>Length of the recommendation list to estimate the recommendation accuracy, i.e. N in NDCG@N</td><td>10</td></tr>
+<tr><td><code>n_test_users</code></td><td>int</td><td>Number of users in the test set (0 means use all users to test)</td><td>0</td></tr>
 </tbody></table>
-<p>模型参数相关的配置如下，模型参数的默认值取决于具体的模型设定：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>对应模型</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>学习率</td><td>BPR</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>alpha</code></td><td>float</td><td>负样本权重</td><td>ALS/CCD</td></tr>
+<p>The configurations related to the model hyper-parameters are as follows. The default values of hyper-parameters depend on the corresponding model settings.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Corresponding model</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td><td>BPR</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>alpha</code></td><td>float</td><td>Weight for negative samples</td><td>ALS/CCD</td></tr>
 </tbody></table>
-<h2 id="个性化排序模型配置"><a class="header" href="#个性化排序模型配置">个性化排序模型配置</a></h2>
-<p>个性化排序模型配置位于<code>[rank]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>task</code></td><td>int</td><td>排序任务类型（r表示回归，c表示分类）</td><td>r</td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>排序使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>更新排序模型时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和预测准确率的迭代间隔</td><td>10</td></tr>
+<h2 id="ranking-configuration"><a class="header" href="#ranking-configuration">Ranking Configuration</a></h2>
+<p>The ranking configuration is located under <code>[rank]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>task</code></td><td>int</td><td>Task type (<code>r</code> for regression, <code>c</code> for classification)</td><td><code>r</code></td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>Types of feedback used for ranking</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>Time interval to update the ranking model (in minutes)</td><td>1440</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of threads for model training</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and prediction accuracies</td><td>10</td></tr>
 </tbody></table>
-<p>模型参数相关的配置如下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>学习率</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td></tr>
+<p>The configurations related to the model hyper-parameters are as follows.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td></tr>
 </tbody></table>
-<h2 id="主节点配置"><a class="header" href="#主节点配置">主节点配置</a></h2>
-<p>主节点配置位于<code>[cf]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>host</code></td><td>string</td><td>主节点监听地址</td><td>127.0.0.1</td></tr>
-<tr><td><code>port</code></td><td>int</td><td>主节点监听端口</td><td>8086</td></tr>
-<tr><td><code>jobs</code></td><td>int</td><td>主节点工作线程数量</td><td>1</td></tr>
-<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>元数据超时时间</td><td>60</td></tr>
+<h2 id="master-configuration"><a class="header" href="#master-configuration">Master Configuration</a></h2>
+<p>The master configuration is located under <code>[cf]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>host</code></td><td>string</td><td>Master node listening host</td><td>127.0.0.1</td></tr>
+<tr><td><code>port</code></td><td>int</td><td>Master node listening port</td><td>8086</td></tr>
+<tr><td><code>jobs</code></td><td>int</td><td>Number of working threads</td><td>1</td></tr>
+<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>Metadata timeout</td><td>60</td></tr>
 </tbody></table>
 
                     </main>

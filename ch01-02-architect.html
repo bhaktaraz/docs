@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>系统架构 - Gorse推荐系统文档</title>
+        <title>System Architecture - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html" class="active"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html" class="active"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,57 +165,57 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="系统架构"><a class="header" href="#系统架构">系统架构</a></h1>
-<p>本章会介绍数据存储和缓存存储的设计，以及主节点、服务节点和工作节点的分工合作。HTTP接口和CLI工具的使用可以参考<a href="ch02-03-api.html">接口介绍</a>和<a href="ch02-02-command.html">命令介绍</a>。</p>
+                        <h1 id="system-architecture"><a class="header" href="#system-architecture">System Architecture</a></h1>
+<p>This chapter will introduce the design of data storage and cache storage, and the division of labor between master nodes, server nodes and worker nodes. RESTful APIs and CLI tools can be found in <a href="ch02-03-api.html">RESTful APIs</a> and <a href="ch02-02-command.html">Commands</a>.</p>
 <center><img src="img/arch.png" height="200"></center>
-<h2 id="数据存储"><a class="header" href="#数据存储">数据存储</a></h2>
-<p>数据存储由三张表构成（在MongoDB中就是三个集合）：物品库、用户库和交互记录库。</p>
+<h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
+<p>The data storage consists of three tables (in MongoDB that's three collections): the items table, the users table, and the feedback table.</p>
 <ul>
-<li><strong>物品库</strong></li>
+<li><strong>Items</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
-<tr><td><code>time_stamp</code></td><td>时间</td><td>物品更新日期</td></tr>
-<tr><td><code>labels</code></td><td>字符串数组</td><td>物品标签</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
+<tr><td><code>time_stamp</code></td><td>time</td><td>Item update date</td></tr>
+<tr><td><code>labels</code></td><td>array of strings</td><td>Item labels</td></tr>
 </tbody></table>
 <ul>
-<li><strong>用户库</strong></li>
+<li><strong>Users</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
-<tr><td><code>labels</code></td><td>字符串数组</td><td>用户标签</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
+<tr><td><code>labels</code></td><td>array of strings</td><td>User labels</td></tr>
 </tbody></table>
 <ul>
-<li><strong>反馈记录库</strong></li>
+<li><strong>Feedback</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>feedback_type</code></td><td>字符串</td><td>反馈类型</td></tr>
-<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
-<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
-<tr><td><code>time_stamp</code></td><td>时间</td><td>反馈时间</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>feedback_type</code></td><td>string</td><td>Feedback type</td></tr>
+<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
+<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
+<tr><td><code>time_stamp</code></td><td>time</td><td>Feedback time</td></tr>
 </tbody></table>
-<p>所有的操作都在这三张表（三个集合）上进行，必要的时候借助索引加快速度。<code>feedback_type</code>指定了反馈类型：例如B站的点赞、收藏、投币是不同的反馈类型。在插入反馈的时候，会遇到相关的用户或者物品在用户库和物品库中不存在，这个时候<code>auto_insert_user</code>和<code>auto_insert_item</code>就可以控制插入行为，可以选择自动插入用户或者物品，也可以选择放弃插入反馈。</p>
-<h2 id="缓存存储"><a class="header" href="#缓存存储">缓存存储</a></h2>
-<p>缓存数据库存储键-字符串和键-列表两者类型的键值对。键由两部分组成：前缀和名称，在Redis实现中，前缀和名称会拼接成为最终的键。由于所有对缓存的操作都是点查询，因此缓存存储很容易就可以扩展成分布式的形式。</p>
-<h2 id="主节点"><a class="header" href="#主节点">主节点</a></h2>
+<p>All operations are performed on these three tables (three collections), with the help of indexes to speed things up if necessary. <code>feedback_type</code> specifies the type of feedback: for example, stars, forks, and watches are different types of feedback for GitHub. When inserting feedback, you will encounter that the relevant user or item does not exist in the user and item table. This time <code>auto_insert_user</code> and <code>auto_insert_item</code> can control the insertion behavior, you can choose to insert the user or item automatically, or you can choose to abort the insertion of feedback.</p>
+<h2 id="cache-storage"><a class="header" href="#cache-storage">Cache Storage</a></h2>
+<p>The cache database stores key-value pairs of both key-string and key-list types. A key consists of two parts: a prefix and a name, which in the Redis implementation are stitched together to become the final key. Since all operations on the cache are point queries, the cache store can easily be scaled to a distributed form.</p>
+<h2 id="master-node"><a class="header" href="#master-node">Master Node</a></h2>
 <center><img src="img/master.png" height="320"></center>
-<p>主节点主要负责以下工作：</p>
+<p>The master node is responsible for the following tasks.</p>
 <ul>
-<li><strong>元数据管理：</strong> 主要管理系统配置和集群成员，集群节点心跳超时时间为<code>cluster_meta_timeout</code>秒。</li>
-<li><strong>非个性化召回：</strong> 搜集最新物品以及最近热门物品，更新频率由<code>update_period</code>确定。</li>
-<li><strong>协同过滤模型训练：</strong> 每间隔<code>fit_period</code>分钟训练协同过滤模型，供工作节点使用。</li>
-<li><strong>排序模型训练：</strong> 每间隔<code>fit_period</code>分钟训练排序模型，供服务节点使用。</li>
+<li><strong>Metadata/members management:</strong> Manages system configuration and cluster membership, cluster node heartbeat timeout is <code>cluster_meta_timeout</code> seconds.</li>
+<li><strong>Non-personalized matching:</strong> Collecting the latest items and recent popular items, the update frequency is determined by <code>update_period</code> in minutes.</li>
+<li><strong>Cooperative filtering model training:</strong> Train collaborative filtering model every <code>fit_period</code> minutes for worker nodes.</li>
+<li><strong>Ranking model training:</strong> The ranking model is trained every <code>fit_period</code> minutes for use by the server nodes.</li>
 </ul>
-<h2 id="服务节点"><a class="header" href="#服务节点">服务节点</a></h2>
+<h2 id="service-node"><a class="header" href="#service-node">Service Node</a></h2>
 <center><img src="img/server.png" height="320"></center>
-<p>服务节点主要提供两个功能：</p>
+<p>The server node provides two main functions.</p>
 <ul>
-<li><strong>暴露HTTP接口：</strong> 用户/物品/反馈的读写都通过HTTP请求的形式完成，服务节点接收HTTP请求后对数据库进行操作，然后返回HTTP响应。</li>
-<li><strong>进行实时推荐：</strong> 此时服务节点从缓存数据库读取召回物品，然后去除重复物品和用户查看过的物品，从数据库获取物品和用户特征之后将召回物品进行排序，然后将排序前<code>n</code>个物品返回。服务节点需要在后台不断检查更新排序模型，从而达到最好的推荐准确率。</li>
+<li><strong>Exposing RESTful APIs:</strong> The reading and writing of users/items/feedback is done in the form of HTTP requests. The service node receives the HTTP request and then operates on the database and returns the HTTP response.</li>
+<li><strong>Performs online recommendation:</strong> At this time, the server node reads the matched items from the cache database, then removes duplicate items and items viewed by users, ranks these matched items after obtaining the items and user labels from the database, and then returns the top <code>n</code> items. The server node needs to continuously check and update the ranking model in the background.</li>
 </ul>
-<h2 id="工作节点"><a class="header" href="#工作节点">工作节点</a></h2>
+<h2 id="worker-node"><a class="header" href="#worker-node">Worker Node</a></h2>
 <center><img src="img/worker.png" height="240"></center>
-<p>工作节点的任务更加简单一些——就是为用户生成个性化的召回物品集合。连接上主节点之后，工作节点会不断检查更新协同过滤模型。每隔一段时间（这个时间为<code>predict_period</code>）拉取集群中的工作节点地址计算出自己负责的用户标签范围，然后为负责的用户范围生成召回无物品写入到缓存数据库中。</p>
+<p>The task of the worker node is a bit simpler - it is to generate a personalized collection of matched items for the user. After connecting to the master node, the worker node constantly checks for updates to the collaborative filtering model. Every once in a while (this time is <code>predict_period</code>) it pulls the information of all worker nodes in the cluster to calculate the range of user IDs it is responsible for, and then generates matched items for the range of users it is responsible for and writes them to the cache database.</p>
 
                     </main>
 

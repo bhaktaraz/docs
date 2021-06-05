@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>推荐原理 - Gorse推荐系统文档</title>
+        <title>Recommendation Principles - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html" class="active"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html" class="active"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,30 +165,30 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="推荐原理"><a class="header" href="#推荐原理">推荐原理</a></h1>
-<p>推荐由两阶段构成：召回和排序。推荐系统中的物品数量通常非常庞大，如果对全体物料进行排序是不现实的。因此需要召回阶段从物料库中筛选出一些物品，再由排序模型结合物品标签进行更加精准的排序。</p>
-<center><img src="img/dataflow.png" height="150"></center>
-<h2 id="召回机制"><a class="header" href="#召回机制">召回机制</a></h2>
-<p>目前系统了三种召回策略：最新物品、最近热门物品和协同过滤召回。实际上，召回策略不限于这三种，还可以是根据用户感兴趣的标签进行召回、召回和用户喜欢的物品相似的物品等等，欢迎在<a href="https://github.com/zhenghaoz/gorse/issues">issues</a>中交流。</p>
+                        <h1 id="recommendation-principles"><a class="header" href="#recommendation-principles">Recommendation Principles</a></h1>
+<p>Recommendation consists of two phases: matching and ranking. The number of items in a recommender system is usually very large, and it is not practical to ranking all items. Therefore, the matching phase is needed to filter out candidate items from all items, and then the ranking model utilizes the item and user labels for more accurate ranking.</p>
+<center><img src="img/dataflow.png" height="180"></center>
+<h2 id="matching-strategies"><a class="header" href="#matching-strategies">Matching Strategies</a></h2>
+<p>There are currently three matching strategies in the system: latest items, recently popular items and collaborative filtering. In fact, recall strategies are not limited to these three, but can also be based on the user's interested tags, items similar to the user's favorite items, etc. Feel free to discuss in <a href="https://github.com/zhenghaoz/gorse/issues">issues</a>.</p>
 <ul>
 <li>
-<p><strong>最新物品：</strong> 直接将最新物品加入排序过程，这样可以给予新物品曝光机会。</p>
+<p><strong>Latest Items:</strong> Add the latest items directly to the ranking phase so that new items are given the opportunity to be exposed.</p>
 </li>
 <li>
-<p><strong>最近热门物品：</strong> 用户喜欢热门物品的可能性比较大，但是需要设置时间限制避免推荐“过时”的热门。</p>
+<p><strong>Recent Popular Items:</strong> Users are more likely to like popular items, but we need to set a time limit to avoid recommending &quot;outdated&quot; popular items.</p>
 </li>
 <li>
-<p><strong>协同过滤召回：</strong> 使用协同过滤推荐算法从全体物料库中筛选召回物品。由于协同过滤不使用物品标签，因此计算量较小，适合召回场景。系统中实现了BPR、ALS和CCD这三种协同过滤推荐算法。</p>
+<p><strong>Collaborative Filtering:</strong> Use collaborative filtering to filter candidate items from the entire item pool. Since collaborative filtering does not use item labels, it is less computationally intensive and suitable for matching scenarios. Three collaborative filtering models, BPR, ALS and CCD, are implemented in the system.</p>
 </li>
 </ul>
-<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
 <tr><td>ALS</td><td>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</td></tr>
 <tr><td>BPR</td><td>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; arXiv preprint arXiv:1205.2618 (2012).</td></tr>
 <tr><td>CCD</td><td>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</td></tr>
 </tbody></table>
-<h2 id="排序机制"><a class="header" href="#排序机制">排序机制</a></h2>
-<p>排序模型会考虑物品的标签信息，尤其对于新物品来说，标签是决定是否将新物品推送给用户的依据。本系统的排序模型选择了因子分解机：</p>
-<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<h2 id="ranking-mechanism"><a class="header" href="#ranking-mechanism">Ranking Mechanism</a></h2>
+<p>The ranking model takes into account labels of the items, especially for new items, where the label is the basis for deciding whether to push the new item to the user or not. The ranking model for this system is factorization machines.</p>
+<table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
 <tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
 </tbody></table>
 

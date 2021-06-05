@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Gorse推荐系统文档</title>
+        <title>Gorse Document</title>
         
         <meta name="robots" content="noindex" />
         
@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -129,7 +129,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -167,157 +167,157 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="第一章系统介绍"><a class="header" href="#第一章系统介绍">第一章：系统介绍</a></h1>
-<p>推荐系统本身是非常成熟的技术，网络上已经有很多的推荐算法工具包、各种各样的推荐算法在各个顶级会议上发表。即便推荐系统相关的公开资料非常多，但是却缺少一个开箱即用的开源推荐系统。这样的现象其实是推荐系统本身的特性造成，推荐系统的构建过程涉及了不同的技术包括存储、计算、业务。推荐系统一般捆绑了技术选型和业务知识，这导致推荐系统很难被解耦出来形成一套具有普适性的开源系统。Gorse就是希望成为一个具有普适性开源推荐系统，可以方便地引入到各种各样的在线服务中。</p>
-<h2 id="a-hrefch01-01-principlehtml推荐原理a"><a class="header" href="#a-hrefch01-01-principlehtml推荐原理a"><a href="ch01-01-principle.html">推荐原理</a></a></h2>
-<p>Gorse推荐物品的过程由<strong>召回</strong>和<strong>排序</strong>两个阶段构成。召回阶段从全体物品中寻找出一个候选物品集合用于后续排序。由于物品的数量庞大，推荐系统无法完成对全体物品进行排序的计算量，因此召回阶段主要使用一些简单的策略或者模型去搜集候选物品。目前，系统已经实现了“最近热门物品”、“最新物品”和“协同过滤”三种召回方式。排序阶段将召回物品去掉重复物品和历史物品之后进行排序，排序阶段会结合物品和用户的特征进行推荐，通过更加精准。</p>
-<center><img src="img/dataflow.png" height="150"></center>
-<h2 id="a-hrefch01-02-architecthtml系统架构a"><a class="header" href="#a-hrefch01-02-architecthtml系统架构a"><a href="ch01-02-architect.html">系统架构</a></a></h2>
-<p>Gorse是一个单机训练分布式预测的推荐系统。Gorse将数据存储在MySQL或者MongoDB中，中间数据缓存在Redis中。集群又一个主节点、多个工作节点和服务节点构成。主节点负责排序模型训练、协同过滤模型训练、非个性化物品召回、配置管理和成员管理。服务节点负责暴露系统的HTTP接口，以及负责在线实时推荐。工作节点负责为每个用户进行个性化召回——目前仅支持协同过滤召回。另外，运维人员可以通过CLI进行模型调参、数据导入导出和系统状态查看。</p>
+                        <h1 id="chapter-1-introduction"><a class="header" href="#chapter-1-introduction">Chapter 1: Introduction</a></h1>
+<p>Recommender systems are mature technologies, and there are already many recommender system toolkits on the web and various recommenders published in various top conferences. Even though there is a lot of public information about recommender systems, there is a lack of an open source recommender system that works out of the box. Such a phenomenon is actually caused by the nature of the recommender system itself, which involves different technologies including storage, computation, and business. Gorse aims to be a universal open source recommender system that can be easily introduced into online services.</p>
+<h2 id="a-hrefch01-01-principlehtmlrecommendation-principlesa"><a class="header" href="#a-hrefch01-01-principlehtmlrecommendation-principlesa"><a href="ch01-01-principle.html">Recommendation Principles</a></a></h2>
+<p>The process of recommending items consists of two phases, <strong>matching</strong> and <strong>ranking</strong>. The matching phase finds a collection of candidate items from all items for subsequent ranking. Due to the large number of items, the recommender system is unable to perform the computational workload of ranking all items, so the matching phase uses simple strategies or models to collect the candidate items. At present, the system has implemented three matching strategies, namely &quot;recent popular items&quot;, &quot;latest items&quot; and &quot;collaborative filtering&quot;. The ranking phase ranks the matched items after removing duplicate items and historical items. The ranking model exploits the items and user features to improve recommendation accuracy.</p>
+<center><img src="img/dataflow.png" height="180"></center>
+<h2 id="a-hrefch01-02-architecthtmlsystem-architecturea"><a class="header" href="#a-hrefch01-02-architecthtmlsystem-architecturea"><a href="ch01-02-architect.html">System Architecture</a></a></h2>
+<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for ranking model training, collaborative filtering model training, non-personalized item matching, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for personalized matching for each user - currently only collaborative filtering is supported. In addition, administrator can perform model tuning, data import and export, and system status checking via the CLI.</p>
 <center><img src="img/arch.png" height="200"></center>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="推荐原理"><a class="header" href="#推荐原理">推荐原理</a></h1>
-<p>推荐由两阶段构成：召回和排序。推荐系统中的物品数量通常非常庞大，如果对全体物料进行排序是不现实的。因此需要召回阶段从物料库中筛选出一些物品，再由排序模型结合物品标签进行更加精准的排序。</p>
-<center><img src="img/dataflow.png" height="150"></center>
-<h2 id="召回机制"><a class="header" href="#召回机制">召回机制</a></h2>
-<p>目前系统了三种召回策略：最新物品、最近热门物品和协同过滤召回。实际上，召回策略不限于这三种，还可以是根据用户感兴趣的标签进行召回、召回和用户喜欢的物品相似的物品等等，欢迎在<a href="https://github.com/zhenghaoz/gorse/issues">issues</a>中交流。</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="recommendation-principles"><a class="header" href="#recommendation-principles">Recommendation Principles</a></h1>
+<p>Recommendation consists of two phases: matching and ranking. The number of items in a recommender system is usually very large, and it is not practical to ranking all items. Therefore, the matching phase is needed to filter out candidate items from all items, and then the ranking model utilizes the item and user labels for more accurate ranking.</p>
+<center><img src="img/dataflow.png" height="180"></center>
+<h2 id="matching-strategies"><a class="header" href="#matching-strategies">Matching Strategies</a></h2>
+<p>There are currently three matching strategies in the system: latest items, recently popular items and collaborative filtering. In fact, recall strategies are not limited to these three, but can also be based on the user's interested tags, items similar to the user's favorite items, etc. Feel free to discuss in <a href="https://github.com/zhenghaoz/gorse/issues">issues</a>.</p>
 <ul>
 <li>
-<p><strong>最新物品：</strong> 直接将最新物品加入排序过程，这样可以给予新物品曝光机会。</p>
+<p><strong>Latest Items:</strong> Add the latest items directly to the ranking phase so that new items are given the opportunity to be exposed.</p>
 </li>
 <li>
-<p><strong>最近热门物品：</strong> 用户喜欢热门物品的可能性比较大，但是需要设置时间限制避免推荐“过时”的热门。</p>
+<p><strong>Recent Popular Items:</strong> Users are more likely to like popular items, but we need to set a time limit to avoid recommending &quot;outdated&quot; popular items.</p>
 </li>
 <li>
-<p><strong>协同过滤召回：</strong> 使用协同过滤推荐算法从全体物料库中筛选召回物品。由于协同过滤不使用物品标签，因此计算量较小，适合召回场景。系统中实现了BPR、ALS和CCD这三种协同过滤推荐算法。</p>
+<p><strong>Collaborative Filtering:</strong> Use collaborative filtering to filter candidate items from the entire item pool. Since collaborative filtering does not use item labels, it is less computationally intensive and suitable for matching scenarios. Three collaborative filtering models, BPR, ALS and CCD, are implemented in the system.</p>
 </li>
 </ul>
-<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
 <tr><td>ALS</td><td>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</td></tr>
 <tr><td>BPR</td><td>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; arXiv preprint arXiv:1205.2618 (2012).</td></tr>
 <tr><td>CCD</td><td>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</td></tr>
 </tbody></table>
-<h2 id="排序机制"><a class="header" href="#排序机制">排序机制</a></h2>
-<p>排序模型会考虑物品的标签信息，尤其对于新物品来说，标签是决定是否将新物品推送给用户的依据。本系统的排序模型选择了因子分解机：</p>
-<table><thead><tr><th>模型</th><th>论文</th></tr></thead><tbody>
+<h2 id="ranking-mechanism"><a class="header" href="#ranking-mechanism">Ranking Mechanism</a></h2>
+<p>The ranking model takes into account labels of the items, especially for new items, where the label is the basis for deciding whether to push the new item to the user or not. The ranking model for this system is factorization machines.</p>
+<table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
 <tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
 </tbody></table>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="系统架构"><a class="header" href="#系统架构">系统架构</a></h1>
-<p>本章会介绍数据存储和缓存存储的设计，以及主节点、服务节点和工作节点的分工合作。HTTP接口和CLI工具的使用可以参考<a href="ch02-03-api.html">接口介绍</a>和<a href="ch02-02-command.html">命令介绍</a>。</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="system-architecture"><a class="header" href="#system-architecture">System Architecture</a></h1>
+<p>This chapter will introduce the design of data storage and cache storage, and the division of labor between master nodes, server nodes and worker nodes. RESTful APIs and CLI tools can be found in <a href="ch02-03-api.html">RESTful APIs</a> and <a href="ch02-02-command.html">Commands</a>.</p>
 <center><img src="img/arch.png" height="200"></center>
-<h2 id="数据存储"><a class="header" href="#数据存储">数据存储</a></h2>
-<p>数据存储由三张表构成（在MongoDB中就是三个集合）：物品库、用户库和交互记录库。</p>
+<h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
+<p>The data storage consists of three tables (in MongoDB that's three collections): the items table, the users table, and the feedback table.</p>
 <ul>
-<li><strong>物品库</strong></li>
+<li><strong>Items</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
-<tr><td><code>time_stamp</code></td><td>时间</td><td>物品更新日期</td></tr>
-<tr><td><code>labels</code></td><td>字符串数组</td><td>物品标签</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
+<tr><td><code>time_stamp</code></td><td>time</td><td>Item update date</td></tr>
+<tr><td><code>labels</code></td><td>array of strings</td><td>Item labels</td></tr>
 </tbody></table>
 <ul>
-<li><strong>用户库</strong></li>
+<li><strong>Users</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
-<tr><td><code>labels</code></td><td>字符串数组</td><td>用户标签</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
+<tr><td><code>labels</code></td><td>array of strings</td><td>User labels</td></tr>
 </tbody></table>
 <ul>
-<li><strong>反馈记录库</strong></li>
+<li><strong>Feedback</strong></li>
 </ul>
-<table><thead><tr><th>字段名称</th><th>类型</th><th>作用</th></tr></thead><tbody>
-<tr><td><code>feedback_type</code></td><td>字符串</td><td>反馈类型</td></tr>
-<tr><td><code>user_id</code></td><td>字符串</td><td>用户编号</td></tr>
-<tr><td><code>item_id</code></td><td>字符串</td><td>物品编号</td></tr>
-<tr><td><code>time_stamp</code></td><td>时间</td><td>反馈时间</td></tr>
+<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>feedback_type</code></td><td>string</td><td>Feedback type</td></tr>
+<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
+<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
+<tr><td><code>time_stamp</code></td><td>time</td><td>Feedback time</td></tr>
 </tbody></table>
-<p>所有的操作都在这三张表（三个集合）上进行，必要的时候借助索引加快速度。<code>feedback_type</code>指定了反馈类型：例如B站的点赞、收藏、投币是不同的反馈类型。在插入反馈的时候，会遇到相关的用户或者物品在用户库和物品库中不存在，这个时候<code>auto_insert_user</code>和<code>auto_insert_item</code>就可以控制插入行为，可以选择自动插入用户或者物品，也可以选择放弃插入反馈。</p>
-<h2 id="缓存存储"><a class="header" href="#缓存存储">缓存存储</a></h2>
-<p>缓存数据库存储键-字符串和键-列表两者类型的键值对。键由两部分组成：前缀和名称，在Redis实现中，前缀和名称会拼接成为最终的键。由于所有对缓存的操作都是点查询，因此缓存存储很容易就可以扩展成分布式的形式。</p>
-<h2 id="主节点"><a class="header" href="#主节点">主节点</a></h2>
+<p>All operations are performed on these three tables (three collections), with the help of indexes to speed things up if necessary. <code>feedback_type</code> specifies the type of feedback: for example, stars, forks, and watches are different types of feedback for GitHub. When inserting feedback, you will encounter that the relevant user or item does not exist in the user and item table. This time <code>auto_insert_user</code> and <code>auto_insert_item</code> can control the insertion behavior, you can choose to insert the user or item automatically, or you can choose to abort the insertion of feedback.</p>
+<h2 id="cache-storage"><a class="header" href="#cache-storage">Cache Storage</a></h2>
+<p>The cache database stores key-value pairs of both key-string and key-list types. A key consists of two parts: a prefix and a name, which in the Redis implementation are stitched together to become the final key. Since all operations on the cache are point queries, the cache store can easily be scaled to a distributed form.</p>
+<h2 id="master-node"><a class="header" href="#master-node">Master Node</a></h2>
 <center><img src="img/master.png" height="320"></center>
-<p>主节点主要负责以下工作：</p>
+<p>The master node is responsible for the following tasks.</p>
 <ul>
-<li><strong>元数据管理：</strong> 主要管理系统配置和集群成员，集群节点心跳超时时间为<code>cluster_meta_timeout</code>秒。</li>
-<li><strong>非个性化召回：</strong> 搜集最新物品以及最近热门物品，更新频率由<code>update_period</code>确定。</li>
-<li><strong>协同过滤模型训练：</strong> 每间隔<code>fit_period</code>分钟训练协同过滤模型，供工作节点使用。</li>
-<li><strong>排序模型训练：</strong> 每间隔<code>fit_period</code>分钟训练排序模型，供服务节点使用。</li>
+<li><strong>Metadata/members management:</strong> Manages system configuration and cluster membership, cluster node heartbeat timeout is <code>cluster_meta_timeout</code> seconds.</li>
+<li><strong>Non-personalized matching:</strong> Collecting the latest items and recent popular items, the update frequency is determined by <code>update_period</code> in minutes.</li>
+<li><strong>Cooperative filtering model training:</strong> Train collaborative filtering model every <code>fit_period</code> minutes for worker nodes.</li>
+<li><strong>Ranking model training:</strong> The ranking model is trained every <code>fit_period</code> minutes for use by the server nodes.</li>
 </ul>
-<h2 id="服务节点"><a class="header" href="#服务节点">服务节点</a></h2>
+<h2 id="service-node"><a class="header" href="#service-node">Service Node</a></h2>
 <center><img src="img/server.png" height="320"></center>
-<p>服务节点主要提供两个功能：</p>
+<p>The server node provides two main functions.</p>
 <ul>
-<li><strong>暴露HTTP接口：</strong> 用户/物品/反馈的读写都通过HTTP请求的形式完成，服务节点接收HTTP请求后对数据库进行操作，然后返回HTTP响应。</li>
-<li><strong>进行实时推荐：</strong> 此时服务节点从缓存数据库读取召回物品，然后去除重复物品和用户查看过的物品，从数据库获取物品和用户特征之后将召回物品进行排序，然后将排序前<code>n</code>个物品返回。服务节点需要在后台不断检查更新排序模型，从而达到最好的推荐准确率。</li>
+<li><strong>Exposing RESTful APIs:</strong> The reading and writing of users/items/feedback is done in the form of HTTP requests. The service node receives the HTTP request and then operates on the database and returns the HTTP response.</li>
+<li><strong>Performs online recommendation:</strong> At this time, the server node reads the matched items from the cache database, then removes duplicate items and items viewed by users, ranks these matched items after obtaining the items and user labels from the database, and then returns the top <code>n</code> items. The server node needs to continuously check and update the ranking model in the background.</li>
 </ul>
-<h2 id="工作节点"><a class="header" href="#工作节点">工作节点</a></h2>
+<h2 id="worker-node"><a class="header" href="#worker-node">Worker Node</a></h2>
 <center><img src="img/worker.png" height="240"></center>
-<p>工作节点的任务更加简单一些——就是为用户生成个性化的召回物品集合。连接上主节点之后，工作节点会不断检查更新协同过滤模型。每隔一段时间（这个时间为<code>predict_period</code>）拉取集群中的工作节点地址计算出自己负责的用户标签范围，然后为负责的用户范围生成召回无物品写入到缓存数据库中。</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="第二章使用手册"><a class="header" href="#第二章使用手册">第二章：使用手册</a></h1>
-<p>本章将介绍Gorse推荐系统的使用方法，包括编写配置文件、启动系统以及调用暴露的HTTP接口。</p>
-<h2 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h2>
-<p>在使用Gorse之前，需要完成以下准备工作：</p>
+<p>The task of the worker node is a bit simpler - it is to generate a personalized collection of matched items for the user. After connecting to the master node, the worker node constantly checks for updates to the collaborative filtering model. Every once in a while (this time is <code>predict_period</code>) it pulls the information of all worker nodes in the cluster to calculate the range of user IDs it is responsible for, and then generates matched items for the range of users it is responsible for and writes them to the cache database.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-user-guide"><a class="header" href="#chapter-2-user-guide">Chapter 2: User Guide</a></h1>
+<p>This chapter introduces how to use the Gorse recommender system, including writing configuration files, starting the system, and using the exposed HTTP interface.</p>
+<h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
+<p>Before using Gorse, the following preparations need to be completed.</p>
 <ul>
 <li>
-<p><strong>数据库：</strong> Gorse需要两个服务器，一个用于数据存储，另外一个用于缓存存储。数据存储目前支持MySQL和MongoDB，而缓存存储只支持Redis。</p>
+<p><strong>Database:</strong> Gorse requires two databases, one for data storage and the other for cache storage. The data storage currently supports MySQL and MongoDB, while the cache storage only supports Redis.</p>
 </li>
 <li>
-<p><strong>服务器：</strong> Gorse系统使用了单机训练和分布式预测的架构。主节点训练好模型后分发给服务节点和工作节点，多个服务节点和工作节点使用训练好的模型进行预测。Gorse推荐系统对服务器配置要求如下</p>
+<p><strong>Hardware:</strong> The Gorse system uses a single machine training and distributed prediction architecture. The master node trains the model and distributes it to server nodes and worker nodes, and multiple server nodes and worker nodes use the trained model for prediction.Gorse recommends the following hardware requirements for the system</p>
 <ul>
-<li>处理器：多核处理器可以通过并行处理加快各类任务</li>
-<li>内存：服务节点和工作节点内存需要满足模型存储、主节点内存需要满足数据和模型的存储</li>
+<li>Processor: Multi-core processors can speed up various tasks by parallel processing.</li>
+<li>Memory: server nodes and worker nodes need to meet the model storage, master node memory needs to meet the data and model storage.</li>
 </ul>
 </li>
 </ul>
-<h2 id="安装"><a class="header" href="#安装">安装</a></h2>
-<p>可以以下的不同方式安装Gorse</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>Gorse can be installed in the following different ways</p>
 <ul>
-<li>从<a href="https://github.com/zhenghaoz/gorse/releases">Release</a>下载预编译的二进制可执行文件。</li>
-<li>从DockerHub获取镜像</li>
+<li>Download the pre-compiled binary executable from <a href="https://github.com/zhenghaoz/gorse/releases">Release</a>.</li>
+<li>Get images from DockerHub</li>
 </ul>
-<table><thead><tr><th>镜像</th><th>编译状态</th></tr></thead><tbody>
+<table><thead><tr><th>Image</th><th>Compile Status</th></tr></thead><tbody>
 <tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-master" alt="" /></a></td></tr>
 <tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-server" alt="" /></a></td></tr>
 <tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
 <tr><td>gorse-cli</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-cli"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-cli" alt="" /></a></td></tr>
 </tbody></table>
 <ul>
-<li>从源码编译</li>
+<li>Compiling from source</li>
 </ul>
-<p>需要首先安装Go 编译器，然后使用 <code>go get</code> 安装</p>
+<p>You need to install the Go compiler first, and then use <code>go get</code> to install</p>
 <pre><code>$ go get github.com/zhenghaoz/gorse/...
 </code></pre>
-<p>项目代码会被自动下载到本地， <code>gorse-cli</code> 、<code>gorse-leader</code>、<code>gorse-worker</code>和<code>gorse-server</code>四个程序被安装在<code> $GOBIN</code> 路径指定的文件夹中。</p>
-<h2 id="启动"><a class="header" href="#启动">启动</a></h2>
-<p>首先需要编写配置文件，在<a href="chapter_1.html">第一章</a>中已经详细介绍了Gorse的工作方式，参考文档中的<a href="ch02-01-config.html">配置介绍</a>编写推荐系统的配置文件为<code>config.toml</code>。文档中的<a href="ch02-02-command.html">命令介绍</a>一节介绍了每个命令的用法，下面使用命令逐个启动Gorse的组件。</p>
+<p>The project code is automatically downloaded locally, and the four programs <code>gorse-cli</code>, <code>gorse-leader</code>, <code>gorse-worker</code> and <code>gorse-server</code> are installed in the folder specified by the <code> $GOBIN</code> path.</p>
+<h2 id="start"><a class="header" href="#start">Start</a></h2>
+<p>First, you need to write a configuration file. The way Gorse works has been described in detail in <a href="chapter_1.html">Chapter 1</a>, refer to <a href="ch02-01-config.html">Configuration</a> in the document to write the recommender system configuration file as <code>config.toml</code>. The section <a href="ch02-02-command.html">Commands</a> in the documentation describes the usage of each command, and the following commands are used to start Gorse's components one by one.</p>
 <ul>
-<li><strong>启动主节点</strong></li>
+<li><strong>Start the master node</strong></li>
 </ul>
-<p>启动主节点需要指定配置文件，其他节点从主节点再获取配置。</p>
+<p>To start the master node you need to specify the configuration file, and the other nodes get the configuration from the master node.</p>
 <pre><code class="language-bash">$ gorse-master -c config.toml
 </code></pre>
 <ul>
-<li><strong>启动工作节点</strong></li>
+<li><strong>Start the worker node</strong></li>
 </ul>
-<p>工作节点需要指定主节点的地址和端口，以及工作的线程数量。</p>
+<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
 <pre><code class="language-bash">$ gorse-worker --master-host 127.0.0.1 --master-port 8086 -j 4
 </code></pre>
 <ul>
-<li><strong>启动服务节点</strong></li>
+<li><strong>Start the server node</strong></li>
 </ul>
-<p>工作节点需要指定主节点的地址和端口，另外还要指定HTTP接口的地址和端口。</p>
+<p>The worker node needs to specify the address and port of the master node, in addition to the address and port of the HTTP interface.</p>
 <pre><code class="language-bash">$ gorse-server --master-host 127.0.0.1 --master-port 8086 \
     --host 127.0.0.1 --port 8087
 </code></pre>
-<h2 id="使用"><a class="header" href="#使用">使用</a></h2>
+<h2 id="interact-with-gorse"><a class="header" href="#interact-with-gorse">Interact with Gorse</a></h2>
 <ul>
-<li><strong>命令行工具</strong></li>
+<li><strong>Command line tools</strong></li>
 </ul>
-<p>在使用命令行工具<code>gorse-cli</code>之前，需要将主节点的地址和端口信息保存在<code>~/.gorse/cli.toml</code>目录下：</p>
+<p>Before using the command line tool <code>gorse-cli</code>, you need to save the host and port information of the master node in the <code>~/.gorse/cli.toml</code> directory.</p>
 <pre><code class="language-toml">[master]
 port = 8086         # master port
 host = &quot;127.0.0.1&quot;  # master host
 </code></pre>
-<p><strong>第一步：检查集群状态。</strong> </p>
+<p><strong>Step 1: Check the cluster status.</strong> </p>
 <pre><code class="language-bash">$ gorse-cli cluster
 +--------+-----------------+
 |  ROLE  |     ADDRESS     |
@@ -327,15 +327,15 @@ host = &quot;127.0.0.1&quot;  # master host
 | worker | 127.0.0.1:1238  |
 +--------+-----------------+
 </code></pre>
-<p><code>gorse-cli cluster</code>命令展示了集群中的节点，<code>ADDRESS</code>字段表示的是节点和主节点连接的地址端口。</p>
-<p><strong>第二步：导入物品数据。</strong> </p>
-<p>假设推荐的物品是GitHub上的仓库，原始数据文件<code>repos.csv</code>如下：</p>
+<p>The <code>gorse-cli cluster</code> command shows the nodes in the cluster. The <code>ADDRESS</code> field indicates the address to connect the master node.</p>
+<p><strong>Step 2: Import the item data.</strong> </p>
+<p>Assuming the recommended items are repositories on GitHub, the raw data file <code>repos.csv</code> is as follows.</p>
 <pre><code>01org/cc-oci-runtime,2021-01-25 14:32:01 +0000 UTC,containers|container|docker|kvm|oci|security
 02sh/4chanMarkovText,2021-02-08 14:38:55 +0000 UTC,scrapper|data-mining|markov-chain
 05bit/peewee-async,2021-01-25 09:35:57 +0000 UTC,peewee|python|asyncio|mysql|postgresql|orm
 ...
 </code></pre>
-<p>每个字段从左到右分别为：仓库、更新时间、标签，那么导入数据的命令行为：</p>
+<p>Each field from left to right is: repository, update time, tag, then the command line to import the data is</p>
 <pre><code class="language-bash">$ gorse-cli import items repos.csv
 +---------------------------------+--------------------------------+--------------------------------+
 |             ITEM ID             |           TIMESTAMP            |             LABEL              |
@@ -349,9 +349,9 @@ host = &quot;127.0.0.1&quot;  # master host
 +---------------------------------+--------------------------------+--------------------------------+
 Import items to database? [Y/n] 
 </code></pre>
-<p>命令行工具能够识别了数据，确认之后即可导入数据库。</p>
-<p><strong>第三步：导入交互数据。</strong> </p>
-<p>假设交互数据就是用户给仓库的点赞行为，原始数据文件<code>stars.csv</code>如下：</p>
+<p>The command line tool recognizes the data and confirms that it can be imported into the database.</p>
+<p><strong>Step 3: Import the interactive data.</strong> </p>
+<p>Assuming that the interaction data is the user's likes to the repository, the original data file <code>stars.csv</code> is as follows.</p>
 <pre><code>0xAX,0xAX/erlang-bookmarks,2013-08-31 19:48:01 +0000 UTC
 0xAX,abo-abo/hydra,2020-12-27 17:35:57 +0000 UTC
 0xAX,alebcay/awesome-shell,2015-06-16 17:17:17 +0000 UTC
@@ -359,7 +359,7 @@ Import items to database? [Y/n]
 0xAX,binhnguyennus/awesome-scalability,2018-01-27 18:00:00 +0000 UTC
 ...
 </code></pre>
-<p>每个字段从左到右分别为：用户、仓库、点赞时间。那么导入数据的命令行为：</p>
+<p>Each field from left to right is: user, repository, and time of likes. Then the command line to import the data is.</p>
 <pre><code class="language-bash">$ gorse-cli import feedback
 +------+---------+-----------------------------------+--------------------------------+
 | TYPE | USER ID |              ITEM ID              |           TIMESTAMP            |
@@ -379,107 +379,107 @@ Import items to database? [Y/n]
 +------+---------+-----------------------------------+--------------------------------+
 Import feedback into database (type = &quot;&quot;, auto_insert_user = true, auto_insert_item = false) [Y/n] 
 </code></pre>
-<p>数据文件同样成功识别，可以看到交互数据类型<code>TYPE</code>一栏是空的，因为命令没有设置交互类型。需要注意，导入数据时候设置的数据类型需要和配置文件中的召回反馈类型或者排序反馈类型对应，否则反馈数据将无法被利用。</p>
-<p><strong>第四步：生成推荐。</strong> </p>
-<p>如果一切顺利，Gorse会在一段时间后加载数据，训练模型。</p>
+<p>The data file is also successfully identified, and you can see that the interaction data type <code>TYPE</code> column is empty, because the command does not set the interaction type. Note that the data type set when importing data needs to correspond to the matching feedback type or ranking feedback type in the configuration file, otherwise the feedback data will not be loaded.</p>
+<p><strong>Step 4: Generate recommendations.</strong> </p>
+<p>If everything goes well, Gorse will load the data and train the model after some time.</p>
 <pre><code class="language-bash">time=&quot;2021-03-03T14:00:27+08:00&quot; level=info msg=&quot;master: load data from database&quot;
 time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: data loaded (#user = 982, #item = 45247, #feedback = 5922)&quot;
 time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: collect latest items&quot;
-time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collect latest items&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collecting latest items&quot;
 time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train set size (positive) = 3432, test set size = 1716&quot;
 ...
 </code></pre>
 <ul>
-<li><strong>HTTP服务</strong></li>
+<li><strong>RESTful APIs</strong></li>
 </ul>
-<p>服务节点开放了<a href="ch02-03-api.html">HTTP接口</a>，方便其他程度和Gorse进行交互。服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
-<p><img src="img/swagger.png" alt="" /></p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="配置介绍"><a class="header" href="#配置介绍">配置介绍</a></h1>
-<h2 id="数据库配置"><a class="header" href="#数据库配置">数据库配置</a></h2>
-<p>数据库配置位于<code>[database]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>cache_store</code></td><td>string</td><td>数据存储数据库（支持MySQL/MongoDB）</td><td>redis://127.0.0.1:6379</td></tr>
-<tr><td><code>data_store</code></td><td>string</td><td>缓存存储数据库（支持Redis）</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
-<tr><td><code>auto_insert_user</code></td><td>bool</td><td>在插入新反馈的时候自动插入新用户</td><td>true</td></tr>
-<tr><td><code>auto_insert_item</code></td><td>bool</td><td>在插入新反馈的时候自动插入新物品</td><td>true</td></tr>
+<p>The server node opens the <a href="ch02-03-api.html">RESTful APIs</a> to facilitate interaction with Gorse. The server node provides the RESTful APIs with specific documentation under the <code>apidocs</code> path. If the address of the service node HTTP service is <code>127.0.0.1:8087</code>, then the URL of the documentation is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
+<p>! <a href="img/swagger.png"></a></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<h2 id="database-configuration"><a class="header" href="#database-configuration">Database Configuration</a></h2>
+<p>The database configuration is located under <code>[database]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>cache_store</code></td><td>string</td><td>Database for data (supports MySQL/MongoDB)</td><td>redis://127.0.0.1:6379</td></tr>
+<tr><td><code>data_store</code></td><td>string</td><td>Database for cache (supports Redis)</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
+<tr><td><code>auto_insert_user</code></td><td>bool</td><td>Automatically insert new users when inserting new feedback</td><td>true</td></tr>
+<tr><td><code>auto_insert_item</code></td><td>bool</td><td>Automatically insert new items when inserting new feedback</td><td>true</td></tr>
 </tbody></table>
-<p><code>data_store</code>和<code>cache_store</code>设置数据库的DSN（Database Source Name）格式如下：</p>
+<p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
-<li>Redis：<code>redis://主机名:端口</code></li>
-<li>MySQL：<code>mysql://[用户名[:密码]@][协议[(地址)]]/数据库[?配置项1=值1&amp;...¶配置项N=值N]</code></li>
-<li>MongoDB：<code>mongodb://[用户名:密码@]主机名1[:端口1][,...主机名N[:端口N]]][/[数据库][?选项]]</code></li>
+<li>Redis: <code>redis://hostname:port</code></li>
+<li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
+<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
 </ul>
-<h2 id="相似物品更新配置"><a class="header" href="#相似物品更新配置">相似物品更新配置</a></h2>
-<p>相似物品召回配置位于<code>[similar]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_similar</code></td><td>int</td><td>缓存相似物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新相似物品时间间隔（分钟）</td><td>60</td></tr>
+<h2 id="similar-item-configuration"><a class="header" href="#similar-item-configuration">Similar Item Configuration</a></h2>
+<p>Similar item configurations are located under <code>[similar]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_similar</code></td><td>int</td><td>Number of similar items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval (in minutes) to update similar items</td><td>60</td></tr>
 </tbody></table>
-<h2 id="最新物品召回配置"><a class="header" href="#最新物品召回配置">最新物品召回配置</a></h2>
-<p>最新物品召回配置位于<code>[latest]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_latest</code></td><td>int</td><td>召回最新物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新最新物品时间间隔（分钟）</td><td>10</td></tr>
+<h2 id="latest-item-configuration"><a class="header" href="#latest-item-configuration">Latest Item Configuration</a></h2>
+<p>The latest item configuration is located under <code>[latest]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_latest</code></td><td>int</td><td>Number of latest items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update the latest items (in minutes)</td><td>10</td></tr>
 </tbody></table>
-<h2 id="热门物品召回配置"><a class="header" href="#热门物品召回配置">热门物品召回配置</a></h2>
-<p>热门物品召回配置位于<code>[popular]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_popular</code></td><td>int</td><td>召回热门物品的数量，0表示禁用</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>更新热门物品时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>time_window</code></td><td>int</td><td>召回前N天之内的热门物品</td><td>365</td></tr>
+<h2 id="popular-item-configuration"><a class="header" href="#popular-item-configuration">Popular Item Configuration</a></h2>
+<p>The popular item configuration is located under <code>[popular]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_popular</code></td><td>int</td><td>Number of popular items to cache, 0 means disabled</td><td>100</td></tr>
+<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update popular items (in minutes)</td><td>1440</td></tr>
+<tr><td><code>time_window</code></td><td>int</td><td>Popular items within the previous N days</td><td>365</td></tr>
 </tbody></table>
-<h2 id="协同过滤召回配置"><a class="header" href="#协同过滤召回配置">协同过滤召回配置</a></h2>
-<p>协同过滤召回配置位于<code>[cf]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>n_cf</code></td><td>int</td><td>协同过滤召回物品的数量，0表示禁用</td><td>800</td></tr>
-<tr><td><code>cf_model</code></td><td>string</td><td>协同过滤模型（从<code>als</code>、<code>bpr</code>和<code>ccd</code>选择）</td><td>als</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>更新协同过滤推荐模型时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>predict_period</code></td><td>int</td><td>更新协同过滤推荐物品时间间隔（分钟）</td><td>60</td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>协同过滤推荐使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和推荐准确率的迭代间隔</td><td>10</td></tr>
-<tr><td><code>n_candidates</code></td><td>int</td><td>计算推荐准确率使用候选物品数量</td><td>100</td></tr>
-<tr><td><code>top_k</code></td><td>int</td><td>计算推荐准确率的推荐列表长度，也就是NDCG@N中的N</td><td>10</td></tr>
-<tr><td><code>n_test_users</code></td><td>int</td><td>测试集用户数量（0表示使用全体用户测试）</td><td>0</td></tr>
+<h2 id="collaborative-filtering-configuration"><a class="header" href="#collaborative-filtering-configuration">Collaborative Filtering Configuration</a></h2>
+<p>The collaborative filtering configuration is located under <code>[cf]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>n_cf</code></td><td>int</td><td>Number of collaborative filtering matched items, 0 means disabled</td><td>800</td></tr>
+<tr><td><code>cf_model</code></td><td>string</td><td>Collaborative filtering model (select from <code>als</code>, <code>bpr</code> and <code>ccd</code>)</td><td>als</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>Interval (in minutes) to update the collaborative filtering model</td><td>1440</td></tr>
+<tr><td><code>predict_period</code></td><td>int</td><td>Update collaborative filtering matched items interval (in minutes)</td><td>60</td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>Feedback types used by collaborative filtering model</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of model training threads</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and recommendation accuracy</td><td>10</td></tr>
+<tr><td><code>n_candidates</code></td><td>int</td><td>Number of candidates used to estimate the recommendation accuracy</td><td>100</td></tr>
+<tr><td><code>top_k</code></td><td>int</td><td>Length of the recommendation list to estimate the recommendation accuracy, i.e. N in NDCG@N</td><td>10</td></tr>
+<tr><td><code>n_test_users</code></td><td>int</td><td>Number of users in the test set (0 means use all users to test)</td><td>0</td></tr>
 </tbody></table>
-<p>模型参数相关的配置如下，模型参数的默认值取决于具体的模型设定：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>对应模型</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>学习率</td><td>BPR</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>alpha</code></td><td>float</td><td>负样本权重</td><td>ALS/CCD</td></tr>
+<p>The configurations related to the model hyper-parameters are as follows. The default values of hyper-parameters depend on the corresponding model settings.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Corresponding model</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td><td>BPR</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
+<tr><td><code>alpha</code></td><td>float</td><td>Weight for negative samples</td><td>ALS/CCD</td></tr>
 </tbody></table>
-<h2 id="个性化排序模型配置"><a class="header" href="#个性化排序模型配置">个性化排序模型配置</a></h2>
-<p>个性化排序模型配置位于<code>[rank]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>task</code></td><td>int</td><td>排序任务类型（r表示回归，c表示分类）</td><td>r</td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>排序使用的反馈类型</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>更新排序模型时间间隔（分钟）</td><td>1440</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>模型训练线程数</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>报告损失函数值和预测准确率的迭代间隔</td><td>10</td></tr>
+<h2 id="ranking-configuration"><a class="header" href="#ranking-configuration">Ranking Configuration</a></h2>
+<p>The ranking configuration is located under <code>[rank]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>task</code></td><td>int</td><td>Task type (<code>r</code> for regression, <code>c</code> for classification)</td><td><code>r</code></td></tr>
+<tr><td><code>feedback_types</code></td><td>int</td><td>Types of feedback used for ranking</td><td>[&quot;&quot;]</td></tr>
+<tr><td><code>fit_period</code></td><td>int</td><td>Time interval to update the ranking model (in minutes)</td><td>1440</td></tr>
+<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of threads for model training</td><td>1</td></tr>
+<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and prediction accuracies</td><td>10</td></tr>
 </tbody></table>
-<p>模型参数相关的配置如下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>学习率</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>正则化系数</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>迭代次数</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>隐向量维度</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>高斯随机初始化平均</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>高斯随机初始化方差</td></tr>
+<p>The configurations related to the model hyper-parameters are as follows.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td></tr>
+<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td></tr>
+<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td></tr>
+<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td></tr>
+<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td></tr>
+<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td></tr>
 </tbody></table>
-<h2 id="主节点配置"><a class="header" href="#主节点配置">主节点配置</a></h2>
-<p>主节点配置位于<code>[cf]</code>之下：</p>
-<table><thead><tr><th>配置项</th><th>类型</th><th>说明</th><th>默认值</th></tr></thead><tbody>
-<tr><td><code>host</code></td><td>string</td><td>主节点监听地址</td><td>127.0.0.1</td></tr>
-<tr><td><code>port</code></td><td>int</td><td>主节点监听端口</td><td>8086</td></tr>
-<tr><td><code>jobs</code></td><td>int</td><td>主节点工作线程数量</td><td>1</td></tr>
-<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>元数据超时时间</td><td>60</td></tr>
+<h2 id="master-configuration"><a class="header" href="#master-configuration">Master Configuration</a></h2>
+<p>The master configuration is located under <code>[cf]</code>.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>host</code></td><td>string</td><td>Master node listening host</td><td>127.0.0.1</td></tr>
+<tr><td><code>port</code></td><td>int</td><td>Master node listening port</td><td>8086</td></tr>
+<tr><td><code>jobs</code></td><td>int</td><td>Number of working threads</td><td>1</td></tr>
+<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>Metadata timeout</td><td>60</td></tr>
 </tbody></table>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="命令介绍"><a class="header" href="#命令介绍">命令介绍</a></h1>
-<h2 id="主节点程序"><a class="header" href="#主节点程序">主节点程序</a></h2>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
+<h2 id="master-node-commands"><a class="header" href="#master-node-commands">Master Node Commands</a></h2>
 <pre><code>$ gorse-master -h
 The master node of gorse recommender system.
 
@@ -493,8 +493,8 @@ Flags:
       --port int        port of master node (default 8086)
   -v, --version         gorse version
 </code></pre>
-<p>主节点程序需要指定配置文件路径，另外可以使用命令行设置监听的地址和端口，命令行中指定的地址和端口会覆盖配置文件中的地址和端口设置。</p>
-<h2 id="服务节点程序"><a class="header" href="#服务节点程序">服务节点程序</a></h2>
+<p>The master node needs to specify the configuration file path, in addition, you can use the command line to set the listening host and port, the host and port specified in the command line will override the host and port settings in the configuration file.</p>
+<h2 id="service-node-commands"><a class="header" href="#service-node-commands">Service Node Commands</a></h2>
 <pre><code>$ gorse-server -h
 The server node of gorse recommender system.
 
@@ -509,8 +509,8 @@ Flags:
       --port int              port of server node (default 8087)
   -v, --version               gorse version
 </code></pre>
-<p>服务节点程序需要指定主节点的地址和端口，以及开启HTTP服务的地址和端口。</p>
-<h2 id="工作节点程序"><a class="header" href="#工作节点程序">工作节点程序</a></h2>
+<p>The server node needs to specify the host and port of the master node, as well as the host and port to open the HTTP service.</p>
+<h2 id="work-node-commands"><a class="header" href="#work-node-commands">Work Node Commands</a></h2>
 <pre><code>$ gorse-worker -h
 The worker node of gorse recommender system.
 
@@ -523,8 +523,8 @@ Flags:
       --master-host string   host of master node (default &quot;127.0.0.1&quot;)
       --master-port int      port of master node (default 8086)
 </code></pre>
-<p>工作节点程序需要指定主节点的地址和端口，以及工作线程数量。</p>
-<h2 id="控制台程序"><a class="header" href="#控制台程序">控制台程序</a></h2>
+<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
+<h2 id="cli-tools"><a class="header" href="#cli-tools">CLI Tools</a></h2>
 <pre><code>$ gorse-cli -h
 CLI for gorse recommender system.
 
@@ -546,38 +546,38 @@ Flags:
 
 Use &quot;gorse-cli [command] --help&quot; for more information about a command.
 </code></pre>
-<p>控制台程序能够列出集群成员、查看系统状态、导入/导出数据、测试模型推荐准去率以及随即搜索模型最佳参数。</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="接口介绍"><a class="header" href="#接口介绍">接口介绍</a></h1>
-<p>服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
+<p>The CLI tools can list cluster members, view system status, import/export data, test model, and search for model optimal hyper-parameters.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
+<p>The server node provides RESTful APIs with documents under the <code>apidocs</code> path. If the address of the server's RESTful API service is <code>127.0.0.1:8087</code>, then the URL of the document is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
 <p><img src="img/swagger.png" alt="" /></p>
-<h2 id="数据接口"><a class="header" href="#数据接口">数据接口</a></h2>
-<p>数据接口中涉及原始数据的操作。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>POST</td><td>/user</td><td>插入一个用户</td></tr>
-<tr><td>DELETE</td><td>/user</td><td>删除一个用户，同时删除所有相关的反馈</td></tr>
-<tr><td>GET</td><td>/user/{user-id}</td><td>获取一个用户</td></tr>
-<tr><td>GET</td><td>/users</td><td>获取所有用户</td></tr>
-<tr><td>POST</td><td>/item</td><td>插入一个物品</td></tr>
-<tr><td>DELETE</td><td>/item</td><td>删除一个物品</td></tr>
-<tr><td>GET</td><td>/item/{item-id}</td><td>获取一个物品，同时删除所有相关的反馈</td></tr>
-<tr><td>GET</td><td>/items</td><td>获取所有物品</td></tr>
-<tr><td>POST</td><td>/feedback</td><td>批量插入反馈，可以选择是否自动插入新用户/物品</td></tr>
-<tr><td>GET</td><td>/feedback</td><td>获取所有反馈</td></tr>
-<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>获取用户反馈</td></tr>
-<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>获取物品反馈</td></tr>
+<h2 id="data-interfaces"><a class="header" href="#data-interfaces">Data Interfaces</a></h2>
+<p>There are operations on user/item/feedback data.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>POST</td><td>/user</td><td>Insert a user</td></tr>
+<tr><td>DELETE</td><td>/user</td><td>Delete a user and all associated feedback</td></tr>
+<tr><td>GET</td><td>/user/{user-id}</td><td>Get a user</td></tr>
+<tr><td>GET</td><td>/users</td><td>Get all users</td></tr>
+<tr><td>POST</td><td>/item</td><td>Insert an item</td></tr>
+<tr><td>DELETE</td><td>/item</td><td>Delete an item</td></tr>
+<tr><td>GET</td><td>/item/{item-id}</td><td>Get an item and delete all related feedback</td></tr>
+<tr><td>GET</td><td>/items</td><td>Get all items</td></tr>
+<tr><td>POST</td><td>/feedback</td><td>Batch insert feedbacks</td></tr>
+<tr><td>GET</td><td>/feedback</td><td>Get all feedbacks</td></tr>
+<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>Get user feedback</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>Get item feedback</td></tr>
 </tbody></table>
-<h2 id="缓存接口"><a class="header" href="#缓存接口">缓存接口</a></h2>
-<p>缓存接口的数据都是从原始数据处理之后得到的。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>GET</td><td>/latest</td><td>获取最新物品</td></tr>
-<tr><td>GET</td><td>/popular</td><td>获取最近热门物品</td></tr>
-<tr><td>GET</td><td>/neighbors/{item-id}</td><td>获取相似物品</td></tr>
-<tr><td>GET</td><td>/cf/{user-id}</td><td>获取协同过滤推荐物品</td></tr>
+<h2 id="caching-apis"><a class="header" href="#caching-apis">Caching APIs</a></h2>
+<p>Get matched items.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/latest</td><td>Get the latest items</td></tr>
+<tr><td>GET</td><td>/popular</td><td>Get recent popular items</td></tr>
+<tr><td>GET</td><td>/neighbors/{item-id}</td><td>Get similar items</td></tr>
+<tr><td>GET</td><td>/cf/{user-id}</td><td>Get collaborative filtering recommended items</td></tr>
 </tbody></table>
-<h2 id="推荐接口"><a class="header" href="#推荐接口">推荐接口</a></h2>
-<p>实时推荐由服务节点实时计算生成。</p>
-<table><thead><tr><th>方法</th><th>URL</th><th>说明</th></tr></thead><tbody>
-<tr><td>GET</td><td>/recommend/{user-id}</td><td>获取实时推荐</td></tr>
+<h2 id="recommendation-apis"><a class="header" href="#recommendation-apis">Recommendation APIs</a></h2>
+<p>Online recommendations are generated by the server node in real-time.</p>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/recommend/{user-id}</td><td>Online recommendations</td></tr>
 </tbody></table>
 
                     </main>

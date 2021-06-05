@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>第一章：系统介绍 - Gorse推荐系统文档</title>
+        <title>Chapter 1: Introduction - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,13 +165,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="第一章系统介绍"><a class="header" href="#第一章系统介绍">第一章：系统介绍</a></h1>
-<p>推荐系统本身是非常成熟的技术，网络上已经有很多的推荐算法工具包、各种各样的推荐算法在各个顶级会议上发表。即便推荐系统相关的公开资料非常多，但是却缺少一个开箱即用的开源推荐系统。这样的现象其实是推荐系统本身的特性造成，推荐系统的构建过程涉及了不同的技术包括存储、计算、业务。推荐系统一般捆绑了技术选型和业务知识，这导致推荐系统很难被解耦出来形成一套具有普适性的开源系统。Gorse就是希望成为一个具有普适性开源推荐系统，可以方便地引入到各种各样的在线服务中。</p>
-<h2 id="a-hrefch01-01-principlehtml推荐原理a"><a class="header" href="#a-hrefch01-01-principlehtml推荐原理a"><a href="ch01-01-principle.html">推荐原理</a></a></h2>
-<p>Gorse推荐物品的过程由<strong>召回</strong>和<strong>排序</strong>两个阶段构成。召回阶段从全体物品中寻找出一个候选物品集合用于后续排序。由于物品的数量庞大，推荐系统无法完成对全体物品进行排序的计算量，因此召回阶段主要使用一些简单的策略或者模型去搜集候选物品。目前，系统已经实现了“最近热门物品”、“最新物品”和“协同过滤”三种召回方式。排序阶段将召回物品去掉重复物品和历史物品之后进行排序，排序阶段会结合物品和用户的特征进行推荐，通过更加精准。</p>
-<center><img src="img/dataflow.png" height="150"></center>
-<h2 id="a-hrefch01-02-architecthtml系统架构a"><a class="header" href="#a-hrefch01-02-architecthtml系统架构a"><a href="ch01-02-architect.html">系统架构</a></a></h2>
-<p>Gorse是一个单机训练分布式预测的推荐系统。Gorse将数据存储在MySQL或者MongoDB中，中间数据缓存在Redis中。集群又一个主节点、多个工作节点和服务节点构成。主节点负责排序模型训练、协同过滤模型训练、非个性化物品召回、配置管理和成员管理。服务节点负责暴露系统的HTTP接口，以及负责在线实时推荐。工作节点负责为每个用户进行个性化召回——目前仅支持协同过滤召回。另外，运维人员可以通过CLI进行模型调参、数据导入导出和系统状态查看。</p>
+                        <h1 id="chapter-1-introduction"><a class="header" href="#chapter-1-introduction">Chapter 1: Introduction</a></h1>
+<p>Recommender systems are mature technologies, and there are already many recommender system toolkits on the web and various recommenders published in various top conferences. Even though there is a lot of public information about recommender systems, there is a lack of an open source recommender system that works out of the box. Such a phenomenon is actually caused by the nature of the recommender system itself, which involves different technologies including storage, computation, and business. Gorse aims to be a universal open source recommender system that can be easily introduced into online services.</p>
+<h2 id="a-hrefch01-01-principlehtmlrecommendation-principlesa"><a class="header" href="#a-hrefch01-01-principlehtmlrecommendation-principlesa"><a href="ch01-01-principle.html">Recommendation Principles</a></a></h2>
+<p>The process of recommending items consists of two phases, <strong>matching</strong> and <strong>ranking</strong>. The matching phase finds a collection of candidate items from all items for subsequent ranking. Due to the large number of items, the recommender system is unable to perform the computational workload of ranking all items, so the matching phase uses simple strategies or models to collect the candidate items. At present, the system has implemented three matching strategies, namely &quot;recent popular items&quot;, &quot;latest items&quot; and &quot;collaborative filtering&quot;. The ranking phase ranks the matched items after removing duplicate items and historical items. The ranking model exploits the items and user features to improve recommendation accuracy.</p>
+<center><img src="img/dataflow.png" height="180"></center>
+<h2 id="a-hrefch01-02-architecthtmlsystem-architecturea"><a class="header" href="#a-hrefch01-02-architecthtmlsystem-architecturea"><a href="ch01-02-architect.html">System Architecture</a></a></h2>
+<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for ranking model training, collaborative filtering model training, non-personalized item matching, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for personalized matching for each user - currently only collaborative filtering is supported. In addition, administrator can perform model tuning, data import and export, and system status checking via the CLI.</p>
 <center><img src="img/arch.png" height="200"></center>
 
                     </main>

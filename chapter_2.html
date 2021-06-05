@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js light">
+<html lang="en" class="sidebar-visible no-js light">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>第二章：使用手册 - Gorse推荐系统文档</title>
+        <title>Chapter 2: User Guide - Gorse Document</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> 第一章：系统介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> 推荐原理</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> 系统架构</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> 第二章：使用手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> 配置介绍</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> 命令介绍</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> 接口介绍</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -127,7 +127,7 @@
                         
                     </div>
 
-                    <h1 class="menu-title">Gorse推荐系统文档</h1>
+                    <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
                         
@@ -165,72 +165,72 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="第二章使用手册"><a class="header" href="#第二章使用手册">第二章：使用手册</a></h1>
-<p>本章将介绍Gorse推荐系统的使用方法，包括编写配置文件、启动系统以及调用暴露的HTTP接口。</p>
-<h2 id="准备工作"><a class="header" href="#准备工作">准备工作</a></h2>
-<p>在使用Gorse之前，需要完成以下准备工作：</p>
+                        <h1 id="chapter-2-user-guide"><a class="header" href="#chapter-2-user-guide">Chapter 2: User Guide</a></h1>
+<p>This chapter introduces how to use the Gorse recommender system, including writing configuration files, starting the system, and using the exposed HTTP interface.</p>
+<h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
+<p>Before using Gorse, the following preparations need to be completed.</p>
 <ul>
 <li>
-<p><strong>数据库：</strong> Gorse需要两个服务器，一个用于数据存储，另外一个用于缓存存储。数据存储目前支持MySQL和MongoDB，而缓存存储只支持Redis。</p>
+<p><strong>Database:</strong> Gorse requires two databases, one for data storage and the other for cache storage. The data storage currently supports MySQL and MongoDB, while the cache storage only supports Redis.</p>
 </li>
 <li>
-<p><strong>服务器：</strong> Gorse系统使用了单机训练和分布式预测的架构。主节点训练好模型后分发给服务节点和工作节点，多个服务节点和工作节点使用训练好的模型进行预测。Gorse推荐系统对服务器配置要求如下</p>
+<p><strong>Hardware:</strong> The Gorse system uses a single machine training and distributed prediction architecture. The master node trains the model and distributes it to server nodes and worker nodes, and multiple server nodes and worker nodes use the trained model for prediction.Gorse recommends the following hardware requirements for the system</p>
 <ul>
-<li>处理器：多核处理器可以通过并行处理加快各类任务</li>
-<li>内存：服务节点和工作节点内存需要满足模型存储、主节点内存需要满足数据和模型的存储</li>
+<li>Processor: Multi-core processors can speed up various tasks by parallel processing.</li>
+<li>Memory: server nodes and worker nodes need to meet the model storage, master node memory needs to meet the data and model storage.</li>
 </ul>
 </li>
 </ul>
-<h2 id="安装"><a class="header" href="#安装">安装</a></h2>
-<p>可以以下的不同方式安装Gorse</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>Gorse can be installed in the following different ways</p>
 <ul>
-<li>从<a href="https://github.com/zhenghaoz/gorse/releases">Release</a>下载预编译的二进制可执行文件。</li>
-<li>从DockerHub获取镜像</li>
+<li>Download the pre-compiled binary executable from <a href="https://github.com/zhenghaoz/gorse/releases">Release</a>.</li>
+<li>Get images from DockerHub</li>
 </ul>
-<table><thead><tr><th>镜像</th><th>编译状态</th></tr></thead><tbody>
+<table><thead><tr><th>Image</th><th>Compile Status</th></tr></thead><tbody>
 <tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-master" alt="" /></a></td></tr>
 <tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-server" alt="" /></a></td></tr>
 <tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
 <tr><td>gorse-cli</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-cli"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-cli" alt="" /></a></td></tr>
 </tbody></table>
 <ul>
-<li>从源码编译</li>
+<li>Compiling from source</li>
 </ul>
-<p>需要首先安装Go 编译器，然后使用 <code>go get</code> 安装</p>
+<p>You need to install the Go compiler first, and then use <code>go get</code> to install</p>
 <pre><code>$ go get github.com/zhenghaoz/gorse/...
 </code></pre>
-<p>项目代码会被自动下载到本地， <code>gorse-cli</code> 、<code>gorse-leader</code>、<code>gorse-worker</code>和<code>gorse-server</code>四个程序被安装在<code> $GOBIN</code> 路径指定的文件夹中。</p>
-<h2 id="启动"><a class="header" href="#启动">启动</a></h2>
-<p>首先需要编写配置文件，在<a href="chapter_1.html">第一章</a>中已经详细介绍了Gorse的工作方式，参考文档中的<a href="ch02-01-config.html">配置介绍</a>编写推荐系统的配置文件为<code>config.toml</code>。文档中的<a href="ch02-02-command.html">命令介绍</a>一节介绍了每个命令的用法，下面使用命令逐个启动Gorse的组件。</p>
+<p>The project code is automatically downloaded locally, and the four programs <code>gorse-cli</code>, <code>gorse-leader</code>, <code>gorse-worker</code> and <code>gorse-server</code> are installed in the folder specified by the <code> $GOBIN</code> path.</p>
+<h2 id="start"><a class="header" href="#start">Start</a></h2>
+<p>First, you need to write a configuration file. The way Gorse works has been described in detail in <a href="chapter_1.html">Chapter 1</a>, refer to <a href="ch02-01-config.html">Configuration</a> in the document to write the recommender system configuration file as <code>config.toml</code>. The section <a href="ch02-02-command.html">Commands</a> in the documentation describes the usage of each command, and the following commands are used to start Gorse's components one by one.</p>
 <ul>
-<li><strong>启动主节点</strong></li>
+<li><strong>Start the master node</strong></li>
 </ul>
-<p>启动主节点需要指定配置文件，其他节点从主节点再获取配置。</p>
+<p>To start the master node you need to specify the configuration file, and the other nodes get the configuration from the master node.</p>
 <pre><code class="language-bash">$ gorse-master -c config.toml
 </code></pre>
 <ul>
-<li><strong>启动工作节点</strong></li>
+<li><strong>Start the worker node</strong></li>
 </ul>
-<p>工作节点需要指定主节点的地址和端口，以及工作的线程数量。</p>
+<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
 <pre><code class="language-bash">$ gorse-worker --master-host 127.0.0.1 --master-port 8086 -j 4
 </code></pre>
 <ul>
-<li><strong>启动服务节点</strong></li>
+<li><strong>Start the server node</strong></li>
 </ul>
-<p>工作节点需要指定主节点的地址和端口，另外还要指定HTTP接口的地址和端口。</p>
+<p>The worker node needs to specify the address and port of the master node, in addition to the address and port of the HTTP interface.</p>
 <pre><code class="language-bash">$ gorse-server --master-host 127.0.0.1 --master-port 8086 \
     --host 127.0.0.1 --port 8087
 </code></pre>
-<h2 id="使用"><a class="header" href="#使用">使用</a></h2>
+<h2 id="interact-with-gorse"><a class="header" href="#interact-with-gorse">Interact with Gorse</a></h2>
 <ul>
-<li><strong>命令行工具</strong></li>
+<li><strong>Command line tools</strong></li>
 </ul>
-<p>在使用命令行工具<code>gorse-cli</code>之前，需要将主节点的地址和端口信息保存在<code>~/.gorse/cli.toml</code>目录下：</p>
+<p>Before using the command line tool <code>gorse-cli</code>, you need to save the host and port information of the master node in the <code>~/.gorse/cli.toml</code> directory.</p>
 <pre><code class="language-toml">[master]
 port = 8086         # master port
 host = &quot;127.0.0.1&quot;  # master host
 </code></pre>
-<p><strong>第一步：检查集群状态。</strong> </p>
+<p><strong>Step 1: Check the cluster status.</strong> </p>
 <pre><code class="language-bash">$ gorse-cli cluster
 +--------+-----------------+
 |  ROLE  |     ADDRESS     |
@@ -240,15 +240,15 @@ host = &quot;127.0.0.1&quot;  # master host
 | worker | 127.0.0.1:1238  |
 +--------+-----------------+
 </code></pre>
-<p><code>gorse-cli cluster</code>命令展示了集群中的节点，<code>ADDRESS</code>字段表示的是节点和主节点连接的地址端口。</p>
-<p><strong>第二步：导入物品数据。</strong> </p>
-<p>假设推荐的物品是GitHub上的仓库，原始数据文件<code>repos.csv</code>如下：</p>
+<p>The <code>gorse-cli cluster</code> command shows the nodes in the cluster. The <code>ADDRESS</code> field indicates the address to connect the master node.</p>
+<p><strong>Step 2: Import the item data.</strong> </p>
+<p>Assuming the recommended items are repositories on GitHub, the raw data file <code>repos.csv</code> is as follows.</p>
 <pre><code>01org/cc-oci-runtime,2021-01-25 14:32:01 +0000 UTC,containers|container|docker|kvm|oci|security
 02sh/4chanMarkovText,2021-02-08 14:38:55 +0000 UTC,scrapper|data-mining|markov-chain
 05bit/peewee-async,2021-01-25 09:35:57 +0000 UTC,peewee|python|asyncio|mysql|postgresql|orm
 ...
 </code></pre>
-<p>每个字段从左到右分别为：仓库、更新时间、标签，那么导入数据的命令行为：</p>
+<p>Each field from left to right is: repository, update time, tag, then the command line to import the data is</p>
 <pre><code class="language-bash">$ gorse-cli import items repos.csv
 +---------------------------------+--------------------------------+--------------------------------+
 |             ITEM ID             |           TIMESTAMP            |             LABEL              |
@@ -262,9 +262,9 @@ host = &quot;127.0.0.1&quot;  # master host
 +---------------------------------+--------------------------------+--------------------------------+
 Import items to database? [Y/n] 
 </code></pre>
-<p>命令行工具能够识别了数据，确认之后即可导入数据库。</p>
-<p><strong>第三步：导入交互数据。</strong> </p>
-<p>假设交互数据就是用户给仓库的点赞行为，原始数据文件<code>stars.csv</code>如下：</p>
+<p>The command line tool recognizes the data and confirms that it can be imported into the database.</p>
+<p><strong>Step 3: Import the interactive data.</strong> </p>
+<p>Assuming that the interaction data is the user's likes to the repository, the original data file <code>stars.csv</code> is as follows.</p>
 <pre><code>0xAX,0xAX/erlang-bookmarks,2013-08-31 19:48:01 +0000 UTC
 0xAX,abo-abo/hydra,2020-12-27 17:35:57 +0000 UTC
 0xAX,alebcay/awesome-shell,2015-06-16 17:17:17 +0000 UTC
@@ -272,7 +272,7 @@ Import items to database? [Y/n]
 0xAX,binhnguyennus/awesome-scalability,2018-01-27 18:00:00 +0000 UTC
 ...
 </code></pre>
-<p>每个字段从左到右分别为：用户、仓库、点赞时间。那么导入数据的命令行为：</p>
+<p>Each field from left to right is: user, repository, and time of likes. Then the command line to import the data is.</p>
 <pre><code class="language-bash">$ gorse-cli import feedback
 +------+---------+-----------------------------------+--------------------------------+
 | TYPE | USER ID |              ITEM ID              |           TIMESTAMP            |
@@ -292,21 +292,21 @@ Import items to database? [Y/n]
 +------+---------+-----------------------------------+--------------------------------+
 Import feedback into database (type = &quot;&quot;, auto_insert_user = true, auto_insert_item = false) [Y/n] 
 </code></pre>
-<p>数据文件同样成功识别，可以看到交互数据类型<code>TYPE</code>一栏是空的，因为命令没有设置交互类型。需要注意，导入数据时候设置的数据类型需要和配置文件中的召回反馈类型或者排序反馈类型对应，否则反馈数据将无法被利用。</p>
-<p><strong>第四步：生成推荐。</strong> </p>
-<p>如果一切顺利，Gorse会在一段时间后加载数据，训练模型。</p>
+<p>The data file is also successfully identified, and you can see that the interaction data type <code>TYPE</code> column is empty, because the command does not set the interaction type. Note that the data type set when importing data needs to correspond to the matching feedback type or ranking feedback type in the configuration file, otherwise the feedback data will not be loaded.</p>
+<p><strong>Step 4: Generate recommendations.</strong> </p>
+<p>If everything goes well, Gorse will load the data and train the model after some time.</p>
 <pre><code class="language-bash">time=&quot;2021-03-03T14:00:27+08:00&quot; level=info msg=&quot;master: load data from database&quot;
 time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: data loaded (#user = 982, #item = 45247, #feedback = 5922)&quot;
 time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: collect latest items&quot;
-time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collect latest items&quot;
+time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collecting latest items&quot;
 time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train set size (positive) = 3432, test set size = 1716&quot;
 ...
 </code></pre>
 <ul>
-<li><strong>HTTP服务</strong></li>
+<li><strong>RESTful APIs</strong></li>
 </ul>
-<p>服务节点开放了<a href="ch02-03-api.html">HTTP接口</a>，方便其他程度和Gorse进行交互。服务节点提供了HTTP接口，<code>apidocs</code>路径下有具体文档，如果服务节点HTTP服务的地址为<code>127.0.0.1:8087</code>，那么文档的URL就是<a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>。</p>
-<p><img src="img/swagger.png" alt="" /></p>
+<p>The server node opens the <a href="ch02-03-api.html">RESTful APIs</a> to facilitate interaction with Gorse. The server node provides the RESTful APIs with specific documentation under the <code>apidocs</code> path. If the address of the service node HTTP service is <code>127.0.0.1:8087</code>, then the URL of the documentation is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
+<p>! <a href="img/swagger.png"></a></p>
 
                     </main>
 
