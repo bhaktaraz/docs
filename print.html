@@ -4,40 +4,28 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Gorse Document</title>
-        
-        <meta name="robots" content="noindex" />
-        
-        
-
+                <meta name="robots" content="noindex" />
+                
 
         <!-- Custom HTML head -->
         
-
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        
-        <link rel="icon" href="favicon.svg">
-        
-        
-        <link rel="shortcut icon" href="favicon.png">
-        
-        <link rel="stylesheet" href="css/variables.css">
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
         
-        <link rel="stylesheet" href="css/print.css" media="print">
-        
-
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
-        
-
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
@@ -45,9 +33,7 @@
 
         <!-- Custom theme stylesheets -->
         
-
-        
-    </head>
+            </head>
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
@@ -97,8 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-principle.html"><strong aria-hidden="true">1.1.</strong> Recommendation Principles</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.2.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: User Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>
-            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.3.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Gorse Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -122,29 +107,22 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
-                    </div>
+                                            </div>
 
                     <h1 class="menu-title">Gorse Document</h1>
 
                     <div class="right-buttons">
-                        
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
-                        
-
+                                                                        
                     </div>
                 </div>
 
-                
-                <div id="search-wrapper" class="hidden">
+                                <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
@@ -155,7 +133,6 @@
                     </div>
                 </div>
                 
-
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -167,15 +144,107 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="chapter-1-introduction"><a class="header" href="#chapter-1-introduction">Chapter 1: Introduction</a></h1>
-<p>Recommender systems are mature technologies, and there are already many recommender system toolkits on the web and various recommenders published in various top conferences. Even though there is a lot of public information about recommender systems, there is a lack of an open source recommender system that works out of the box. Such a phenomenon is actually caused by the nature of the recommender system itself, which involves different technologies including storage, computation, and business. Gorse aims to be a universal open source recommender system that can be easily introduced into online services.</p>
-<h2 id="a-hrefch01-01-principlehtmlrecommendation-principlesa"><a class="header" href="#a-hrefch01-01-principlehtmlrecommendation-principlesa"><a href="ch01-01-principle.html">Recommendation Principles</a></a></h2>
-<p>The process of recommending items consists of two phases, <strong>matching</strong> and <strong>ranking</strong>. The matching phase finds a collection of candidate items from all items for subsequent ranking. Due to the large number of items, the recommender system is unable to perform the computational workload of ranking all items, so the matching phase uses simple strategies or models to collect the candidate items. At present, the system has implemented three matching strategies, namely &quot;recent popular items&quot;, &quot;latest items&quot; and &quot;collaborative filtering&quot;. The ranking phase ranks the matched items after removing duplicate items and historical items. The ranking model exploits the items and user features to improve recommendation accuracy.</p>
-<center><img src="img/dataflow.png" height="180"></center>
-<h2 id="a-hrefch01-02-architecthtmlsystem-architecturea"><a class="header" href="#a-hrefch01-02-architecthtmlsystem-architecturea"><a href="ch01-02-architect.html">System Architecture</a></a></h2>
-<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for ranking model training, collaborative filtering model training, non-personalized item matching, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for personalized matching for each user - currently only collaborative filtering is supported. In addition, administrator can perform model tuning, data import and export, and system status checking via the CLI.</p>
-<center><img src="img/arch.png" height="200"></center>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="recommendation-principles"><a class="header" href="#recommendation-principles">Recommendation Principles</a></h1>
+                        <h1 id="chapter-1-gorse-usage"><a class="header" href="#chapter-1-gorse-usage">Chapter 1: Gorse Usage</a></h1>
+<p>Gorse is an open source recommendation system written in Go. Gorse aims to be an universal open source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user. Project features are as follows.</p>
+<ul>
+<li><strong>AutoML</strong>: Choose the best recommendation model and stargety automatically by model searching in the background.</li>
+<li><strong>Distributed Recommendation</strong>: Single node training, distributed prediction, and ability to achieve horizontal scaling in the recommendation stage.</li>
+<li><strong>RESTful API</strong>: Provide RESTful APIs for data CRUD and recommendation requests.</li>
+<li><strong>Dashboard</strong>: Provide dashboard for data import and export, monitoring, and cluster status checking.</li>
+</ul>
+<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for offline recommendation for each user. In addition, administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
+<img width=480 src="assets/architecture.png"/>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<h2 id="setup-gorse-with-docker-compose"><a class="header" href="#setup-gorse-with-docker-compose">Setup Gorse with Docker Compose</a></h2>
+<p>The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc.. There are Docker images of the master node, the server node and the worker node.</p>
+<table><thead><tr><th>Docker Image</th><th>Image Size</th></tr></thead><tbody>
+<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master" alt="" /></a></td></tr>
+<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-server" alt="" /></a></td></tr>
+<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
+</tbody></table>
+<p>There is an example <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml">docker-compose.yml</a> consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.</p>
+<ul>
+<li>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">config.toml</a> (Docker Compose version) in the working directory.</li>
+<li>Setup the Gorse cluster using Docker Compose.</li>
+</ul>
+<pre><code class="language-bash">docker-compose up -d
+</code></pre>
+<ul>
+<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import to the MySQL instance.</li>
+</ul>
+<pre><code>mysql -h 127.0.0.1 -u root -proot_pass gorse &lt; github.sql
+</code></pre>
+<ul>
+<li>Restart the master node to apply imported data.</li>
+</ul>
+<pre><code class="language-bash">docker-compose restart
+</code></pre>
+<p>These images tagged with <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
+<h2 id="setup-gorse-manually"><a class="header" href="#setup-gorse-manually">Setup Gorse Manually</a></h2>
+<p>Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the <a href="https://github.com/zhenghaoz/gorse/releases">release</a> page. Due to the demand on large memories, 64-bit machines are highly recommended to deploy Gorse.</p>
+<p>Gorse depends on following softwares:</p>
+<table><thead><tr><th>Software</th><th>Role</th></tr></thead><tbody>
+<tr><td><em>Redis</em></td><td>used to store caches.</td></tr>
+<tr><td><em>MySQL/MongoDB</em></td><td>used to store data.</td></tr>
+</tbody></table>
+<ul>
+<li>Install Gorse</li>
+</ul>
+<p><strong>Option 1:</strong> Download binary distributions (Linux)</p>
+<pre><code class="language-bash">wget https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_linux_amd64.zip
+unzip gorse_linux_amd64.zip
+</code></pre>
+<p>For Windows and MacOS (Intel Chip or Apple Silicon), download <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_windows_amd64.zip">gorse_windows_amd64.zip</a>, <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_amd64.zip">gorse_darwin_amd64.zip</a> or <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_arm64.zip">gorse_darwin_arm64.zip</a> respectively.</p>
+<p><strong>Option 2:</strong> Build executable files via <code>go get</code></p>
+<pre><code class="language-bash">go get github.com/zhenghaoz/gorse/...
+</code></pre>
+<p>Built binaries locate at <code>$(go env GOPATH)/bin</code>.</p>
+<ul>
+<li>Configuration</li>
+</ul>
+<p>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a> in the working directory. Set <code>cache_store</code> and <code>data_store</code> in the configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a>. </p>
+<pre><code class="language-toml"># This section declares settings for the database.
+[database]
+# database for caching (support Redis only)
+cache_store = &quot;redis://localhost:6379&quot;
+# database for persist data (support MySQL/MongoDB)
+data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
+</code></pre>
+<ul>
+<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import to the MySQL instance.</li>
+</ul>
+<pre><code class="language-bash">mysql -h 127.0.0.1 -u root gorse &lt; github.sql
+</code></pre>
+<ul>
+<li>Start the master node</li>
+</ul>
+<pre><code class="language-bash">./gorse-master -c config.toml
+</code></pre>
+<p><code>-c</code> specify the path of the configuration file.</p>
+<ul>
+<li>Start the server node and worker node</li>
+</ul>
+<pre><code class="language-bash">./gorse-server --master-host 127.0.0.1 --master-port 8086 \
+    --http-host 127.0.0.1 --http-port 8087
+</code></pre>
+<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for RESTful APIs and metrics reporting of this server node.</p>
+<pre><code class="language-bash">./gorse-worker --master-host 127.0.0.1 --master-port 8086 \
+    --http-host 127.0.0.1 --http-port 8089 -j 4
+</code></pre>
+<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for metrics reporting of this worker node. <code>-j</code> is the number of working threads.</p>
+<h2 id="play-with-gorse"><a class="header" href="#play-with-gorse">Play with Gorse:</a></h2>
+<p>There are HTTP entries provided by Gorse:</p>
+<table><thead><tr><th>Entry</th><th>Link</th></tr></thead><tbody>
+<tr><td>Master Dashboard</td><td>http://127.0.0.1:8088/</td></tr>
+<tr><td>Server RESTful API</td><td>http://127.0.0.1:8087/apidocs</td></tr>
+<tr><td>Server Prometheus Metrics</td><td>http://127.0.0.1:8087/metrics</td></tr>
+<tr><td>Worker Prometheus Metrics</td><td>http://127.0.0.1:8089/metrics</td></tr>
+</tbody></table>
+<h3 id="master-dashboard"><a class="header" href="#master-dashboard">Master Dashboard</a></h3>
+<p><img src="img/dashboard.jpg" alt="" /></p>
+<h3 id="server-restful-api"><a class="header" href="#server-restful-api">Server RESTful API</a></h3>
+<p><img src="img/swagger.png" alt="" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="recommend-using-gorse"><a class="header" href="#recommend-using-gorse">Recommend using Gorse</a></h1>
 <p>Recommendation consists of two phases: matching and ranking. The number of items in a recommender system is usually very large, and it is not practical to ranking all items. Therefore, the matching phase is needed to filter out candidate items from all items, and then the ranking model utilizes the item and user labels for more accurate ranking.</p>
 <center><img src="img/dataflow.png" height="180"></center>
 <h2 id="matching-strategies"><a class="header" href="#matching-strategies">Matching Strategies</a></h2>
@@ -201,7 +270,7 @@
 <table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
 <tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
 </tbody></table>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="system-architecture"><a class="header" href="#system-architecture">System Architecture</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="system-architecture"><a class="header" href="#system-architecture">System Architecture</a></h1>
 <p>This chapter will introduce the design of data storage and cache storage, and the division of labor between master nodes, server nodes and worker nodes. RESTful APIs and CLI tools can be found in <a href="ch02-03-api.html">RESTful APIs</a> and <a href="ch02-02-command.html">Commands</a>.</p>
 <center><img src="img/arch.png" height="200"></center>
 <h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
@@ -252,7 +321,7 @@
 <h2 id="worker-node"><a class="header" href="#worker-node">Worker Node</a></h2>
 <center><img src="img/worker.png" height="240"></center>
 <p>The task of the worker node is a bit simpler - it is to generate a personalized collection of matched items for the user. After connecting to the master node, the worker node constantly checks for updates to the collaborative filtering model. Every once in a while (this time is <code>predict_period</code>) it pulls the information of all worker nodes in the cluster to calculate the range of user IDs it is responsible for, and then generates matched items for the range of users it is responsible for and writes them to the cache database.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-user-guide"><a class="header" href="#chapter-2-user-guide">Chapter 2: User Guide</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-gorse-development"><a class="header" href="#chapter-2-gorse-development">Chapter 2: Gorse Development</a></h1>
 <p>This chapter introduces how to use the Gorse recommender system, including writing configuration files, starting the system, and using the exposed HTTP interface.</p>
 <h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
 <p>Before using Gorse, the following preparations need to be completed.</p>
@@ -268,7 +337,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <p>Gorse can be installed in the following different ways</p>
 <ul>
 <li>Download the pre-compiled binary executable from <a href="https://github.com/zhenghaoz/gorse/releases">Release</a>.</li>
@@ -394,7 +463,7 @@ time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train
 </ul>
 <p>The server node opens the <a href="ch02-03-api.html">RESTful APIs</a> to facilitate interaction with Gorse. The server node provides the RESTful APIs with specific documentation under the <code>apidocs</code> path. If the address of the service node HTTP service is <code>127.0.0.1:8087</code>, then the URL of the documentation is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
 <p>! <a href="img/swagger.png"></a></p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
 <h2 id="database-configuration"><a class="header" href="#database-configuration">Database Configuration</a></h2>
 <p>The database configuration is located under <code>[database]</code>.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
@@ -478,116 +547,15 @@ time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train
 <tr><td><code>jobs</code></td><td>int</td><td>Number of working threads</td><td>1</td></tr>
 <tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>Metadata timeout</td><td>60</td></tr>
 </tbody></table>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
-<h2 id="master-node-commands"><a class="header" href="#master-node-commands">Master Node Commands</a></h2>
-<pre><code>$ gorse-master -h
-The master node of gorse recommender system.
-
-Usage:
-  gorse-master [flags]
-
-Flags:
-  -c, --config string   configuration file path (default &quot;/etc/gorse.toml&quot;)
-  -h, --help            help for gorse-master
-      --host string     host of master node (default &quot;127.0.0.1&quot;)
-      --port int        port of master node (default 8086)
-  -v, --version         gorse version
-</code></pre>
-<p>The master node needs to specify the configuration file path, in addition, you can use the command line to set the listening host and port, the host and port specified in the command line will override the host and port settings in the configuration file.</p>
-<h2 id="service-node-commands"><a class="header" href="#service-node-commands">Service Node Commands</a></h2>
-<pre><code>$ gorse-server -h
-The server node of gorse recommender system.
-
-Usage:
-  gorse-server [flags]
-
-Flags:
-  -h, --help                  help for gorse-server
-      --host string           host of server node (default &quot;127.0.0.1&quot;)
-      --master-host string   host of master node (default &quot;127.0.0.1&quot;)
-      --master-port int       port of master node (default 8086)
-      --port int              port of server node (default 8087)
-  -v, --version               gorse version
-</code></pre>
-<p>The server node needs to specify the host and port of the master node, as well as the host and port to open the HTTP service.</p>
-<h2 id="work-node-commands"><a class="header" href="#work-node-commands">Work Node Commands</a></h2>
-<pre><code>$ gorse-worker -h
-The worker node of gorse recommender system.
-
-Usage:
-  gorse-worker [flags]
-
-Flags:
-  -h, --help                 help for gorse-worker
-  -j, --jobs int             number of working jobs. (default 4)
-      --master-host string   host of master node (default &quot;127.0.0.1&quot;)
-      --master-port int      port of master node (default 8086)
-</code></pre>
-<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
-<h2 id="cli-tools"><a class="header" href="#cli-tools">CLI Tools</a></h2>
-<pre><code>$ gorse-cli -h
-CLI for gorse recommender system.
-
-Usage:
-  gorse-cli [command]
-
-Available Commands:
-  cluster     cluster information
-  export      export data
-  help        Help about any command
-  import      import data
-  status      status of recommender system
-  test        test recommendation model
-  tune        tune recommendation model by random search
-  version     gorse version
-
-Flags:
-  -h, --help   help for gorse-cli
-
-Use &quot;gorse-cli [command] --help&quot; for more information about a command.
-</code></pre>
-<p>The CLI tools can list cluster members, view system status, import/export data, test model, and search for model optimal hyper-parameters.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
-<p>The server node provides RESTful APIs with documents under the <code>apidocs</code> path. If the address of the server's RESTful API service is <code>127.0.0.1:8087</code>, then the URL of the document is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
-<p><img src="img/swagger.png" alt="" /></p>
-<h2 id="data-interfaces"><a class="header" href="#data-interfaces">Data Interfaces</a></h2>
-<p>There are operations on user/item/feedback data.</p>
-<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
-<tr><td>POST</td><td>/user</td><td>Insert a user</td></tr>
-<tr><td>DELETE</td><td>/user</td><td>Delete a user and all associated feedback</td></tr>
-<tr><td>GET</td><td>/user/{user-id}</td><td>Get a user</td></tr>
-<tr><td>GET</td><td>/users</td><td>Get all users</td></tr>
-<tr><td>POST</td><td>/item</td><td>Insert an item</td></tr>
-<tr><td>DELETE</td><td>/item</td><td>Delete an item</td></tr>
-<tr><td>GET</td><td>/item/{item-id}</td><td>Get an item and delete all related feedback</td></tr>
-<tr><td>GET</td><td>/items</td><td>Get all items</td></tr>
-<tr><td>POST</td><td>/feedback</td><td>Batch insert feedbacks</td></tr>
-<tr><td>GET</td><td>/feedback</td><td>Get all feedbacks</td></tr>
-<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>Get user feedback</td></tr>
-<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>Get item feedback</td></tr>
-</tbody></table>
-<h2 id="caching-apis"><a class="header" href="#caching-apis">Caching APIs</a></h2>
-<p>Get matched items.</p>
-<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
-<tr><td>GET</td><td>/latest</td><td>Get the latest items</td></tr>
-<tr><td>GET</td><td>/popular</td><td>Get recent popular items</td></tr>
-<tr><td>GET</td><td>/neighbors/{item-id}</td><td>Get similar items</td></tr>
-<tr><td>GET</td><td>/cf/{user-id}</td><td>Get collaborative filtering recommended items</td></tr>
-</tbody></table>
-<h2 id="recommendation-apis"><a class="header" href="#recommendation-apis">Recommendation APIs</a></h2>
-<p>Online recommendations are generated by the server node in real-time.</p>
-<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
-<tr><td>GET</td><td>/recommend/{user-id}</td><td>Online recommendations</td></tr>
-</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="restful-api"><a class="header" href="#restful-api">RESTful API</a></h1>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-
                         
-
                         <div style="clear: both"></div>
                     </nav>
                 </div>
@@ -595,48 +563,33 @@ Use &quot;gorse-cli [command] --help&quot; for more information about a command.
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-
-                
-            </nav>
+                            </nav>
 
         </div>
 
         
-
         
-
         
-
-        
-        <script type="text/javascript">
+                <script type="text/javascript">
             window.playground_copyable = true;
         </script>
         
-
         
-
-        
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
         
-
         <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
-
-        
-        
-        <script type="text/javascript">
+                        <script type="text/javascript">
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
-        
-        
-
+                
     </body>
 </html>
