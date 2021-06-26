@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.3.</strong> System Architecture</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Gorse Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-config.html"><strong aria-hidden="true">2.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch02-02-command.html"><strong aria-hidden="true">2.2.</strong> Commands</a></li><li class="chapter-item expanded "><a href="ch02-03-api.html"><strong aria-hidden="true">2.3.</strong> RESTful API</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -155,6 +155,7 @@
 <p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for offline recommendation for each user. In addition, administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
 <img width=480 src="assets/architecture.png"/>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>Gorse can be setup via Docker Compose or maually.</p>
 <h2 id="setup-gorse-with-docker-compose"><a class="header" href="#setup-gorse-with-docker-compose">Setup Gorse with Docker Compose</a></h2>
 <p>The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc.. There are Docker images of the master node, the server node and the worker node.</p>
 <table><thead><tr><th>Docker Image</th><th>Image Size</th></tr></thead><tbody>
@@ -205,8 +206,10 @@ unzip gorse_linux_amd64.zip
 <p>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a> in the working directory. Set <code>cache_store</code> and <code>data_store</code> in the configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a>. </p>
 <pre><code class="language-toml"># This section declares settings for the database.
 [database]
+
 # database for caching (support Redis only)
 cache_store = &quot;redis://localhost:6379&quot;
+
 # database for persist data (support MySQL/MongoDB)
 data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 </code></pre>
@@ -321,234 +324,132 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <h2 id="worker-node"><a class="header" href="#worker-node">Worker Node</a></h2>
 <center><img src="img/worker.png" height="240"></center>
 <p>The task of the worker node is a bit simpler - it is to generate a personalized collection of matched items for the user. After connecting to the master node, the worker node constantly checks for updates to the collaborative filtering model. Every once in a while (this time is <code>predict_period</code>) it pulls the information of all worker nodes in the cluster to calculate the range of user IDs it is responsible for, and then generates matched items for the range of users it is responsible for and writes them to the cache database.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-gorse-development"><a class="header" href="#chapter-2-gorse-development">Chapter 2: Gorse Development</a></h1>
-<p>This chapter introduces how to use the Gorse recommender system, including writing configuration files, starting the system, and using the exposed HTTP interface.</p>
-<h2 id="preparation"><a class="header" href="#preparation">Preparation</a></h2>
-<p>Before using Gorse, the following preparations need to be completed.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gitrec-the-live-demo"><a class="header" href="#gitrec-the-live-demo">GitRec, The Live Demo</a></h1>
+<p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before are imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendationn and press ⏯️ to skip current recommendationn.</p>
+<p><img src="img/gitrec.jpg" alt="" /></p>
+<h2 id="design"><a class="header" href="#design">Design</a></h2>
+<center><img width="500" src="img/gitrec-architecture.png"/></center>
 <ul>
-<li>
-<p><strong>Database:</strong> Gorse requires two databases, one for data storage and the other for cache storage. The data storage currently supports MySQL and MongoDB, while the cache storage only supports Redis.</p>
-</li>
-<li>
-<p><strong>Hardware:</strong> The Gorse system uses a single machine training and distributed prediction architecture. The master node trains the model and distributes it to server nodes and worker nodes, and multiple server nodes and worker nodes use the trained model for prediction.Gorse recommends the following hardware requirements for the system</p>
-<ul>
-<li>Processor: Multi-core processors can speed up various tasks by parallel processing.</li>
-<li>Memory: server nodes and worker nodes need to meet the model storage, master node memory needs to meet the data and model storage.</li>
+<li><strong>Import new repositories</strong>: The trending crawler crawls trending repositories and insert them into Gorse as new items. Since there are huge nuumber of repositories in GitHub, it's impossible add all of them into GitRec. So, only trending repositories are imported.</li>
+<li><strong>Import user starred repositories</strong>: The user starred crawler crawls user starred repositories and insert them into Gorse as new fewdback typed <code>star</code> when a new user signed in.</li>
+<li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and show to users. When a user press ❤️, a feedback typed <code>like</code> will be inserted to Gorse. When ⏯️ pressed, a feedback typed <code>view</code> will be inserted to Gorse.</li>
 </ul>
-</li>
-</ul>
-<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
-<p>Gorse can be installed in the following different ways</p>
-<ul>
-<li>Download the pre-compiled binary executable from <a href="https://github.com/zhenghaoz/gorse/releases">Release</a>.</li>
-<li>Get images from DockerHub</li>
-</ul>
-<table><thead><tr><th>Image</th><th>Compile Status</th></tr></thead><tbody>
-<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-master" alt="" /></a></td></tr>
-<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-server" alt="" /></a></td></tr>
-<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-worker" alt="" /></a></td></tr>
-<tr><td>gorse-cli</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-cli"><img src="https://img.shields.io/docker/cloud/build/zhenghaoz/gorse-cli" alt="" /></a></td></tr>
-</tbody></table>
-<ul>
-<li>Compiling from source</li>
-</ul>
-<p>You need to install the Go compiler first, and then use <code>go get</code> to install</p>
-<pre><code>$ go get github.com/zhenghaoz/gorse/...
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for read events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events doesn't happen in GitRec, it won't be added to <code>click_feedback_types</code>. </p>
+<pre><code class="language-toml"># feedback type for positive event
+positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
+
+# feedback type for click event
+click_feedback_types = [&quot;like&quot;]
+
+# feedback type for read event
+read_feedback_type = &quot;read&quot;
 </code></pre>
-<p>The project code is automatically downloaded locally, and the four programs <code>gorse-cli</code>, <code>gorse-leader</code>, <code>gorse-worker</code> and <code>gorse-server</code> are installed in the folder specified by the <code> $GOBIN</code> path.</p>
-<h2 id="start"><a class="header" href="#start">Start</a></h2>
-<p>First, you need to write a configuration file. The way Gorse works has been described in detail in <a href="chapter_1.html">Chapter 1</a>, refer to <a href="ch02-01-config.html">Configuration</a> in the document to write the recommender system configuration file as <code>config.toml</code>. The section <a href="ch02-02-command.html">Commands</a> in the documentation describes the usage of each command, and the following commands are used to start Gorse's components one by one.</p>
-<ul>
-<li><strong>Start the master node</strong></li>
-</ul>
-<p>To start the master node you need to specify the configuration file, and the other nodes get the configuration from the master node.</p>
-<pre><code class="language-bash">$ gorse-master -c config.toml
+<p>Other settings are the same as <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">docker/config.toml</a>.</p>
+<h2 id="implemenetation"><a class="header" href="#implemenetation">Implemenetation</a></h2>
+<p>This project consists of frontend, backend and crawlers. In this section, only these codes interact with Gorse are introduced. Other codes are avaliable in the <a href="https://github.com/zhenghaoz/gitrec">GitRec repository</a>.</p>
+<ol>
+<li>First thing is to wrap Gorse API as a python module. It sends HTTP requests and handle responses using <code>requests</code>.</li>
+</ol>
+<pre><code class="language-python">from collections import namedtuple
+from datetime import datetime
+from typing import List
+
+import requests
+
+Success = namedtuple(&quot;Success&quot;, [&quot;RowAffected&quot;])
+
+
+class GorseException(BaseException):
+    def __init__(self, status_code: int, message: str):
+        self.status_code = status_code
+        self.message = message
+
+
+class Gorse:
+    def __init__(self, entry_point):
+        self.entry_point = entry_point
+
+    def insert_feedback(
+        self, feedback_type: str, user_id: str, item_id: str
+    ) -&gt; Success:
+        r = requests.post(
+            self.entry_point + &quot;/api/feedback&quot;,
+            json=[
+                {
+                    &quot;FeedbackType&quot;: feedback_type,
+                    &quot;UserId&quot;: user_id,
+                    &quot;ItemId&quot;: item_id,
+                    &quot;Timestamp&quot;: datetime.now().isoformat(),
+                }
+            ],
+        )
+        if r.status_code == 200:
+            return r.json()
+        raise GorseException(r.status_code, r.text)
+
+    def get_recommend(self, user_id: str, n: int = 1) -&gt; List[str]:
+        r = requests.get(self.entry_point + &quot;/api/recommend/%s?n=%d&quot; % (user_id, n))
+        if r.status_code == 200:
+            return r.json()
+        raise GorseException(r.status_code, r.text)
+
+    def insert_feedbacks(self, feedbacks) -&gt; Success:
+        r = requests.post(self.entry_point + &quot;/api/feedback&quot;, json=feedbacks)
+        if r.status_code == 200:
+            return r.json()
+        raise GorseException(r.status_code, r.text)
+
+    def insert_item(self, item) -&gt; List[str]:
+        r = requests.post(self.entry_point + &quot;/api/item&quot;, json=item)
+        if r.status_code == 200:
+            return r.json()
+        raise GorseException(r.status_code, r.text)
 </code></pre>
-<ul>
-<li><strong>Start the worker node</strong></li>
-</ul>
-<p>The worker node needs to specify the host and port of the master node, and the number of working threads.</p>
-<pre><code class="language-bash">$ gorse-worker --master-host 127.0.0.1 --master-port 8086 -j 4
+<ol start="2">
+<li>In the code of trending crawler, insert trending repositories as new items.</li>
+</ol>
+<pre><code class="language-python">if __name__ == &quot;__main__&quot;:
+    trending_repos = get_trending()
+    for trending_repo in trending_repos:
+        gorse_client.insert_item(get_repo_info(trending_repo))
 </code></pre>
-<ul>
-<li><strong>Start the server node</strong></li>
-</ul>
-<p>The worker node needs to specify the address and port of the master node, in addition to the address and port of the HTTP interface.</p>
-<pre><code class="language-bash">$ gorse-server --master-host 127.0.0.1 --master-port 8086 \
-    --host 127.0.0.1 --port 8087
+<ol start="3">
+<li>In the code of starred repositories crawler, insert user starred repositories as <code>star</code> feedbacks.</li>
+</ol>
+<pre><code class="language-python">@app.task
+def pull(token: str):
+    g = GraphQLGitHub(token)
+    stars = g.get_viewer_starred()
+    gorse_client.insert_feedbacks(stars)
 </code></pre>
-<h2 id="interact-with-gorse"><a class="header" href="#interact-with-gorse">Interact with Gorse</a></h2>
-<ul>
-<li><strong>Command line tools</strong></li>
-</ul>
-<p>Before using the command line tool <code>gorse-cli</code>, you need to save the host and port information of the master node in the <code>~/.gorse/cli.toml</code> directory.</p>
-<pre><code class="language-toml">[master]
-port = 8086         # master port
-host = &quot;127.0.0.1&quot;  # master host
+<ol start="4">
+<li>In the code of web service backend, pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</li>
+</ol>
+<pre><code class="language-python">@app.route(&quot;/api/repo&quot;)
+def get_repo():
+    repo_id = gorse_client.get_recommend(session[&quot;user_id&quot;])[0]
+    full_name = repo_id.replace(&quot;:&quot;, &quot;/&quot;)
+    github_client = Github(github.token[&quot;access_token&quot;])
+    repo = github_client.get_repo(full_name)
+    # ...
+
+
+@app.route(&quot;/api/like/&lt;repo_name&gt;&quot;)
+def like_repo(repo_name: str):
+    try:
+        return gorse_client.insert_feedback(&quot;like&quot;, session[&quot;user_id&quot;], repo_name)
+    except gorse.GorseException as e:
+        return Response(e.message, status=e.status_code)
+
+
+@app.route(&quot;/api/read/&lt;repo_name&gt;&quot;)
+def read_repo(repo_name: str):
+    try:
+        return gorse_client.insert_feedback(&quot;read&quot;, session[&quot;user_id&quot;], repo_name)
+    except gorse.GorseException as e:
+        return Response(e.message, status=e.status_code)
 </code></pre>
-<p><strong>Step 1: Check the cluster status.</strong> </p>
-<pre><code class="language-bash">$ gorse-cli cluster
-+--------+-----------------+
-|  ROLE  |     ADDRESS     |
-+--------+-----------------+
-| master | 127.0.0.1:8086  |
-| server | 127.0.0.1:14778 |
-| worker | 127.0.0.1:1238  |
-+--------+-----------------+
-</code></pre>
-<p>The <code>gorse-cli cluster</code> command shows the nodes in the cluster. The <code>ADDRESS</code> field indicates the address to connect the master node.</p>
-<p><strong>Step 2: Import the item data.</strong> </p>
-<p>Assuming the recommended items are repositories on GitHub, the raw data file <code>repos.csv</code> is as follows.</p>
-<pre><code>01org/cc-oci-runtime,2021-01-25 14:32:01 +0000 UTC,containers|container|docker|kvm|oci|security
-02sh/4chanMarkovText,2021-02-08 14:38:55 +0000 UTC,scrapper|data-mining|markov-chain
-05bit/peewee-async,2021-01-25 09:35:57 +0000 UTC,peewee|python|asyncio|mysql|postgresql|orm
-...
-</code></pre>
-<p>Each field from left to right is: repository, update time, tag, then the command line to import the data is</p>
-<pre><code class="language-bash">$ gorse-cli import items repos.csv
-+---------------------------------+--------------------------------+--------------------------------+
-|             ITEM ID             |           TIMESTAMP            |             LABEL              |
-+---------------------------------+--------------------------------+--------------------------------+
-| 01org/cc-oci-runtime            | 2021-01-25 14:32:01 +0000      | [containers container          |
-|                                 | +0000                          | docker kvm oci security        |
-|                                 |                                | virtual-machine                |
-|                                 |                                | virtualization]                |
-| 02sh/4chanMarkovText            | 2021-02-08 14:38:55 +0000      | [scrapper data-mining          |
-|                                 | +0000                          | markov-chain]                  |
-+---------------------------------+--------------------------------+--------------------------------+
-Import items to database? [Y/n] 
-</code></pre>
-<p>The command line tool recognizes the data and confirms that it can be imported into the database.</p>
-<p><strong>Step 3: Import the interactive data.</strong> </p>
-<p>Assuming that the interaction data is the user's likes to the repository, the original data file <code>stars.csv</code> is as follows.</p>
-<pre><code>0xAX,0xAX/erlang-bookmarks,2013-08-31 19:48:01 +0000 UTC
-0xAX,abo-abo/hydra,2020-12-27 17:35:57 +0000 UTC
-0xAX,alebcay/awesome-shell,2015-06-16 17:17:17 +0000 UTC
-0xAX,angrave/SystemProgramming,2015-02-22 16:47:33 +0000 UTC
-0xAX,binhnguyennus/awesome-scalability,2018-01-27 18:00:00 +0000 UTC
-...
-</code></pre>
-<p>Each field from left to right is: user, repository, and time of likes. Then the command line to import the data is.</p>
-<pre><code class="language-bash">$ gorse-cli import feedback
-+------+---------+-----------------------------------+--------------------------------+
-| TYPE | USER ID |              ITEM ID              |           TIMESTAMP            |
-+------+---------+-----------------------------------+--------------------------------+
-|      | 0xAX    | 0xAX/erlang-bookmarks             | 2013-08-31 19:48:01 +0000      |
-|      |         |                                   | +0000                          |
-|      | 0xAX    | abo-abo/hydra                     | 2020-12-27 17:35:57 +0000      |
-|      |         |                                   | +0000                          |
-|      | 0xAX    | alebcay/awesome-shell             | 2015-06-16 17:17:17 +0000      |
-|      |         |                                   | +0000                          |
-|      | 0xAX    | angrave/SystemProgramming         | 2015-02-22 16:47:33 +0000      |
-|      |         |                                   | +0000                          |
-|      | 0xAX    | binhnguyennus/awesome-scalability | 2018-01-27 18:00:00 +0000      |
-|      |         |                                   | +0000                          |
-|      | 0xAX    | bitwalker/conform                 | 2015-06-10 13:32:03 +0000      |
-|      |         |                                   | +0000                          |
-+------+---------+-----------------------------------+--------------------------------+
-Import feedback into database (type = &quot;&quot;, auto_insert_user = true, auto_insert_item = false) [Y/n] 
-</code></pre>
-<p>The data file is also successfully identified, and you can see that the interaction data type <code>TYPE</code> column is empty, because the command does not set the interaction type. Note that the data type set when importing data needs to correspond to the matching feedback type or ranking feedback type in the configuration file, otherwise the feedback data will not be loaded.</p>
-<p><strong>Step 4: Generate recommendations.</strong> </p>
-<p>If everything goes well, Gorse will load the data and train the model after some time.</p>
-<pre><code class="language-bash">time=&quot;2021-03-03T14:00:27+08:00&quot; level=info msg=&quot;master: load data from database&quot;
-time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: data loaded (#user = 982, #item = 45247, #feedback = 5922)&quot;
-time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: collect latest items&quot;
-time=&quot;2021-03-03T14:00:28+08:00&quot; level=info msg=&quot;master: completed collecting latest items&quot;
-time=&quot;2021-03-03T14:30:28+08:00&quot; level=info msg=&quot;fit FM(r): train set size (positive) = 3432, test set size = 1716&quot;
-...
-</code></pre>
-<ul>
-<li><strong>RESTful APIs</strong></li>
-</ul>
-<p>The server node opens the <a href="ch02-03-api.html">RESTful APIs</a> to facilitate interaction with Gorse. The server node provides the RESTful APIs with specific documentation under the <code>apidocs</code> path. If the address of the service node HTTP service is <code>127.0.0.1:8087</code>, then the URL of the documentation is <a href="http://127.0.0.1:8087/apidocs"><code>http://127.0.0.1:8087/apidocs</code></a>.</p>
-<p>! <a href="img/swagger.png"></a></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
-<h2 id="database-configuration"><a class="header" href="#database-configuration">Database Configuration</a></h2>
-<p>The database configuration is located under <code>[database]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>cache_store</code></td><td>string</td><td>Database for data (supports MySQL/MongoDB)</td><td>redis://127.0.0.1:6379</td></tr>
-<tr><td><code>data_store</code></td><td>string</td><td>Database for cache (supports Redis)</td><td>mysql://root@tcp(127.0.0.1:3306)/gorse</td></tr>
-<tr><td><code>auto_insert_user</code></td><td>bool</td><td>Automatically insert new users when inserting new feedback</td><td>true</td></tr>
-<tr><td><code>auto_insert_item</code></td><td>bool</td><td>Automatically insert new items when inserting new feedback</td><td>true</td></tr>
-</tbody></table>
-<p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
-<ul>
-<li>Redis: <code>redis://hostname:port</code></li>
-<li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
-<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
-</ul>
-<h2 id="similar-item-configuration"><a class="header" href="#similar-item-configuration">Similar Item Configuration</a></h2>
-<p>Similar item configurations are located under <code>[similar]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>n_similar</code></td><td>int</td><td>Number of similar items to cache, 0 means disabled</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>Time interval (in minutes) to update similar items</td><td>60</td></tr>
-</tbody></table>
-<h2 id="latest-item-configuration"><a class="header" href="#latest-item-configuration">Latest Item Configuration</a></h2>
-<p>The latest item configuration is located under <code>[latest]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>n_latest</code></td><td>int</td><td>Number of latest items to cache, 0 means disabled</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update the latest items (in minutes)</td><td>10</td></tr>
-</tbody></table>
-<h2 id="popular-item-configuration"><a class="header" href="#popular-item-configuration">Popular Item Configuration</a></h2>
-<p>The popular item configuration is located under <code>[popular]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>n_popular</code></td><td>int</td><td>Number of popular items to cache, 0 means disabled</td><td>100</td></tr>
-<tr><td><code>update_period</code></td><td>int</td><td>Time interval to update popular items (in minutes)</td><td>1440</td></tr>
-<tr><td><code>time_window</code></td><td>int</td><td>Popular items within the previous N days</td><td>365</td></tr>
-</tbody></table>
-<h2 id="collaborative-filtering-configuration"><a class="header" href="#collaborative-filtering-configuration">Collaborative Filtering Configuration</a></h2>
-<p>The collaborative filtering configuration is located under <code>[cf]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>n_cf</code></td><td>int</td><td>Number of collaborative filtering matched items, 0 means disabled</td><td>800</td></tr>
-<tr><td><code>cf_model</code></td><td>string</td><td>Collaborative filtering model (select from <code>als</code>, <code>bpr</code> and <code>ccd</code>)</td><td>als</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>Interval (in minutes) to update the collaborative filtering model</td><td>1440</td></tr>
-<tr><td><code>predict_period</code></td><td>int</td><td>Update collaborative filtering matched items interval (in minutes)</td><td>60</td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>Feedback types used by collaborative filtering model</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of model training threads</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and recommendation accuracy</td><td>10</td></tr>
-<tr><td><code>n_candidates</code></td><td>int</td><td>Number of candidates used to estimate the recommendation accuracy</td><td>100</td></tr>
-<tr><td><code>top_k</code></td><td>int</td><td>Length of the recommendation list to estimate the recommendation accuracy, i.e. N in NDCG@N</td><td>10</td></tr>
-<tr><td><code>n_test_users</code></td><td>int</td><td>Number of users in the test set (0 means use all users to test)</td><td>0</td></tr>
-</tbody></table>
-<p>The configurations related to the model hyper-parameters are as follows. The default values of hyper-parameters depend on the corresponding model settings.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Corresponding model</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td><td>BPR</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td><td>BPR/ALS/CCD</td></tr>
-<tr><td><code>alpha</code></td><td>float</td><td>Weight for negative samples</td><td>ALS/CCD</td></tr>
-</tbody></table>
-<h2 id="ranking-configuration"><a class="header" href="#ranking-configuration">Ranking Configuration</a></h2>
-<p>The ranking configuration is located under <code>[rank]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>task</code></td><td>int</td><td>Task type (<code>r</code> for regression, <code>c</code> for classification)</td><td><code>r</code></td></tr>
-<tr><td><code>feedback_types</code></td><td>int</td><td>Types of feedback used for ranking</td><td>[&quot;&quot;]</td></tr>
-<tr><td><code>fit_period</code></td><td>int</td><td>Time interval to update the ranking model (in minutes)</td><td>1440</td></tr>
-<tr><td><code>fit_jobs</code></td><td>int</td><td>Number of threads for model training</td><td>1</td></tr>
-<tr><td><code>verbose</code></td><td>int</td><td>Iteration interval for reporting costs and prediction accuracies</td><td>10</td></tr>
-</tbody></table>
-<p>The configurations related to the model hyper-parameters are as follows.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>lr</code></td><td>float</td><td>Learning rate</td></tr>
-<tr><td><code>reg</code></td><td>float</td><td>Regularization coefficient</td></tr>
-<tr><td><code>n_epochs</code></td><td>int</td><td>Number of iterations</td></tr>
-<tr><td><code>n_factors</code></td><td>int</td><td>Number of latent factors</td></tr>
-<tr><td><code>init_mean</code></td><td>float</td><td>Mean of gaussian random initializer</td></tr>
-<tr><td><code>init_std</code></td><td>float</td><td>Standard deviation of gaussian random initializer</td></tr>
-</tbody></table>
-<h2 id="master-configuration"><a class="header" href="#master-configuration">Master Configuration</a></h2>
-<p>The master configuration is located under <code>[cf]</code>.</p>
-<table><thead><tr><th>Key</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
-<tr><td><code>host</code></td><td>string</td><td>Master node listening host</td><td>127.0.0.1</td></tr>
-<tr><td><code>port</code></td><td>int</td><td>Master node listening port</td><td>8086</td></tr>
-<tr><td><code>jobs</code></td><td>int</td><td>Number of working threads</td><td>1</td></tr>
-<tr><td><code>cluster_meta_timeout</code></td><td>int</td><td>Metadata timeout</td><td>60</td></tr>
-</tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="restful-api"><a class="header" href="#restful-api">RESTful API</a></h1>
 
                     </main>
 
