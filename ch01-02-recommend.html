@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html" class="active"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html" class="active"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -160,15 +160,74 @@
 </li>
 </ul>
 <table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
-<tr><td>ALS</td><td>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</td></tr>
+<tr><td>ALS</td><td></td></tr>
 <tr><td>BPR</td><td>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; arXiv preprint arXiv:1205.2618 (2012).</td></tr>
-<tr><td>CCD</td><td>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</td></tr>
+<tr><td>CCD</td><td></td></tr>
 </tbody></table>
 <h2 id="ranking-mechanism"><a class="header" href="#ranking-mechanism">Ranking Mechanism</a></h2>
 <p>The ranking model takes into account labels of the items, especially for new items, where the label is the basis for deciding whether to push the new item to the user or not. The ranking model for this system is factorization machines.</p>
 <table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
-<tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
+<tr><td>FM</td><td></td></tr>
 </tbody></table>
+<h2 id="recommendation"><a class="header" href="#recommendation">Recommendation</a></h2>
+<h3 id="popular-items"><a class="header" href="#popular-items">Popular Items</a></h3>
+<h3 id="latest-items"><a class="header" href="#latest-items">Latest Items</a></h3>
+<h3 id="offline-recommendation"><a class="header" href="#offline-recommendation">Offline Recommendation</a></h3>
+<h3 id="online-recommendation"><a class="header" href="#online-recommendation">Online Recommendation</a></h3>
+<h2 id="model-update"><a class="header" href="#model-update">Model Update</a></h2>
+<p>There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same. </p>
+<h3 id="model-training"><a class="header" href="#model-training">Model Training</a></h3>
+<p>Model training are done by the master node, as well as model search. The master node pull data from database and fit ranking model and CTR model periodically.</p>
+<blockquote>
+<ul>
+<li>For every <code>fit_jobs</code> minutes:
+<ul>
+<li>Pull data from database.
+<ul>
+<li>Train model with hyperparameters found by model search using <code>fit_jobs</code> jobs.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="model-search"><a class="header" href="#model-search">Model Search</a></h3>
+<p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configuare these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">1</a></sup> for hyperparameters optimization. The procedure of model search is as following:</p>
+<blockquote>
+<ul>
+<li>For every <code>search_period</code> minutes:
+<ul>
+<li>Pull data from database.</li>
+<li>For every recommender models:
+<ul>
+<li>For <code>search_trials</code> trials:
+<ul>
+<li>Sample a hyperparameter combination.</li>
+<li>Train model with sampled hyperparameters by <code>search_epoch</code> epoches and <code>search_jobs</code> jobs.</li>
+<li>Update best model.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010. </p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<p>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</p>
+</div>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">5</sup>
+<p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
+</div>
 
                     </main>
 
@@ -178,7 +237,7 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="ch01-02-architect.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                                    <a rel="next" href="ch01-03-config.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -192,7 +251,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="ch01-02-architect.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                    <a rel="next" href="ch01-03-config.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                             </nav>

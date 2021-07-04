@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-02-architect.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -264,66 +264,124 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 </li>
 </ul>
 <table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
-<tr><td>ALS</td><td>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</td></tr>
+<tr><td>ALS</td><td></td></tr>
 <tr><td>BPR</td><td>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; arXiv preprint arXiv:1205.2618 (2012).</td></tr>
-<tr><td>CCD</td><td>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</td></tr>
+<tr><td>CCD</td><td></td></tr>
 </tbody></table>
 <h2 id="ranking-mechanism"><a class="header" href="#ranking-mechanism">Ranking Mechanism</a></h2>
 <p>The ranking model takes into account labels of the items, especially for new items, where the label is the basis for deciding whether to push the new item to the user or not. The ranking model for this system is factorization machines.</p>
 <table><thead><tr><th>Model</th><th>Paper</th></tr></thead><tbody>
-<tr><td>FM</td><td>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</td></tr>
+<tr><td>FM</td><td></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="system-architecture"><a class="header" href="#system-architecture">System Architecture</a></h1>
-<p>This chapter will introduce the design of data storage and cache storage, and the division of labor between master nodes, server nodes and worker nodes. RESTful APIs and CLI tools can be found in <a href="ch02-03-api.html">RESTful APIs</a> and <a href="ch02-02-command.html">Commands</a>.</p>
-<center><img src="img/arch.png" height="200"></center>
-<h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
-<p>The data storage consists of three tables (in MongoDB that's three collections): the items table, the users table, and the feedback table.</p>
+<h2 id="recommendation"><a class="header" href="#recommendation">Recommendation</a></h2>
+<h3 id="popular-items"><a class="header" href="#popular-items">Popular Items</a></h3>
+<h3 id="latest-items"><a class="header" href="#latest-items">Latest Items</a></h3>
+<h3 id="offline-recommendation"><a class="header" href="#offline-recommendation">Offline Recommendation</a></h3>
+<h3 id="online-recommendation"><a class="header" href="#online-recommendation">Online Recommendation</a></h3>
+<h2 id="model-update"><a class="header" href="#model-update">Model Update</a></h2>
+<p>There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same. </p>
+<h3 id="model-training"><a class="header" href="#model-training">Model Training</a></h3>
+<p>Model training are done by the master node, as well as model search. The master node pull data from database and fit ranking model and CTR model periodically.</p>
+<blockquote>
 <ul>
-<li><strong>Items</strong></li>
+<li>For every <code>fit_jobs</code> minutes:
+<ul>
+<li>Pull data from database.
+<ul>
+<li>Train model with hyperparameters found by model search using <code>fit_jobs</code> jobs.</li>
 </ul>
-<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
-<tr><td><code>time_stamp</code></td><td>time</td><td>Item update date</td></tr>
-<tr><td><code>labels</code></td><td>array of strings</td><td>Item labels</td></tr>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="model-search"><a class="header" href="#model-search">Model Search</a></h3>
+<p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configuare these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">1</a></sup> for hyperparameters optimization. The procedure of model search is as following:</p>
+<blockquote>
+<ul>
+<li>For every <code>search_period</code> minutes:
+<ul>
+<li>Pull data from database.</li>
+<li>For every recommender models:
+<ul>
+<li>For <code>search_trials</code> trials:
+<ul>
+<li>Sample a hyperparameter combination.</li>
+<li>Train model with sampled hyperparameters by <code>search_epoch</code> epoches and <code>search_jobs</code> jobs.</li>
+<li>Update best model.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010. </p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<p>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</p>
+</div>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">5</sup>
+<p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<p>Previous section <em><a href="ch01-02-recommend.html">Recommend using Gorse</a></em> is helpful to understand configurations introduced in this section.</p>
+<h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
+<p>Configuratios under <code>[database]</code> are used to define behaviors on database and data.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>data_store</code></td><td>string</td><td></td><td>Database for data store (supports MySQL/MongoDB)</td></tr>
+<tr><td><code>cache_store</code></td><td>string</td><td></td><td>Database for cache store (supports Redis)</td></tr>
+<tr><td><code>auto_insert_user</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new users when inserting new feedback</td></tr>
+<tr><td><code>auto_insert_item</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new items when inserting new feedback</td></tr>
+<tr><td><code>ache_size</code></td><td>string</td><td></td><td></td></tr>
+<tr><td><code>positive_feedback_types</code></td><td>string</td><td><code>[]</code></td><td></td></tr>
+<tr><td><code>click_feedback_types</code></td><td>string</td><td><code>[]</code></td><td></td></tr>
+<tr><td><code>read_feedback_type</code></td><td>string</td><td></td><td></td></tr>
+<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td></td><td></td></tr>
+<tr><td><code>item_ttl</code></td><td>string</td><td></td><td></td></tr>
 </tbody></table>
+<p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
-<li><strong>Users</strong></li>
+<li>Redis: <code>redis://hostname:port</code></li>
+<li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
+<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
 </ul>
-<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
-<tr><td><code>labels</code></td><td>array of strings</td><td>User labels</td></tr>
+<h2 id="master"><a class="header" href="#master"><code>[master]</code></a></h2>
+<p>Configuratios under <code>[master]</code> are used to define behaviors of the master node.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>host</code></td><td>string</td><td><code>127.0.0.1</code></td><td>Master node listening host for gRPC service (metadata exchange)</td></tr>
+<tr><td><code>port</code></td><td>integer</td><td><code>8086</code></td><td>Master node listening port for gRPC service (metadata exchange)</td></tr>
+<tr><td><code>http_host</code></td><td>string</td><td><code>127.0.0.1</code></td><td>Master node listening host for HTTP service (dashboard)</td></tr>
+<tr><td><code>http_port</code></td><td>integer</td><td><code>8088</code></td><td>Master node listening port for HTTP service (dashboard)</td></tr>
+<tr><td><code>fit_jobs</code></td><td>integer</td><td><code>1</code></td><td>Number of working threads for model training</td></tr>
+<tr><td><code>search_jobs</code></td><td>integer</td><td><code>1</code></td><td>Number of working threads for model search</td></tr>
+<tr><td><code>meta_timeout</code></td><td>integer</td><td><code>60</code></td><td>Metadata timeout in seconds</td></tr>
 </tbody></table>
-<ul>
-<li><strong>Feedback</strong></li>
-</ul>
-<table><thead><tr><th>Field Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>feedback_type</code></td><td>string</td><td>Feedback type</td></tr>
-<tr><td><code>user_id</code></td><td>string</td><td>User ID</td></tr>
-<tr><td><code>item_id</code></td><td>string</td><td>Item ID</td></tr>
-<tr><td><code>time_stamp</code></td><td>time</td><td>Feedback time</td></tr>
+<h2 id="server"><a class="header" href="#server"><code>[server]</code></a></h2>
+<p>Configuratios under <code>[server]</code> are used to define behaviors of the server node.</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>default_n</code></td><td>integer</td><td><code>10</code></td><td>Default number of returned items</td></tr>
+<tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required)</td></tr>
 </tbody></table>
-<p>All operations are performed on these three tables (three collections), with the help of indexes to speed things up if necessary. <code>feedback_type</code> specifies the type of feedback: for example, stars, forks, and watches are different types of feedback for GitHub. When inserting feedback, you will encounter that the relevant user or item does not exist in the user and item table. This time <code>auto_insert_user</code> and <code>auto_insert_item</code> can control the insertion behavior, you can choose to insert the user or item automatically, or you can choose to abort the insertion of feedback.</p>
-<h2 id="cache-storage"><a class="header" href="#cache-storage">Cache Storage</a></h2>
-<p>The cache database stores key-value pairs of both key-string and key-list types. A key consists of two parts: a prefix and a name, which in the Redis implementation are stitched together to become the final key. Since all operations on the cache are point queries, the cache store can easily be scaled to a distributed form.</p>
-<h2 id="master-node"><a class="header" href="#master-node">Master Node</a></h2>
-<center><img src="img/master.png" height="320"></center>
-<p>The master node is responsible for the following tasks.</p>
-<ul>
-<li><strong>Metadata/members management:</strong> Manages system configuration and cluster membership, cluster node heartbeat timeout is <code>cluster_meta_timeout</code> seconds.</li>
-<li><strong>Non-personalized matching:</strong> Collecting the latest items and recent popular items, the update frequency is determined by <code>update_period</code> in minutes.</li>
-<li><strong>Cooperative filtering model training:</strong> Train collaborative filtering model every <code>fit_period</code> minutes for worker nodes.</li>
-<li><strong>Ranking model training:</strong> The ranking model is trained every <code>fit_period</code> minutes for use by the server nodes.</li>
-</ul>
-<h2 id="service-node"><a class="header" href="#service-node">Service Node</a></h2>
-<center><img src="img/server.png" height="320"></center>
-<p>The server node provides two main functions.</p>
-<ul>
-<li><strong>Exposing RESTful APIs:</strong> The reading and writing of users/items/feedback is done in the form of HTTP requests. The service node receives the HTTP request and then operates on the database and returns the HTTP response.</li>
-<li><strong>Performs online recommendation:</strong> At this time, the server node reads the matched items from the cache database, then removes duplicate items and items viewed by users, ranks these matched items after obtaining the items and user labels from the database, and then returns the top <code>n</code> items. The server node needs to continuously check and update the ranking model in the background.</li>
-</ul>
-<h2 id="worker-node"><a class="header" href="#worker-node">Worker Node</a></h2>
-<center><img src="img/worker.png" height="240"></center>
-<p>The task of the worker node is a bit simpler - it is to generate a personalized collection of matched items for the user. After connecting to the master node, the worker node constantly checks for updates to the collaborative filtering model. Every once in a while (this time is <code>predict_period</code>) it pulls the information of all worker nodes in the cluster to calculate the range of user IDs it is responsible for, and then generates matched items for the range of users it is responsible for and writes them to the cache database.</p>
+<h2 id="recommend"><a class="header" href="#recommend"><code>[recommend]</code></a></h2>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>popular_window</code></td><td>integer</td><td><code>180</code></td><td></td></tr>
+<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model trainig in minutes</td></tr>
+<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes</td></tr>
+<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epoches for each model in model search</td></tr>
+<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search</td></tr>
+<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>10</code></td><td></td></tr>
+<tr><td><code>fallback_recommend</code></td><td>integer</td><td><code>10</code></td><td></td></tr>
+<tr><td><code>explore_latest_num</code></td><td>integer</td><td><code>10</code></td><td></td></tr>
+</tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gitrec-the-live-demo"><a class="header" href="#gitrec-the-live-demo">GitRec, The Live Demo</a></h1>
 <p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before are imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendationn and press ⏯️ to skip current recommendationn.</p>
 <p><img src="img/gitrec.jpg" alt="" /></p>
@@ -334,7 +392,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <li><strong>Import user starred repositories</strong>: The user starred crawler crawls user starred repositories and insert them into Gorse as new fewdback typed <code>star</code> when a new user signed in.</li>
 <li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and show to users. When a user press ❤️, a feedback typed <code>like</code> will be inserted to Gorse. When ⏯️ pressed, a feedback typed <code>view</code> will be inserted to Gorse.</li>
 </ul>
-<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<h2 id="configuration-1"><a class="header" href="#configuration-1">Configuration</a></h2>
 <p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for read events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events doesn't happen in GitRec, it won't be added to <code>click_feedback_types</code>. </p>
 <pre><code class="language-toml"># feedback type for positive event
 positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
