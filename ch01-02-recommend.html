@@ -176,8 +176,15 @@
 <h3 id="latest-items"><a class="header" href="#latest-items">Latest Items</a></h3>
 <p>Items with latest timestamps are collected. Items won't be added to latest items collection if their timestamp is empty.</p>
 <h3 id="similar-items"><a class="header" href="#similar-items">Similar Items</a></h3>
+<p>For each item, top n (n equals <code>cache_size</code>) similar items are collected. In current implementation, the similarity between items are the number of common users of two items<sup class="footnote-reference"><a href="#6">1</a></sup>.</p>
 <h3 id="offline-recommendation"><a class="header" href="#offline-recommendation">Offline Recommendation</a></h3>
 <h3 id="online-recommendation"><a class="header" href="#online-recommendation">Online Recommendation</a></h3>
+<p>The online recommendation in the server node consists of three stages:</p>
+<ol>
+<li>Load offline recommendation from cache, remove read items.</li>
+<li>If the number of offline recommendations is less than required, collect items similar to these items in the user's histrical feedbacks. Read items are removed as well.</li>
+<li>If the number of recommendations is still less than required, collect items from <code>fallback_recommend</code> (latest items or popular items). Read items are removed.</li>
+</ol>
 <h2 id="model-update"><a class="header" href="#model-update">Model Update</a></h2>
 <p>There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same. </p>
 <h3 id="model-training"><a class="header" href="#model-training">Model Training</a></h3>
@@ -196,7 +203,7 @@
 </ul>
 </blockquote>
 <h3 id="model-search"><a class="header" href="#model-search">Model Search</a></h3>
-<p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configuare these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">1</a></sup> for hyperparameters optimization. The procedure of model search is as following:</p>
+<p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configuare these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">2</a></sup> for hyperparameters optimization. The procedure of model search is as following:</p>
 <blockquote>
 <ul>
 <li>For every <code>search_period</code> minutes:
@@ -217,19 +224,22 @@
 </li>
 </ul>
 </blockquote>
-<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<div class="footnote-definition" id="6"><sup class="footnote-definition-label">1</sup>
+<p>Zhang, Zhenghao, et al. &quot;SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation.&quot; DASFAA (3). 2021.</p>
+</div>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">2</sup>
 <p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
 </div>
-<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">3</sup>
 <p>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010. </p>
 </div>
-<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">4</sup>
 <p>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</p>
 </div>
-<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">5</sup>
 <p>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</p>
 </div>
-<div class="footnote-definition" id="5"><sup class="footnote-definition-label">5</sup>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">6</sup>
 <p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
 </div>
 
