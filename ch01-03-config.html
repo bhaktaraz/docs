@@ -183,15 +183,16 @@
 <tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required)</td></tr>
 </tbody></table>
 <h2 id="recommend"><a class="header" href="#recommend"><code>[recommend]</code></a></h2>
+<p>Configuratios under <code>[recommend]</code> are used to define behaviors of recommendation.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>popular_window</code></td><td>integer</td><td><code>180</code></td><td>Time window of popular items in days</td></tr>
 <tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model trainig in minutes</td></tr>
 <tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes</td></tr>
 <tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epoches for each model in model search</td></tr>
 <tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search</td></tr>
-<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>10</code></td><td></td></tr>
+<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days</td></tr>
 <tr><td><code>fallback_recommend</code></td><td>integer</td><td><code>latest</code></td><td>Source of recommendation when personalized recommendation exhausted</td></tr>
-<tr><td><code>explore_latest_num</code></td><td>integer</td><td><code>10</code></td><td></td></tr>
+<tr><td><code>explore_latest_num</code></td><td>integer</td><td><code>10</code></td><td>Number of latest items add to offline recommendation to address cold-start problem</td></tr>
 </tbody></table>
 
                     </main>
