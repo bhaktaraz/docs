@@ -32,6 +32,8 @@
 
         <!-- Custom theme stylesheets -->
         
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
             </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -82,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html" class="active"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html" class="active"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li><li class="chapter-item expanded "><a href="ch01-05-q&a.html"><strong aria-hidden="true">1.5.</strong> Questions &amp; Answers</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -144,6 +146,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="recommend-using-gorse"><a class="header" href="#recommend-using-gorse">Recommend using Gorse</a></h1>
+<p>Each components and concepts of Gorse will be introduced in this section.</p>
 <h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items and Feedback</a></h2>
 <p>A recommender system is expected to recommend items to users. To learn the peference of each user, feedbacks between users and items are feed to recommender system. In Gorse, there are three types of entities.</p>
 <ul>
@@ -172,16 +175,33 @@
 	Timestamp   time.Time
 }
 </code></pre>
+<p>Types of feedbacks are classified to three categories: </p>
+<ol>
+<li><code>positive_feedback_types</code> mean a user favors a item. </li>
+<li><code>click_feedback_types</code> mean a user favors a recommended item. This item must be recommended by Gorse.</li>
+<li><code>read_feedback_type</code> means a user read a item. However, the real feedback this user has in his/her mind is never known.</li>
+</ol>
+<p>The difference between <code>positive_feedback_types</code> and <code>click_feedback_types</code> is that the item of <code>click_feedback_types</code> must come from recommendations of Gorse. The item of <code>positive_feedback_types</code> could be found by a user through other approaches such as search, direct access, etc. <code>read_feedback_type</code> is a neutral event. Negative feedback can be conduct by {<code>read_feedback_type</code> items} - {<code>positive_feedback_types</code> items}.</p>
 <blockquote>
 <p>There might be extra field in the defined structure. They are preserved for future usage.</p>
 </blockquote>
 <h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
+<center><img width=480 src="img/workflow.png"/></center>
 <h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
 <p>There are two types of storage used in Gorse: data store and cache store.</p>
 <h3 id="data-store"><a class="header" href="#data-store">Data Store</a></h3>
-<p>The data store is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented.</p>
+<p>The <code>data_store</code> is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented. </p>
+<p>Unfortunately, there are two challenges in data storage:</p>
+<ol>
+<li>
+<p>What if a feedback with unknown user or item is inserted? There are two options <code>auto_insert_user</code> and <code>auto_insert_item</code> to control feedback insertion. If new users or items insertion is forbided, a feedback with new user or item will be ignored.</p>
+</li>
+<li>
+<p>How to address stale feedback and items? Some items and its feedbacks are short-lived such as news. <code>positive_feedback_ttl</code> and <code>item_ttl</code> are used to ignore stale feedback and items when pulling dataset from data store.</p>
+</li>
+</ol>
 <h3 id="cache-store"><a class="header" href="#cache-store">Cache Store</a></h3>
-<p>The cache store is used to store offline recommendation and temp variables. Only Redis is supported.</p>
+<p>The <code>cache_store</code> is used to store offline recommendation and temp variables. Only Redis is supported. Latest items, popular items, similar items and recommended items are cached in Redis. The length of each cached list is <code>cache_size</code>.</p>
 <h2 id="recommendation"><a class="header" href="#recommendation">Recommendation</a></h2>
 <p>Recommended items come from multiple sources through multiple stages. Non-personalized recommendations (popular/latest/similar) are generated by the master node. Offline personalized recommendations are generated by worker nodes while online personalized recommendations are generated by server nodes.</p>
 <h3 id="popular-items"><a class="header" href="#popular-items">Popular Items</a></h3>
@@ -255,6 +275,7 @@
 </ul>
 </blockquote>
 <h2 id="online-evaluation"><a class="header" href="#online-evaluation">Online Evaluation</a></h2>
+<p>The only method to estimate recommendation performance is online evaluation. The metric of online evaluation in Gorse is click-through-rate: <code>click feedback</code> / <code>read feedback</code>.</p>
 <div class="footnote-definition" id="6"><sup class="footnote-definition-label">1</sup>
 <p>Zhang, Zhenghao, et al. &quot;SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation.&quot; DASFAA (3). 2021.</p>
 </div>

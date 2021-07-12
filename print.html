@@ -33,6 +33,8 @@
 
         <!-- Custom theme stylesheets -->
         
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
             </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -83,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li><li class="chapter-item expanded "><a href="ch01-05-q&a.html"><strong aria-hidden="true">1.5.</strong> Questions &amp; Answers</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -153,7 +155,7 @@
 <li><strong>Dashboard</strong>: Provide dashboard for data import and export, monitoring, and cluster status checking.</li>
 </ul>
 <p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for offline recommendation for each user. In addition, administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
-<img width=480 src="assets/architecture.png"/>
+<center><img width=480 src="img/architecture.png"/></center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Gorse can be setup via Docker Compose or maually.</p>
 <h2 id="setup-gorse-with-docker-compose"><a class="header" href="#setup-gorse-with-docker-compose">Setup Gorse with Docker Compose</a></h2>
@@ -248,6 +250,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <h3 id="server-restful-api"><a class="header" href="#server-restful-api">Server RESTful API</a></h3>
 <p><img src="img/swagger.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="recommend-using-gorse"><a class="header" href="#recommend-using-gorse">Recommend using Gorse</a></h1>
+<p>Each components and concepts of Gorse will be introduced in this section.</p>
 <h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items and Feedback</a></h2>
 <p>A recommender system is expected to recommend items to users. To learn the peference of each user, feedbacks between users and items are feed to recommender system. In Gorse, there are three types of entities.</p>
 <ul>
@@ -276,16 +279,33 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 	Timestamp   time.Time
 }
 </code></pre>
+<p>Types of feedbacks are classified to three categories: </p>
+<ol>
+<li><code>positive_feedback_types</code> mean a user favors a item. </li>
+<li><code>click_feedback_types</code> mean a user favors a recommended item. This item must be recommended by Gorse.</li>
+<li><code>read_feedback_type</code> means a user read a item. However, the real feedback this user has in his/her mind is never known.</li>
+</ol>
+<p>The difference between <code>positive_feedback_types</code> and <code>click_feedback_types</code> is that the item of <code>click_feedback_types</code> must come from recommendations of Gorse. The item of <code>positive_feedback_types</code> could be found by a user through other approaches such as search, direct access, etc. <code>read_feedback_type</code> is a neutral event. Negative feedback can be conduct by {<code>read_feedback_type</code> items} - {<code>positive_feedback_types</code> items}.</p>
 <blockquote>
 <p>There might be extra field in the defined structure. They are preserved for future usage.</p>
 </blockquote>
 <h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
+<center><img width=480 src="img/workflow.png"/></center>
 <h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
 <p>There are two types of storage used in Gorse: data store and cache store.</p>
 <h3 id="data-store"><a class="header" href="#data-store">Data Store</a></h3>
-<p>The data store is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented.</p>
+<p>The <code>data_store</code> is used to store items, users, feedbacks and measurements. Currently, MySQL and MongoDB are supprted as data store. Other database will be avaiable once its interface is implemented. </p>
+<p>Unfortunately, there are two challenges in data storage:</p>
+<ol>
+<li>
+<p>What if a feedback with unknown user or item is inserted? There are two options <code>auto_insert_user</code> and <code>auto_insert_item</code> to control feedback insertion. If new users or items insertion is forbided, a feedback with new user or item will be ignored.</p>
+</li>
+<li>
+<p>How to address stale feedback and items? Some items and its feedbacks are short-lived such as news. <code>positive_feedback_ttl</code> and <code>item_ttl</code> are used to ignore stale feedback and items when pulling dataset from data store.</p>
+</li>
+</ol>
 <h3 id="cache-store"><a class="header" href="#cache-store">Cache Store</a></h3>
-<p>The cache store is used to store offline recommendation and temp variables. Only Redis is supported.</p>
+<p>The <code>cache_store</code> is used to store offline recommendation and temp variables. Only Redis is supported. Latest items, popular items, similar items and recommended items are cached in Redis. The length of each cached list is <code>cache_size</code>.</p>
 <h2 id="recommendation"><a class="header" href="#recommendation">Recommendation</a></h2>
 <p>Recommended items come from multiple sources through multiple stages. Non-personalized recommendations (popular/latest/similar) are generated by the master node. Offline personalized recommendations are generated by worker nodes while online personalized recommendations are generated by server nodes.</p>
 <h3 id="popular-items"><a class="header" href="#popular-items">Popular Items</a></h3>
@@ -359,6 +379,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 </ul>
 </blockquote>
 <h2 id="online-evaluation"><a class="header" href="#online-evaluation">Online Evaluation</a></h2>
+<p>The only method to estimate recommendation performance is online evaluation. The metric of online evaluation in Gorse is click-through-rate: <code>click feedback</code> / <code>read feedback</code>.</p>
 <div class="footnote-definition" id="6"><sup class="footnote-definition-label">1</sup>
 <p>Zhang, Zhenghao, et al. &quot;SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation.&quot; DASFAA (3). 2021.</p>
 </div>
@@ -378,7 +399,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
-<p>Previous section <em><a href="ch01-02-recommend.html">Recommend using Gorse</a></em> is helpful to understand configurations introduced in this section.</p>
+<p>Previous section <em><a href="ch01-02-recommend.html">Recommend using Gorse</a></em> is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create new config file based on <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template"><code>config.toml.template</code></a>.</p>
 <h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
 <p>Configuratios under <code>[database]</code> are used to define behaviors on database and data.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
@@ -386,12 +407,12 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <tr><td><code>cache_store</code></td><td>string</td><td></td><td>Database for cache store (supports Redis)</td></tr>
 <tr><td><code>auto_insert_user</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new users when inserting new feedback</td></tr>
 <tr><td><code>auto_insert_item</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new items when inserting new feedback</td></tr>
-<tr><td><code>ache_size</code></td><td>string</td><td></td><td></td></tr>
-<tr><td><code>positive_feedback_types</code></td><td>string</td><td><code>[]</code></td><td></td></tr>
-<tr><td><code>click_feedback_types</code></td><td>string</td><td><code>[]</code></td><td></td></tr>
-<tr><td><code>read_feedback_type</code></td><td>string</td><td></td><td></td></tr>
-<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td></td><td></td></tr>
-<tr><td><code>item_ttl</code></td><td>string</td><td></td><td></td></tr>
+<tr><td><code>cache_size</code></td><td>string</td><td><code>100</code></td><td>Number of cached elements in cache store</td></tr>
+<tr><td><code>positive_feedback_types</code></td><td>string</td><td></td><td>Types of positive feedback</td></tr>
+<tr><td><code>click_feedback_types</code></td><td>string</td><td></td><td>Types of feedback for click events</td></tr>
+<tr><td><code>read_feedback_type</code></td><td>string</td><td></td><td>Type of feedback for read events</td></tr>
+<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of positive feedback</td></tr>
+<tr><td><code>item_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of items</td></tr>
 </tbody></table>
 <p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
@@ -554,6 +575,11 @@ def read_repo(repo_name: str):
     except gorse.GorseException as e:
         return Response(e.message, status=e.status_code)
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="questions--answers"><a class="header" href="#questions--answers">Questions &amp; Answers</a></h1>
+<p>These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via <a href="https://github.com/zhenghaoz/gorse/issues">issue</a>, <a href="support@gorse.io">email</a>, <a href="https://discord.com/channels/830635934210588743/">Discord</a> (for English) or <a href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi">QQ</a> (for Chinese).</p>
+<h2 id="technical-questions"><a class="header" href="#technical-questions">Technical Questions</a></h2>
+<h3 id="1-how-to-address-the-cold-start-problem"><a class="header" href="#1-how-to-address-the-cold-start-problem">1. How to address the cold-start problem?</a></h3>
+<p>Use <code>explore_latest_num</code> to inject latest items into recommendation. Also, item labels are helpful to rank new items in recommendation.</p>
 
                     </main>
 
@@ -592,7 +618,9 @@ def read_repo(repo_name: str):
         
                         <script type="text/javascript">
         window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
         });
         </script>
                 

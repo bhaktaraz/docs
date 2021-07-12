@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Chapter 1: Gorse Usage - Gorse Document</title>
+        <title>Questions &amp; Answers - Gorse Document</title>
                 
 
         <!-- Custom HTML head -->
@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li><li class="chapter-item expanded "><a href="ch01-05-q&a.html"><strong aria-hidden="true">1.5.</strong> Questions &amp; Answers</a></li></ol></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Gorse Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li><li class="chapter-item expanded "><a href="ch01-05-q&a.html" class="active"><strong aria-hidden="true">1.5.</strong> Questions &amp; Answers</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -145,25 +145,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="chapter-1-gorse-usage"><a class="header" href="#chapter-1-gorse-usage">Chapter 1: Gorse Usage</a></h1>
-<p>Gorse is an open source recommendation system written in Go. Gorse aims to be an universal open source recommender system that can be easily introduced into a wide variety of online services. By importing items, users and interaction data into Gorse, the system will automatically train models to generate recommendations for each user. Project features are as follows.</p>
-<ul>
-<li><strong>AutoML</strong>: Choose the best recommendation model and stargety automatically by model searching in the background.</li>
-<li><strong>Distributed Recommendation</strong>: Single node training, distributed prediction, and ability to achieve horizontal scaling in the recommendation stage.</li>
-<li><strong>RESTful API</strong>: Provide RESTful APIs for data CRUD and recommendation requests.</li>
-<li><strong>Dashboard</strong>: Provide dashboard for data import and export, monitoring, and cluster status checking.</li>
-</ul>
-<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for offline recommendation for each user. In addition, administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
-<center><img width=480 src="img/architecture.png"/></center>
+                        <h1 id="questions--answers"><a class="header" href="#questions--answers">Questions &amp; Answers</a></h1>
+<p>These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via <a href="https://github.com/zhenghaoz/gorse/issues">issue</a>, <a href="support@gorse.io">email</a>, <a href="https://discord.com/channels/830635934210588743/">Discord</a> (for English) or <a href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi">QQ</a> (for Chinese).</p>
+<h2 id="technical-questions"><a class="header" href="#technical-questions">Technical Questions</a></h2>
+<h3 id="1-how-to-address-the-cold-start-problem"><a class="header" href="#1-how-to-address-the-cold-start-problem">1. How to address the cold-start problem?</a></h3>
+<p>Use <code>explore_latest_num</code> to inject latest items into recommendation. Also, item labels are helpful to rank new items in recommendation.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
-                                                    <a rel="next" href="ch01-01-installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                                    <a rel="prev" href="ch01-04-demo.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
+                        
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -171,10 +166,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
-                                    <a rel="next" href="ch01-01-installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                                    <a rel="prev" href="ch01-04-demo.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
+                
                             </nav>
 
         </div>
