@@ -587,7 +587,19 @@ def read_repo(repo_name: str):
 <p>These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via <a href="https://github.com/zhenghaoz/gorse/issues">issue</a>, <a href="support@gorse.io">email</a>, <a href="https://discord.com/channels/830635934210588743/">Discord</a> (for English) or <a href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi">QQ</a> (for Chinese).</p>
 <h2 id="technical-questions"><a class="header" href="#technical-questions">Technical Questions</a></h2>
 <h3 id="1-how-to-address-the-cold-start-problem"><a class="header" href="#1-how-to-address-the-cold-start-problem">1. How to address the cold-start problem?</a></h3>
-<p>Use <code>explore_latest_num</code> to inject latest items into recommendation. Also, item labels are helpful to rank new items in recommendation.</p>
+<p>Use <code>explore_latest_num</code> to inject latest items into recommendation. Also, item labels are helpful to rank new items in recommendation. For example:</p>
+<pre><code class="language-toml">explore_latest_num = 10
+</code></pre>
+<p>It means 10 latest items are inserted to recommended items list.</p>
+<h3 id="2-how-to-keep-track-of-items-recommended-to-each-user"><a class="header" href="#2-how-to-keep-track-of-items-recommended-to-each-user">2. How to keep track of items recommended to each user?</a></h3>
+<p>There are two options:</p>
+<ol>
+<li>Insert a read type feedback to Gorse when a item is showed to a user. This is the way the official demo <a href="https://github.com/zhenghaoz/gitrec">zhenghaoz/gitrec</a> tracks user seen recommendations.</li>
+<li>Use <code>write-back</code> parameter to write back recommendations as read feedbacks to Gorse, eg:</li>
+</ol>
+<pre><code class="language-bash">curl -i -H &quot;Accept: application/json&quot; -X GET http://127.0.0.1:8088//api/recommend/0?write-back=read
+</code></pre>
+<p>The 1st option is more accurate since it is done by front end but the 2rd option is more convenient.</p>
 
                     </main>
 
