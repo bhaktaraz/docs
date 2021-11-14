@@ -137,6 +137,32 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="metrics-monitoring"><a class="header" href="#metrics-monitoring">Metrics Monitoring</a></h1>
+<p>Gorse nodes exports Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code>.</p>
+<p>The Prometheus configuration file for scraping Gorse metrics is as follows.</p>
+<pre><code class="language-yaml">scrape_configs:
+  - job_name:       'gorse'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['worker:8089', 'server:8087', 'master:8088']
+</code></pre>
+<p><code>scrape_interval</code> is the scrape frequency and <code>targets</code> is the address to scrape the metrics. Since the above configuration file is used for Docker Compose deployments, the hostname is used instead of the IP address. Next, add an instance of Prometheus to <code>docker-compose.yml</code>, mount the above configuration file to the default configuration file path <code>/etc/prometheus/prometheus.yml</code>.</p>
+<pre><code class="language-yaml">version: &quot;3&quot;
+services:
+
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    volumes:
+      - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+</code></pre>
+<p>After Prometheus started, add Prometheus as a data source in Grafana.</p>
+<img src="img/ch3/prometheus.png" width="500">
+<p>Finally, import dashboards provided in the demo project GitRec to monitor the count and latency of each service call on the database, cache, worker node, server node, and master node in real time.</p>
+<img src="img/ch3/dashboard-json.png" width="500">
+<p>The left side of the dashboard shows the count of calls per ten minutes, while the right side shows the call latency within 99%.</p>
+<p><img src="img/ch3/dashboard-cache.png" alt="" /></p>
 
                     </main>
 
