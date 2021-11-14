@@ -774,6 +774,14 @@ fallback_recommend = [&quot;item_based&quot;, &quot;latest&quot;]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3-monitoring"><a class="header" href="#chapter-3-monitoring">Chapter 3: Monitoring</a></h1>
 <p>For an online system in production, &quot;observability&quot; is important. Real-time monitoring of an online system can identify flaws or performance issues before they affect users on a large scale. This chapter will introduce how to monitor the Gorse recommender system for logs and metrics, with the logs capturing abnormal events and the metrics monitoring observing the performance of the system. This chapter will only introduce some key configuration, for a complete configuration sample please refer to the official demo project <a href="https://github.com/zhenghaoz/gitrec">GitRec</a>.</p>
+<p>The overview architecture of monitoring infrastructure is as follows:</p>
+<ul>
+<li>Gorse nodes write logs to log files.</li>
+<li><strong>Promtail</strong> reads logs from file and push to <strong>Loki</strong>.</li>
+<li><strong>Prometheus</strong> scrapes metrics from Gorse nodes.</li>
+<li><strong>Grafana</strong> visualizes logs from <strong>Loki</strong> and metrics from <strong>Prometheus</strong> in dashboards.</li>
+</ul>
+<img src="img/ch3/monitoring.png" width="600">
 <div style="break-before: page; page-break-before: always;"></div><h1 id="log-monitoring"><a class="header" href="#log-monitoring">Log Monitoring</a></h1>
 <p>The mainstream log monitoring solutions are ELK and Loki. Loki is chosen in this section because it is more lightweight compared to ELK. The log collection and monitoring process is as follows.</p>
 <ul>
