@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html" class="active"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-feedback.html"><strong aria-hidden="true">2.1.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-02-strategy.html"><strong aria-hidden="true">2.2.</strong> Recommendation Strategy</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html" class="active"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-feedback.html"><strong aria-hidden="true">2.1.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-02-strategy.html"><strong aria-hidden="true">2.2.</strong> Recommendation Strategies</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,17 +137,17 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="gitrec-the-live-demo"><a class="header" href="#gitrec-the-live-demo">GitRec, The Live Demo</a></h1>
-<p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before are imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendationn and press ⏯️ to skip current recommendationn.</p>
-<p><img src="img/gitrec.jpg" alt="" /></p>
+<p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of the Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before being imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendation and press ⏯️ to skip the current recommendation.</p>
+<p><img src="img/gitrec.jpg" alt="gitrec" /></p>
 <h2 id="design"><a class="header" href="#design">Design</a></h2>
 <center><img width="500" src="img/gitrec-architecture.png"/></center>
 <ul>
-<li><strong>Import new repositories</strong>: The trending crawler crawls trending repositories and insert them into Gorse as new items. Since there are huge nuumber of repositories in GitHub, it's impossible add all of them into GitRec. So, only trending repositories are imported.</li>
-<li><strong>Import user starred repositories</strong>: The user starred crawler crawls user starred repositories and insert them into Gorse as new fewdback typed <code>star</code> when a new user signed in.</li>
-<li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and show to users. When a user press ❤️, a feedback typed <code>like</code> will be inserted to Gorse. When ⏯️ pressed, a feedback typed <code>view</code> will be inserted to Gorse.</li>
+<li><strong>Import new repositories</strong>: The trending crawler crawls trending repositories and inserts them into Gorse as new items. Since there are a huge number of repositories in GitHub, it's impossible to add all of them into GitRec. So, only trending repositories are imported.</li>
+<li><strong>Import user starred repositories</strong>: The user starred crawler crawls user starred repositories and inserts them into Gorse as new feedback typed <code>star</code> when a new user signed in.</li>
+<li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and shows them to users. When a user press ❤️, the <code>like</code> feedback type will be inserted to Gorse. When ⏯️ pressed, <code>view</code> feedback type will be inserted to Gorse.</li>
 </ul>
 <h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
-<p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for read events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events doesn't happen in GitRec, it won't be added to <code>click_feedback_types</code>. </p>
+<p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for reading events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events don't happen in GitRec, it won't be added to <code>click_feedback_types</code>.</p>
 <pre><code class="language-toml"># feedback type for positive event
 positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
 
@@ -159,10 +159,10 @@ read_feedback_type = &quot;read&quot;
 </code></pre>
 <p>Other settings are the same as <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">docker/config.toml</a>.</p>
 <h2 id="implemenetation"><a class="header" href="#implemenetation">Implemenetation</a></h2>
-<p>This project consists of frontend, backend and crawlers. In this section, only these codes interact with Gorse are introduced. Other codes are avaliable in the <a href="https://github.com/zhenghaoz/gitrec">GitRec repository</a>.</p>
+<p>This project consists of frontend, backend, and crawlers. In this section, only these codes that interact with Gorse are introduced. Other codes are available in the <a href="https://github.com/zhenghaoz/gitrec">GitRec repository</a>.</p>
 <ol>
-<li>First thing is to wrap Gorse API as a python module. It sends HTTP requests and handle responses using <code>requests</code>.</li>
-</ol>
+<li>
+<p>First thing is to wrap Gorse API as a python module. It sends HTTP requests and handles responses using <code>requests</code>.</p>
 <pre><code class="language-python">from collections import namedtuple
 from datetime import datetime
 from typing import List
@@ -218,26 +218,26 @@ class Gorse:
             return r.json()
         raise GorseException(r.status_code, r.text)
 </code></pre>
-<ol start="2">
-<li>In the code of trending crawler, insert trending repositories as new items.</li>
-</ol>
+</li>
+<li>
+<p>In the code of trending crawler, insert trending repositories as new items.</p>
 <pre><code class="language-python">if __name__ == &quot;__main__&quot;:
     trending_repos = get_trending()
     for trending_repo in trending_repos:
         gorse_client.insert_item(get_repo_info(trending_repo))
 </code></pre>
-<ol start="3">
-<li>In the code of starred repositories crawler, insert user starred repositories as <code>star</code> feedbacks.</li>
-</ol>
+</li>
+<li>
+<p>In the code of starred repositories crawler, insert user starred repositories as <code>star</code> feedbacks.</p>
 <pre><code class="language-python">@app.task
 def pull(token: str):
     g = GraphQLGitHub(token)
     stars = g.get_viewer_starred()
     gorse_client.insert_feedbacks(stars)
 </code></pre>
-<ol start="4">
-<li>In the code of web service backend, pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</li>
-</ol>
+</li>
+<li>
+<p>In the code of the web service backend, pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</p>
 <pre><code class="language-python">@app.route(&quot;/api/repo&quot;)
 def get_repo():
     repo_id = gorse_client.get_recommend(session[&quot;user_id&quot;])[0]
@@ -262,6 +262,8 @@ def read_repo(repo_name: str):
     except gorse.GorseException as e:
         return Response(e.message, status=e.status_code)
 </code></pre>
+</li>
+</ol>
 
                     </main>
 

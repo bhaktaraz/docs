@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-feedback.html" class="active"><strong aria-hidden="true">2.1.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-02-strategy.html"><strong aria-hidden="true">2.2.</strong> Recommendation Strategy</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-feedback.html" class="active"><strong aria-hidden="true">2.1.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-02-strategy.html"><strong aria-hidden="true">2.2.</strong> Recommendation Strategies</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,11 +137,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="feedback-collection"><a class="header" href="#feedback-collection">Feedback Collection</a></h1>
-<p>In a recommender system, data is the foundation of all recommendation results, and this section will briefly introduce how to collect user data for Gorse recommender system. The recommender system relies on the feedback between users and items as training data, and the quality of training data determines the quality of recommendations.</p>
-<h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items and Feedback</a></h2>
-<p>Recommender system is complex, but to maximize reusability, Gorse has abstracted the data used in a recommender system as a collection of three entities: users, items, and feedback.</p>
+<p>In a recommender system, data is the foundation of all recommendation results, and this section will briefly introduce how to collect user data for the Gorse recommender system. The recommender system relies on the feedback between users and items as training data, and the quality of training data determines the quality of recommendations.</p>
+<h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items, and Feedback</a></h2>
+<p>The recommender system is complex, but to maximize reusability, Gorse has abstracted the data used in a recommender system as a collection of three entities: users, items, and feedback.</p>
 <ul>
-<li><strong>User:</strong> A user entity consists of a user ID and labels describing the user. The user labels can be empty, but these labels helps to improve the recommendation accuracy of the recommender system.</li>
+<li><strong>User:</strong> A user entity consists of a user ID and labels describing the user. The user labels can be empty, but these labels help to improve the recommendation accuracy of the recommender system.</li>
 </ul>
 <pre><code class="language-go">type User struct {
     UserId    string
@@ -149,7 +149,7 @@
 }
 </code></pre>
 <ul>
-<li><strong>Item:</strong> A item entity consists of an item ID, an item timestamp and labels describing the item. The timestamp and labels can be empty, and the similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item.</li>
+<li><strong>Item:</strong> A item entity consists of an item ID, an item timestamp, and labels describing the item. The timestamp and labels can be empty, and similarly based on labels information helps to improve the recommendation accuracy of the recommender system, while the timestamp is used to estimate the freshness of the item.</li>
 </ul>
 <pre><code class="language-go">type Item struct {
     ItemId    string
@@ -158,9 +158,9 @@
 }
 </code></pre>
 <ul>
-<li><strong>Feedback:</strong> A feedback entity consists of user ID, item ID, feedback type and feedback timestamp, where the triad of user ID, item ID and feedback type is required to be unique in the database.</li>
+<li><strong>Feedback:</strong> A feedback entity consists of user ID, item ID, feedback type, and feedback timestamp, where the triad of user ID, item ID, and feedback type is required to be unique in the database.</li>
 </ul>
-<p>Feedback represent events happened between users and items, which can be positive or negative. For example, sharing and liking are the user's positive feedback to a item. If the user does not have further positive feedback after reading, the user's feedback to the item is considered negative. If the user views the item, a read feedback will be recorded. Then, if the user gives positive feedback to the item, the read feedback will be overwritten by the positive feedback. Conversely, if the user does not give positive feedback, then the read feedback is considered as negative feedback.</p>
+<p>Feedback represents events that happened between users and items, which can be positive or negative. For example, sharing and liking are the user's positive feedback to an item. If the user does not have further positive feedback after reading, the user's feedback on the item is considered negative. If the user views the item, read feedback will be recorded. Then, if the user gives positive feedback to the item, the read feedback will be overwritten by the positive feedback. Conversely, if the user does not give positive feedback, then the read feedback is considered negative feedback.</p>
 <pre><code class="language-go">type Feedback struct {
     FeedbackType string
     UserId       string
@@ -168,7 +168,7 @@
     Timestamp    time.Time
 }
 </code></pre>
-<p>Gorse's server node provides RESTful APIs for inserting users, items and feedback, as well as getting recommendation for users. Please refer to the RESTful API documentation for a detailed description.</p>
+<p>Gorse's server node provides RESTful APIs for inserting users, items, and feedback, as well as getting a recommendation for users. Please refer to the RESTful API documentation for a detailed description.</p>
 <table><thead><tr><th>METHOD</th><th>URL</th><th>DESCRIPTION</th></tr></thead><tbody>
 <tr><td>POST</td><td>/api/item</td><td>Insert item.</td></tr>
 <tr><td>POST</td><td>/api/user</td><td>Insert user.</td></tr>
@@ -176,7 +176,7 @@
 <tr><td>PUT</td><td>/api/feedback</td><td>Insert feedback, and overwrites existed feedback.</td></tr>
 </tbody></table>
 <h2 id="define-positive-feedback-and-read-feedback"><a class="header" href="#define-positive-feedback-and-read-feedback">Define Positive Feedback and Read Feedback</a></h2>
-<p>Before inserting feedback to the Gorse recommender system, it is necessary to define which of the user's behaviors are positive feedback and which are read feedback. Read feedback is relatively easy to define, as it can be recorded as read feedback when a user has seen the recommended item. However, the definition of positive feedback depends more on the specific scenario. For TikTok, users can be considered as positive feedback if they “like” or “share” the current video; for YouTube, users can be considered as positive feedback if they watch the video to a certain proportion of completion, “like“ the video, or &quot;share&quot; the video. To summarize, positive feedback and read feedback are defined by the following rules.</p>
+<p>Before inserting feedback into the Gorse recommender system, it is necessary to define which of the user's behaviors are positive feedback and which are read feedback. Read feedback is relatively easy to define, as it can be recorded as read feedback when a user has seen the recommended item. However, the definition of positive feedback depends more on the specific scenario. For TikTok, users can be considered as positive feedback if they “like” or “share” the current video; for YouTube, users can be considered as positive feedback if they watch the video to a certain proportion of completion, “like“ the video, or &quot;share&quot; the video. To summarize, positive feedback and read feedback are defined by the following rules.</p>
 <ul>
 <li><strong>Read Feedback:</strong> The user sees the item.</li>
 <li><strong>Positive feedback:</strong> The user action that is expected to do by the service provider.</li>
@@ -198,19 +198,19 @@ read_feedback_types = [&quot;read&quot;]
 <h2 id="insert-read-feedback"><a class="header" href="#insert-read-feedback">Insert Read Feedback</a></h2>
 <p>For read feedback, the timestamp can be used to set the timeout of the recommendation results, in addition to recording the read time.</p>
 <h3 id="proactive-insertion"><a class="header" href="#proactive-insertion">Proactive Insertion</a></h3>
-<p>Positive feedback can be inserted into the recommender system when the user takes the action, while read feedback requires the application to detect the user's &quot;read&quot; behavior. The methods for displaying recommendations vary by application, but can be generally grouped into two categories.</p>
+<p>Positive feedback can be inserted into the recommender system when the user takes the action, while read feedback requires the application to detect the user's &quot;read&quot; behavior. The methods for displaying recommendations vary by application but can be generally grouped into two categories.</p>
 <ul>
-<li><strong>Full screen mode:</strong> The most typical application is TikTok, where the user is considered &quot;read&quot; when the full screen content is shown to them. That is, the application can write a &quot;read&quot; feedback to the recommender system when the recommended content is shown to the user, and the read content will no longer be shown to the user.</li>
+<li><strong>Full-screen mode:</strong> The most typical application is TikTok, where the user is considered &quot;read&quot; when the full-screen content is shown to them. That is, the application can write a &quot;read&quot; feedback to the recommender system when the recommended content is shown to the user, and the read content will no longer be shown to the user.</li>
 </ul>
 <img src="/img/ch2/tiktok.jpg" width="300">
 <img src="/img/ch2/youtube.jpg" width="300">
 <ul>
-<li><strong>List mode:</strong> The most typical application is YouTube, where the user is not considered &quot;read&quot; after looking at multiple videos in the list. When there are more than one videos, the user's attention is not able to browse the whole list. Moreover, if the read content is quickly discarded in the list mode, the recommended content is consumed too fast. Therefore, the best solution is to write a read feedback with a future timestamp to the recommender system when the item is presented to the user in the stream, and the read feedback will take effect when the time has reached the timestamp, and the read content will no longer be presented to the user.</li>
+<li><strong>List mode:</strong> The most typical application is YouTube, where the user is not considered &quot;read&quot; after looking at multiple videos in the list. When there are more than one videos, the user's attention is not able to browse the whole list. Moreover, if the read content is quickly discarded in the list mode, the recommended content is consumed too fast. Therefore, the best solution is to write a &quot;read&quot; feedback with a future timestamp to the recommender system when the item is presented to the user in the stream, and the &quot;read&quot; feedback will take effect when the time has reached the timestamp, and the read content will no longer be presented to the user.</li>
 </ul>
 <h3 id="automatic-insertion"><a class="header" href="#automatic-insertion">Automatic Insertion</a></h3>
-<p>Proactively inserting read feedback to the recommender system requires the application to be able to accurately capture user browsing behavior. This task is easier for mobile applications, but more difficult for web applications. To address this problem, Gorse's API for getting recommendation results provides two parameters: <code>write−back−type</code> and <code>write−back−delay</code>.</p>
+<p>Proactively inserting read feedback to the recommender system requires the application to be able to accurately capture user browsing behavior. This task is easier for mobile applications but more difficult for web applications. To address this problem, Gorse's API for getting recommendation results provides two parameters: <code>write−back−type</code> and <code>write−back−delay</code>.</p>
 <ul>
-<li><strong>In full screen mode:</strong> Get a recommendation and write a &quot;read&quot; feedback, the recommendation will not appear again afterwards.</li>
+<li><strong>In full-screen mode:</strong> Get a recommendation and write a &quot;read&quot; feedback, the recommendation will not appear again afterward.</li>
 </ul>
 <pre><code class="language-bash">curl -X GET &quot;http://172.18.0.3:8087/api/recommend/zhenghaoz?write-back-type=read&amp;n=1&quot; \
     -H &quot;accept: application/json&quot; \
@@ -223,7 +223,7 @@ read_feedback_types = [&quot;read&quot;]
     -H &quot;accept: application/json&quot; \
     -H &quot;X-API-Key: 19260817&quot;
 </code></pre>
-<p>The <code>write−back−type</code> and <code>write−back−delay</code> parameters of the recommendation API provide a convenient way to insert read feedback, but of course if you want the read feedback to be more accurate, it should be written to the recommender system by the application.</p>
+<p>The <code>write−back−type</code> and <code>write−back−delay</code> parameters of the recommendation API provide a convenient way to insert read feedback, but of course, if you want the read feedback to be more accurate, it should be written to the recommender system by the application.</p>
 
                     </main>
 
