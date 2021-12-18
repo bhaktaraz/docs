@@ -1042,21 +1042,31 @@ services:
 <p><img src="img/ch3/dashboard-cache.png" alt="dashboard-cache" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently Asked Questions</a></h1>
 <p>These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via <a href="https://github.com/zhenghaoz/gorse/issues">issue</a>, <a href="support@gorse.io">email</a>, <a href="https://discord.com/channels/830635934210588743/">Discord</a> (for English) or <a href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi">QQ</a> (for Chinese).</p>
-<h2 id="technical-questions"><a class="header" href="#technical-questions">Technical Questions</a></h2>
 <h3 id="1-how-to-address-the-cold-start-problem"><a class="header" href="#1-how-to-address-the-cold-start-problem">1. How to address the cold-start problem?</a></h3>
-<p>Use <code>explore_latest_num</code> to inject the latest items into a recommendation. Also, item labels are helpful to rank new items in a recommendation. For example:</p>
-<pre><code class="language-toml">explore_latest_num = 10
+<p>Use <code>explore_recommend</code> to inject the latest items or recently popular items into a recommendation. Also, item labels are helpful to rank new items in a recommendation. For example:</p>
+<pre><code class="language-toml">explore_recommend = { popular = 0.1, latest = 0.2 }
 </code></pre>
-<p>It means 10 latest items are inserted into recommended items list.</p>
+<p>It means latest items are inserted into recommended items list in a probability of 0.1 and recently popular items are inserted into recommended items list in a probability of 0.2.</p>
 <h3 id="2-how-to-keep-track-of-items-recommended-to-each-user"><a class="header" href="#2-how-to-keep-track-of-items-recommended-to-each-user">2. How to keep track of items recommended to each user?</a></h3>
 <p>There are two options:</p>
 <ol>
 <li>Insert read-type feedback to Gorse when an item is shown to a user. This is the way the official demo <a href="https://github.com/zhenghaoz/gitrec">zhenghaoz/gitrec</a> tracks user-seen recommendations.</li>
-<li>Use <code>write-back</code> parameter to write back recommendations as read feedbacks to Gorse, eg:</li>
+<li>Use <code>write-back-type</code> and <code>write-back-delay</code> parameter to write back recommendations as read feedbacks to Gorse, eg:</li>
 </ol>
-<pre><code class="language-bash">curl -i -H &quot;Accept: application/json&quot; -X GET http://127.0.0.1:8088//api/recommend/0?write-back=read
+<pre><code class="language-bash">curl -i -H &quot;Accept: application/json&quot; \
+    -X GET http://127.0.0.1:8088//api/recommend/0?write-back-type=read&amp;write-back-delay=10
 </code></pre>
-<p>The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient.</p>
+<p>The 1st option is more accurate since it is done by the front end but the 2nd option is more convenient. Read <a href="ch02-03-strategy.html">2.3 Recommendation Strategies</a> for detailed information.</p>
+<h3 id="3-what-does-no-feedback-found-mean"><a class="header" href="#3-what-does-no-feedback-found-mean">3. What does &quot;no feedback found&quot; mean?</a></h3>
+<p>If &quot;collaborative filtering&quot; tasks report no feedback found. It means there is no positive feedback in the database. The definition of positive feedback types and read feedback type is in the configuration file:</p>
+<pre><code class="language-toml"># The feedback types for positive events.
+positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
+
+# The feedback types for read events.
+read_feedback_types = [&quot;read&quot;]
+</code></pre>
+<p>If &quot;click-through rate prediction&quot; tasks report no feedback found. It means there is no negative feedback in the database. The negative feedback are these read feedback without positive feedback.</p>
+<p>If you don't have any feedback, don't worry. There are fallback recommenders to handle cold-start problem.</p>
 
                     </main>
 
