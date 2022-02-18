@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1052,6 +1052,32 @@ services:
 <img src="img/ch3/dashboard-json.png" width="500">
 <p>The left side of the dashboard shows the count of calls per ten minutes, while the right side shows the call latency within 99%.</p>
 <p><img src="img/ch3/dashboard-cache.png" alt="dashboard-cache" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-4-developers-guide"><a class="header" href="#chapter-4-developers-guide">Chapter 4: Developer's Guide</a></h1>
+<p>This chapter will show how to work on Gorse source code.</p>
+<h2 id="setup-develop-environment"><a class="header" href="#setup-develop-environment">Setup Develop Environment</a></h2>
+<p>These following installations are required:</p>
+<ul>
+<li><strong>Go</strong> (&gt;= 1.17): Since Go features from 1.17 are used in Gorse, the version of the compiler must be greater than 1.17. GoLand or Visual Studio Code is highly recommended as the IDE to develop Gorse.</li>
+<li><strong>Docker Compose</strong>: Multiple databases are required for unit tests. It's convenient to manage databases on Docker Compose. </li>
+</ul>
+<pre><code class="language-bash">cd misc/database_test
+docker-compose up -d
+</code></pre>
+<h2 id="run-unit-tests"><a class="header" href="#run-unit-tests">Run Unit Tests</a></h2>
+<p>Most logics in Gorse are covered by unit tests. Run unit tests by the following command:</p>
+<pre><code class="language-bash">go test -v ./...
+</code></pre>
+<p>The default database URLs are directed to these databases in <code>misc/database_test/docker-compose.yml</code>. Test databases could be overrode by setting following environment variables:</p>
+<table><thead><tr><th>Environment Value</th><th>Default Value</th></tr></thead><tbody>
+<tr><td><code>MYSQL_URI</code></td><td><code>mysql://root:password@tcp(127.0.0.1:3306)/</code></td></tr>
+<tr><td><code>POSTGRES_URI</code></td><td><code>postgres://gorse:gorse_pass@127.0.0.1/</code></td></tr>
+<tr><td><code>MONGO_URI</code></td><td><code>mongodb://root:password@127.0.0.1:27017/</code></td></tr>
+<tr><td><code>CLICKHOUSE_URI</code></td><td><code>clickhouse://127.0.0.1:8123/</code></td></tr>
+<tr><td><code>REDIS_URI</code></td><td><code>redis://127.0.0.1:6379/</code></td></tr>
+</tbody></table>
+<p>For example, use TiDB as a test database by:</p>
+<pre><code class="language-bash">MYSQL_URI=mysql://root:password@tcp(127.0.0.1:4000)/ go test -v ./...
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently Asked Questions</a></h1>
 <p>These frequent asked questions are collected from issues, emails and chats. Feel free to ask more questions via <a href="https://github.com/zhenghaoz/gorse/issues">issue</a>, <a href="support@gorse.io">email</a>, <a href="https://discord.com/channels/830635934210588743/">Discord</a> (for English) or <a href="https://qm.qq.com/cgi-bin/qm/qr?k=lOERnxfAM2U2rj4C9Htv9T68SLIXg6uk&amp;jump_from=webapi">QQ</a> (for Chinese).</p>
 <h3 id="1-how-to-address-the-cold-start-problem"><a class="header" href="#1-how-to-address-the-cold-start-problem">1. How to address the cold-start problem?</a></h3>
