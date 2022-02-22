@@ -874,8 +874,96 @@ fallback_recommend = [&quot;item_based&quot;, &quot;latest&quot;]
 <pre><code class="language-toml"># The number of feedback used in fallback item-based similar recommendation. The default values is 10.
 num_feedback_fallback_item_based = 10
 </code></pre>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ol>
+<li>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</li>
+<li>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</li>
+<li>Rendle, Steffen. &quot;Factorization machines.&quot; 2010 IEEE International conference on data mining. IEEE, 2010.</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="performance-vs-precision"><a class="header" href="#performance-vs-precision">Performance vs Precision</a></h1>
+<pre><code class="language-toml"># The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
+positive_feedback_ttl = 0
+
+# The time-to-live (days) of items, 0 means disabled. The default value is 0.
+item_ttl = 0
+</code></pre>
+<pre><code class="language-toml"># The time period for model fitting (minutes). The default values is 60.
+fit_period = 360
+
+# The time period for model searching (minutes). The default values is 100.
+search_period = 60
+
+# The number of epochs for model searching. The default values is 100.
+search_epoch = 100
+
+# The number of trials for model searching. The default values is 10.
+search_trials = 10
+
+# The time period to refresh recommendation for inactive users (days). The default values is 5.
+refresh_recommend_period = 1
+</code></pre>
+<h2 id="enable-clustering-index-for-similar-itemuser-searching"><a class="header" href="#enable-clustering-index-for-similar-itemuser-searching">Enable Clustering Index for Similar Item/User Searching</a></h2>
+<p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is $O(N)$, and the computation complexity to generate similar items for all items is $O(N^2)$. Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from [1].</p>
+<p>Similar item (user) index can be switched on and off by <code>enable_item_neighbor_index</code> (<code>enable_user_neighbor_index</code>), which is turned off by default in the current version and considered to be turned on by default in subsequent versions. Similar item (user) index needs to set the parameter K, which is the number of clusters to query. Too small K will cause the index to fail to reach the required recall, while too large K will reduce the performance. The construction process tries to increase K. If the query recall reaches <code>item_neighbor_index_recall</code> (<code>user_neighbor_index_recall</code>), or the growth epochs reaches <code>item_neighbor_index_fit_epoch</code> (<code>user_neighbor_ index_fit_epoch</code>), the build process stops increasing K. </p>
+<pre><code class="language-toml"># Enable approximate item neighbor searching using vector index.
+enable_item_neighbor_index = true
+
+# Minimal recall for approximate item neighbor searching.
+item_neighbor_index_recall = 0.8
+
+# Maximal number of fit epochs for approximate item neighbor searching vector index.
+item_neighbor_index_fit_epoch = 3
+
+# Enable approximate user neighbor searching using vector index.
+enable_user_neighbor_index = true
+
+# Minimal recall for approximate user neighbor searching.
+user_neighbor_index_recall = 0.8
+
+# Maximal number of fit epochs for approximate user neighbor searching vector index.
+user_neighbor_index_fit_epoch = 3
+</code></pre>
+<p>The advantages and disadvantages of using similar item/user indexing are as follows. </p>
+<ul>
+<li><strong>Advantages:</strong> Saves similar item/user search time.</li>
+<li><strong>Disadvantages:</strong> Indexing requires extra memory, and if the data is difficult to cluster (e.g. randomly generated data), the indexing recall will be low.</li>
+</ul>
+<p>The recall of similar users index and similar items index can be seen in &quot;User Neighbor Index Recall&quot; and &quot;Item Neighbor Index Recall&quot; in the system status section in the overview page of Gorse dashboard.</p>
+<h2 id="enable-hnsw-index-for-collaborative-filtering"><a class="header" href="#enable-hnsw-index-for-collaborative-filtering">Enable HNSW Index for Collaborative Filtering</a></h2>
+<p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is $O(MN)$. However, if the number of items and users is large, the overall computation is unacceptable.</p>
+<pre><code class="language-toml"># Enable approximate collaborative filtering recommend using vector index.
+enable_collaborative_index = false
+
+# Minimal recall for approximate collaborative filtering recommend.
+collaborative_index_recall = 0.9
+
+# Maximal number of fit epochs for approximate collaborative filtering recommend vector index.
+collaborative_index_fit_epoch = 3
+</code></pre>
+<h2 id="references-1"><a class="header" href="#references-1">References</a></h2>
+<ol>
+<li>Auvolat, Alex, et al. &quot;Clustering is efficient for approximate maximum inner product search.&quot; arXiv preprint arXiv:1507.05910 (2015).</li>
+<li>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gorse-dashboard"><a class="header" href="#gorse-dashboard">Gorse Dashboard</a></h1>
+<h2 id="login"><a class="header" href="#login">Login</a></h2>
+<center><img width="360" src="img/ch3/gorse-dashboard-login.png"></center>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p><img src="img/ch3/gorse-dashboard-overview.png" alt="" /></p>
+<h2 id="users"><a class="header" href="#users">Users</a></h2>
+<p><img src="img/ch3/gorse-dashboard-users.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-similar-users.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-user-insight.png" alt="" /></p>
+<h2 id="items"><a class="header" href="#items">Items</a></h2>
+<p><img src="img/ch3/gorse-dashboard-items.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-similar-items.png" alt="" /></p>
+<h2 id="data-export-and-import"><a class="header" href="#data-export-and-import">Data Export and Import</a></h2>
+<p><img src="img/ch3/gorse-dashboard-advance.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-import-users.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-import-items.png" alt="" /></p>
+<p><img src="img/ch3/gorse-dashboard-import-feedback.png" alt="" /></p>
+<h2 id="configurations"><a class="header" href="#configurations">Configurations</a></h2>
+<p><img src="img/ch3/gorse-dashboard-settings.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3-monitoring"><a class="header" href="#chapter-3-monitoring">Chapter 3: Monitoring</a></h1>
 <p>For an online system in production, &quot;observability&quot; is important. Real-time monitoring of an online system can identify flaws or performance issues before they affect users on a large scale. This chapter will introduce how to monitor the Gorse recommender system for logs and metrics, with the logs capturing abnormal events and the metrics monitoring observing the performance of the system. This chapter will only introduce some key configurations, for a complete configuration sample please refer to the official demo project <a href="https://github.com/zhenghaoz/gitrec">GitRec</a>.</p>
 <p>The overview architecture of monitoring infrastructure is as follows:</p>
