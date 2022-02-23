@@ -429,8 +429,8 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <tr><td><code>http_port</code></td><td>integer</td><td><code>8088</code></td><td>Master node listening port for HTTP service (dashboard)</td></tr>
 <tr><td><code>n_jobs</code></td><td>integer</td><td><code>1</code></td><td>Number of working threads for the master node</td></tr>
 <tr><td><code>meta_timeout</code></td><td>integer</td><td><code>60</code></td><td>Metadata timeout in seconds</td></tr>
-<tr><td><code>dashboard_user_name</code></td><td>string</td><td></td><td>Username login dashboard</td></tr>
-<tr><td><code>dashboard_password</code></td><td>string</td><td></td><td>Password login dashboard</td></tr>
+<tr><td><code>dashboard_user_name</code></td><td>string</td><td></td><td>Username login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
+<tr><td><code>dashboard_password</code></td><td>string</td><td></td><td>Password login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
 </tbody></table>
 <h2 id="server"><a class="header" href="#server"><code>[server]</code></a></h2>
 <p>Configurations under <code>[server]</code> are used to define behaviors of the server node.</p>
@@ -946,23 +946,56 @@ collaborative_index_fit_epoch = 3
 <li>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gorse-dashboard"><a class="header" href="#gorse-dashboard">Gorse Dashboard</a></h1>
+<p>Gorse's master node provides the Gorse Dashboard, which can be accessed through port 8088 of the master node. The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.</p>
 <h2 id="login"><a class="header" href="#login">Login</a></h2>
+<p>The default configuration allows access to the console without logging in. In the configuration file, the username and password to log in to the dashboard can be set.</p>
+<pre><code class="language-toml">dashboard_user_name = &quot;admin&quot;   # dashboard user name
+dashboard_password = &quot;password&quot; # dashboard password
+</code></pre>
+<p>After setting a username and password, you will be redirected to the login page the first time you access the dashboard.</p>
 <center><img width="360" src="img/ch3/gorse-dashboard-login.png"></center>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p><img src="img/ch3/gorse-dashboard-overview.png" alt="" /></p>
+<h2 id="tasks"><a class="header" href="#tasks">Tasks</a></h2>
+<p>The task page displays the tasks in Gorse, including the task name, task status, task start time, task end time, and task progress.</p>
+<p><img src="img/ch3/gorse-dashboard-tasks.png" alt="" /></p>
+<h2 id="cluster"><a class="header" href="#cluster">Cluster</a></h2>
+<p>The cluster page lists nodes in the cluster, displaying information such as node type, node name, node IP and address for APIs and metrics. If a container orchestration tool is used, the node IP may not be accessible externally.</p>
+<p><img src="img/ch3/gorse-dashboard-cluster.png" alt="" /></p>
 <h2 id="users"><a class="header" href="#users">Users</a></h2>
+<p>The user page lists all users currently present in Gorse and can be searched by user ID. The information displayed includes the user ID, user labels, last active time and last update time of recommendation.</p>
 <p><img src="img/ch3/gorse-dashboard-users.png" alt="" /></p>
+<p>Click on &quot;Neighbors&quot; to see similar users of this user.</p>
 <p><img src="img/ch3/gorse-dashboard-similar-users.png" alt="" /></p>
+<p>Click on &quot;Insight&quot; to see the user's history and the recommendations Gorse has generated for this user.</p>
 <p><img src="img/ch3/gorse-dashboard-user-insight.png" alt="" /></p>
 <h2 id="items"><a class="header" href="#items">Items</a></h2>
+<p>The item page lists all items currently in Gorse and can be searched by item ID. The information displayed includes the item ID, item categories, whether it is hidden or not, timestamp, item labels and item description.</p>
 <p><img src="img/ch3/gorse-dashboard-items.png" alt="" /></p>
+<p>Click on &quot;Neighbors&quot; to see the similar items for each item.</p>
 <p><img src="img/ch3/gorse-dashboard-similar-items.png" alt="" /></p>
 <h2 id="data-export-and-import"><a class="header" href="#data-export-and-import">Data Export and Import</a></h2>
+<p>The advance page allows importing and exporting data.</p>
+<ul>
+<li>The &quot;Export Users&quot; button exports users to a CSV file with the format of user ID, user labels.</li>
+<li>The &quot;Export Items&quot; button exports items to a CSV file with the format of item ID, hidden or not, item categories, timestamp, item labels and item description.</li>
+<li>The &quot;Export Feedback&quot; button exports feedbacks to a CSV file in the format of feedback type, user ID, item ID and timestamp.</li>
+</ul>
 <p><img src="img/ch3/gorse-dashboard-advance.png" alt="" /></p>
+<ul>
+<li>The &quot;Import Users&quot; button allows you to enter the &quot;Import Users&quot; page and preview the imported data after selecting the file. You can set the field separator, label separator, the mapping of each field and the existence of header row. Once the settings are correct, you can click &quot;Confirm Import&quot; to complete the data import.</li>
+</ul>
 <p><img src="img/ch3/gorse-dashboard-import-users.png" alt="" /></p>
+<ul>
+<li>The &quot;Import Items&quot; button allows you to enter the &quot;Import Items&quot; page, which operates with the same logic as the &quot;Import Users&quot; page.</li>
+</ul>
 <p><img src="img/ch3/gorse-dashboard-import-items.png" alt="" /></p>
+<ul>
+<li>The &quot;Import Feedback&quot; button allows you to enter the &quot;Import Feedback&quot; page, with the same logic as for importing users.</li>
+</ul>
 <p><img src="img/ch3/gorse-dashboard-import-feedback.png" alt="" /></p>
 <h2 id="configurations"><a class="header" href="#configurations">Configurations</a></h2>
+<p>The settings page shows the configurations currently used by Gorse. The configurations used by the system are determined by a combination of the configuration file, command line options, and environment variables, so there may be differences between the configurations seen on the settings page and the configuration file used.</p>
 <p><img src="img/ch3/gorse-dashboard-settings.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3-monitoring"><a class="header" href="#chapter-3-monitoring">Chapter 3: Monitoring</a></h1>
 <p>For an online system in production, &quot;observability&quot; is important. Real-time monitoring of an online system can identify flaws or performance issues before they affect users on a large scale. This chapter will introduce how to monitor the Gorse recommender system for logs and metrics, with the logs capturing abnormal events and the metrics monitoring observing the performance of the system. This chapter will only introduce some key configurations, for a complete configuration sample please refer to the official demo project <a href="https://github.com/zhenghaoz/gitrec">GitRec</a>.</p>
