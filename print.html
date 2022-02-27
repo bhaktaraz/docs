@@ -137,16 +137,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-1-quick-start"><a class="header" href="#chapter-1-quick-start">Chapter 1: Quick Start</a></h1>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>Gorse is an open-source recommendation system written in Go. Gorse aims to be a universal open-source recommender system that can be easily introduced into a wide variety of online services. By importing items, users, and interaction data into Gorse, the system will automatically train models to generate recommendations for each user. Project features are as follows.</p>
 <ul>
-<li><strong>AutoML</strong>: Choose the best recommendation model and strategy automatically by model searching in the background.</li>
-<li><strong>Distributed Recommendation</strong>: Single node training, distributed prediction, and ability to achieve horizontal scaling in the recommendation stage.</li>
-<li><strong>RESTful API</strong>: Provide RESTful APIs for data CRUD and recommendation requests.</li>
-<li><strong>Dashboard</strong>: Provide dashboard for data import and export, monitoring, and cluster status checking.</li>
+<li><strong>Multi-source Recommendation:</strong> For a user, recommended items are collected from different ways (popular, latest, user-based, item-based, and collaborative filtering) and ranked by click-through rate prediction.</li>
+<li><strong>AutoML:</strong> Choose the best recommendation model and strategy automatically by model searching in the background.</li>
+<li><strong>Distributed Recommendation:</strong> Single node training, distributed prediction, and ability to achieve horizontal scaling in the recommendation stage.</li>
+<li><strong>RESTful API:</strong> Provide RESTful APIs for data CRUD and recommendation requests.</li>
+<li><strong>Dashboard:</strong> Provide dashboard for data import and export, monitoring, and cluster status checking.</li>
 </ul>
-<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL or MongoDB, with intermediate data cached in Redis. The cluster consists of a master node, multiple worker nodes, and server nodes. The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management. The server node is responsible for exposing the RESTful APIs and online real-time recommendations. Worker nodes are responsible for the offline recommendation for each user. In addition, the administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
+<p>Gorse is a single node training and distributed prediction recommender system. Gorse stores data in MySQL, MongoDB, PostgresSQL, or ClickHouse, with intermediate data cached in Redis.</p>
+<ol>
+<li>The cluster consists of a master node, multiple worker nodes, and server nodes.</li>
+<li>The master node is responsible for model training, non-personalized item recommendation, configuration management, and membership management.</li>
+<li>The server node is responsible for exposing the RESTful APIs and online real-time recommendations.</li>
+<li>Worker nodes are responsible for offline recommendations for each user.</li>
+</ol>
+<p>In addition, the administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
 <center><img width=480 src="img/architecture.png"/></center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-1-quick-start"><a class="header" href="#chapter-1-quick-start">Chapter 1: Quick Start</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Gorse can be set up via Docker Compose or manually.</p>
 <h2 id="setup-gorse-with-docker-compose"><a class="header" href="#setup-gorse-with-docker-compose">Setup Gorse with Docker Compose</a></h2>
@@ -442,31 +451,35 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <p>Configurations under <code>[recommend]</code> are used to define behaviors of recommendation.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>popular_window</code></td><td>integer</td><td><code>180</code></td><td>Time window of popular items in days <a href="ch02-03-strategy.html#latest-recommender">(2.3)</a></td></tr>
-<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model training in minutes</td></tr>
-<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes</td></tr>
-<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search</td></tr>
-<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search</td></tr>
-<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days</td></tr>
+<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model training in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>check_recommend_period</code></td><td>integer</td><td><code>1</code></td><td>Period to check recommendation for users in minute <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
 <tr><td><code>fallback_recommend</code></td><td>strings</td><td><code>[&quot;latest&quot;]</code></td><td>Source of recommendation when personalized recommendation exhausted <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
 <tr><td><code>num_feedback_fallback_item_based</code></td><td>integer</td><td><code>10</code></td><td>The number of feedback used in fallback item-based similar recommendation <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
 <tr><td><code>item_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for items <a href="ch02-03-strategy.html#item-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_item_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index</td></tr>
-<tr><td><code>item_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching</td></tr>
-<tr><td><code>item_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index</td></tr>
+<tr><td><code>enable_item_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>item_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>item_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
 <tr><td><code>user_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for users <a href="ch02-03-strategy.html#user-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_user_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index</td></tr>
-<tr><td><code>user_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching</td></tr>
-<tr><td><code>user_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index</td></tr>
+<tr><td><code>enable_user_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>user_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>user_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
 <tr><td><code>enable_latest_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable latest recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_popular_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable popular recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_user_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable user-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_item_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable item-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_collaborative_recommend</code></td><td>boolean</td><td><code>true</code></td><td>Enable collaborative filtering recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
-<tr><td><code>enable_collaborative_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index</td></tr>
-<tr><td><code>collaborative_index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend</td></tr>
-<tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index</td></tr>
+<tr><td><code>enable_collaborative_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>collaborative_index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
 <tr><td><code>enable_click_through_prediction</code></td><td>boolean</td><td><code>false</code></td><td>Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>explore_recommend</code></td><td>map</td><td><code>{ popular = 0.0, latest = 0.0 }</code></td><td>The explore recommendation method is used to inject popular items or latest items into recommended result <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
+<tr><td><code>enable_positive_replacement</code></td><td>boolean</td><td><code>false</code></td><td></td></tr>
+<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td></td></tr>
+<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td></td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gitrec-the-live-demo"><a class="header" href="#gitrec-the-live-demo">GitRec, The Live Demo</a></h1>
 <p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of the Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before being imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendation and press ⏯️ to skip the current recommendation.</p>
@@ -808,9 +821,9 @@ user_neighbor_type = &quot;similar&quot;
 </code></pre>
 <p>It is recommended to choose <code>similar</code> or <code>auto</code> because user-based Similarity Recommender using <code>related</code> is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history.</p>
 <h3 id="collaborative-filtering-recommender"><a class="header" href="#collaborative-filtering-recommender">Collaborative Filtering Recommender</a></h3>
-<p>Recommenders based on similar items and similar users require that the recommended items need to be linked with similar users or historical items of the recommended user, which limits the scope of recommended items searching. The collaborative filtering recommender in Gorse uses matrix factorization to recommend items. The training algorithm maps users and items to embedding vectors in a high-dimensional space, and the user's preference for an item is the dot product of the user embedding vector and the item embedding vector. However, the disadvantage of collaborative filtering recommender is that it cannot utilize the label information of users and items, and it cannot handle new users and new items.</p>
+<p>Recommenders based on similar items and similar users require that the recommended items need to be linked with similar users or historical items of the recommended user, which limits the scope of recommended items searching. The collaborative filtering recommender in Gorse uses matrix factorization<sup class="footnote-reference"><a href="#1">1</a></sup><sup class="footnote-reference"><a href="#2">2</a></sup> to recommend items. The training algorithm maps users and items to embedding vectors in a high-dimensional space, and the user's preference for an item is the dot product of the user embedding vector and the item embedding vector. However, the disadvantage of collaborative filtering recommender is that it cannot utilize the label information of users and items, and it cannot handle new users and new items.</p>
 <h3 id="click-through-rate-prediction"><a class="header" href="#click-through-rate-prediction">Click-through Rate Prediction</a></h3>
-<p>Is there a recommender that combines the advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate, prediction model. The click-through rate prediction model in Gorse is a factorization machine that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.</p>
+<p>Is there a recommender that combines the advantages of similarity recommender and collaborative filtering recommender? Then it is the click-through rate, prediction model. The click-through rate prediction model in Gorse is a factorization machine<sup class="footnote-reference"><a href="#3">3</a></sup> that generates embedding vectors for each user label and item label in addition to embedding vectors for each user and item. Although the factorization machine model is effective, it is not generally used as a recommender for collecting recommended items over all items. Compared with collaborative filtering recommender and similarity recommender, its computational complexity is large. Gorse's click-through prediction model is used to fuse and rank the results of the above recommenders.</p>
 <p>The original meaning of &quot;click-through rate prediction&quot; is to predict the probability that users will click on the recommended content or ads, but it should be noted that the click-through rate prediction in Gorse refers more to the probability that users will give positive feedback to the recommended results. For example, suppose we set in Gorse that positive feedback means the user has watched 50% of the video, then the &quot;click-through rate&quot; is the probability that the user has watched more than 50% of the video.</p>
 <h2 id="recommendation-strategy"><a class="header" href="#recommendation-strategy">Recommendation Strategy</a></h2>
 <p>Individual recommenders cannot perform the recommendation task well, and multiple recommenders need to be combined. Gorse provides a workflow for generating recommendation results, under which we can draft recommendation strategies that are suitable for specific scenarios. The recommendation process consists of two main components: offline recommendation and online recommendation. The offline recommendation collects recommendations for each user from the full set of items and caches them in Redis. The online recommendation pulls the cached recommendation results, then removes the read content from the recommendation results, and if the cached recommendation results are exhausted, then the recommendation content is generated in real-time using the fallback recommenders.</p>
@@ -875,18 +888,38 @@ fallback_recommend = [&quot;item_based&quot;, &quot;latest&quot;]
 num_feedback_fallback_item_based = 10
 </code></pre>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
-<ol>
-<li>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</li>
-<li>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</li>
-<li>Rendle, Steffen. &quot;Factorization machines.&quot; 2010 IEEE International conference on data mining. IEEE, 2010.</li>
-</ol>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Rendle, Steffen. &quot;Factorization machines.&quot; 2010 IEEE International conference on data mining. IEEE, 2010.</p>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="performance-vs-precision"><a class="header" href="#performance-vs-precision">Performance vs Precision</a></h1>
+<p>In the most ideal situation, a recommender system should recommend to users the items they are most likely to like. However, since computation and storage resources are always limited, recommender systems often have to make tradeoffs between performance and accuracy. In this section, we describe how to configure the tradeoff between Gorse's computational resource usage, storage resource usage, and recommendation accuracy.</p>
+<h2 id="set-ttl-for-items-and-feedback"><a class="header" href="#set-ttl-for-items-and-feedback">Set TTL for Items and Feedback</a></h2>
+<p>By default, Gorse loads all the data in the database as training data. In the configuration file, the number of items and feedbacks read can be limited by <code>item_ttl</code> and <code>positive_feedback_ttl</code>. If the timestamp of an item is more than <code>item_ttl</code> days ago, Gorse does not read this item anymore. If the timestamp of a feedback is more than <code>positive_feedback_ttl</code> days ago, then Gorse will also not read this feedback. The advantages and disadvantages of using TTL are as follows.</p>
+<ul>
+<li><strong>Advantages:</strong> Remove obsolete items and feedbacks to reduce the amount of data Gorse needs to process. Items that are too outdated, such as old news, are not recommended, and user histories that are too old do not reflect current user interests, so removing outdated items and feedback is beneficial to the recommender system.</li>
+<li><strong>Disadvantage:</strong> If the TTL is set decisively, the amount of information obtained during the training will be insufficient.</li>
+</ul>
+<p>The TTL is used to remove obsolete items and feedback, but should be set long enough to prevent loss of information.</p>
 <pre><code class="language-toml"># The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
 positive_feedback_ttl = 0
 
 # The time-to-live (days) of items, 0 means disabled. The default value is 0.
 item_ttl = 0
 </code></pre>
+<h2 id="set-training-and-recommendation-period"><a class="header" href="#set-training-and-recommendation-period">Set Training and Recommendation Period</a></h2>
+<p>There are three loops in the Gorse recommender system, which are</p>
+<ul>
+<li><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>fit_period</code> in the configuration file.</li>
+<li><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</li>
+<li><strong>Recommendation loop:</strong> The worker node checks whether update each user's recommendation results, the check interval is <code>check_recommend_period</code> minutes. The conditions to update a user's recommendation are: the last active time of the user exceeds the last recommendation generated time, or the last recommendation generated time is more than <code>refresh_recommend_period</code> days from now. The interval <code>check_recommend_period</code> for checking recommendation results should be set relatively short, recommended to be around a few minutes, so as to be able to cope with the user's recommendation result consumption.</li>
+</ul>
+<p>Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, <code>check_recommend_period</code> should be small, <code>search_period</code> should be large, and <code>fit_period</code> needs to be set reasonably according to the database load.</p>
 <pre><code class="language-toml"># The time period for model fitting (minutes). The default values is 60.
 fit_period = 360
 
@@ -903,7 +936,7 @@ search_trials = 10
 refresh_recommend_period = 1
 </code></pre>
 <h2 id="enable-clustering-index-for-similar-itemuser-searching"><a class="header" href="#enable-clustering-index-for-similar-itemuser-searching">Enable Clustering Index for Similar Item/User Searching</a></h2>
-<p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is $O(N)$, and the computation complexity to generate similar items for all items is $O(N^2)$. Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from [1].</p>
+<p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is \(O(N)\), and the computation complexity to generate similar items for all items is \(O(N^2)\). Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from<sup class="footnote-reference"><a href="#2">2</a></sup>.</p>
 <p>Similar item (user) index can be switched on and off by <code>enable_item_neighbor_index</code> (<code>enable_user_neighbor_index</code>), which is turned off by default in the current version and considered to be turned on by default in subsequent versions. Similar item (user) index needs to set the parameter K, which is the number of clusters to query. Too small K will cause the index to fail to reach the required recall, while too large K will reduce the performance. The construction process tries to increase K. If the query recall reaches <code>item_neighbor_index_recall</code> (<code>user_neighbor_index_recall</code>), or the growth epochs reaches <code>item_neighbor_index_fit_epoch</code> (<code>user_neighbor_ index_fit_epoch</code>), the build process stops increasing K. </p>
 <pre><code class="language-toml"># Enable approximate item neighbor searching using vector index.
 enable_item_neighbor_index = true
@@ -929,8 +962,10 @@ user_neighbor_index_fit_epoch = 3
 <li><strong>Disadvantages:</strong> Indexing requires extra memory, and if the data is difficult to cluster (e.g. randomly generated data), the indexing recall will be low.</li>
 </ul>
 <p>The recall of similar users index and similar items index can be seen in &quot;User Neighbor Index Recall&quot; and &quot;Item Neighbor Index Recall&quot; in the system status section in the overview page of Gorse dashboard.</p>
+<center><img width="420px" src="img/ch3/neighbor_index_recall.jpeg"></center>
 <h2 id="enable-hnsw-index-for-collaborative-filtering"><a class="header" href="#enable-hnsw-index-for-collaborative-filtering">Enable HNSW Index for Collaborative Filtering</a></h2>
-<p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is $O(MN)$. However, if the number of items and users is large, the overall computation is unacceptable.</p>
+<p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is \(O(MN)\). However, if the number of items and users is large, the overall computation is unacceptable.</p>
+<p>A more efficient approach is to use the vector index HNSW<sup class="footnote-reference"><a href="#3">3</a></sup>. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, <code>ef_construction</code>, to be set. <code>ef_construction</code> that is too small will prevent the vector index from reaching the required recall, and <code>ef_construction</code> that is too large will reduce search performance. The build process tries to keep increasing <code>ef_construction</code>, and stops growing <code>ef_construction</code> if the recall reaches <code>collaborative_index_recall</code>, or if the number of epochs reaches <code>collaborative_index_fit_epoch</code>.</p>
 <pre><code class="language-toml"># Enable approximate collaborative filtering recommend using vector index.
 enable_collaborative_index = false
 
@@ -940,11 +975,23 @@ collaborative_index_recall = 0.9
 # Maximal number of fit epochs for approximate collaborative filtering recommend vector index.
 collaborative_index_fit_epoch = 3
 </code></pre>
+<p>The advantages and disadvantages of using vector indexing for collaborative filtering are as follows.</p>
+<ul>
+<li><strong>Advantages:</strong> Vector indexing can significantly improve the speed of collaborative filtering recommendations and the recall is sufficient in most cases.</li>
+<li><strong>Disadvantages:</strong> Creating HNSW indexes requires additional memory space and can produce relatively low recall in rare cases.</li>
+</ul>
+<p>The HNSW index recall of collaborative filtering corresponds to the &quot;Matching Index Recall&quot; in the system status of the dashboard overview page, if the value is low then consider turning off the index query.</p>
+<center><img width="420px" src="img/ch3/cf_index_recall.jpeg"></center>
 <h2 id="references-1"><a class="header" href="#references-1">References</a></h2>
-<ol>
-<li>Auvolat, Alex, et al. &quot;Clustering is efficient for approximate maximum inner product search.&quot; arXiv preprint arXiv:1507.05910 (2015).</li>
-<li>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</li>
-</ol>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Auvolat, Alex, et al. &quot;Clustering is efficient for approximate maximum inner product search.&quot; arXiv preprint arXiv:1507.05910 (2015).</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</p>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gorse-dashboard"><a class="header" href="#gorse-dashboard">Gorse Dashboard</a></h1>
 <p>Gorse's master node provides the Gorse Dashboard, which can be accessed through port 8088 of the master node. The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.</p>
 <h2 id="login"><a class="header" href="#login">Login</a></h2>
@@ -955,6 +1002,7 @@ dashboard_password = &quot;password&quot; # dashboard password
 <p>After setting a username and password, you will be redirected to the login page the first time you access the dashboard.</p>
 <center><img width="360" src="img/ch3/gorse-dashboard-login.png"></center>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The top part of the overview page shows the number of users, items, feedback, valid positive feedback and valid negative feedback in Gorse. The middle part of the overview page shows the proportion of each positive feedback given by users over time, and the curve of the corresponding feedback can be hidden by clicking on the feedback type label. The bottom part of the overview page shows the popular items and the latest items in the system, as well as other status in the system.</p>
 <p><img src="img/ch3/gorse-dashboard-overview.png" alt="" /></p>
 <h2 id="tasks"><a class="header" href="#tasks">Tasks</a></h2>
 <p>The task page displays the tasks in Gorse, including the task name, task status, task start time, task end time, and task progress.</p>

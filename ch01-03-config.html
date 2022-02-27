@@ -181,31 +181,35 @@
 <p>Configurations under <code>[recommend]</code> are used to define behaviors of recommendation.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>popular_window</code></td><td>integer</td><td><code>180</code></td><td>Time window of popular items in days <a href="ch02-03-strategy.html#latest-recommender">(2.3)</a></td></tr>
-<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model training in minutes</td></tr>
-<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes</td></tr>
-<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search</td></tr>
-<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search</td></tr>
-<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days</td></tr>
+<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model training in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>check_recommend_period</code></td><td>integer</td><td><code>1</code></td><td>Period to check recommendation for users in minute <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
 <tr><td><code>fallback_recommend</code></td><td>strings</td><td><code>[&quot;latest&quot;]</code></td><td>Source of recommendation when personalized recommendation exhausted <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
 <tr><td><code>num_feedback_fallback_item_based</code></td><td>integer</td><td><code>10</code></td><td>The number of feedback used in fallback item-based similar recommendation <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
 <tr><td><code>item_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for items <a href="ch02-03-strategy.html#item-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_item_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index</td></tr>
-<tr><td><code>item_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching</td></tr>
-<tr><td><code>item_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index</td></tr>
+<tr><td><code>enable_item_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>item_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>item_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
 <tr><td><code>user_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for users <a href="ch02-03-strategy.html#user-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_user_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index</td></tr>
-<tr><td><code>user_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching</td></tr>
-<tr><td><code>user_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index</td></tr>
+<tr><td><code>enable_user_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>user_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>user_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
 <tr><td><code>enable_latest_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable latest recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_popular_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable popular recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_user_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable user-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_item_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable item-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_collaborative_recommend</code></td><td>boolean</td><td><code>true</code></td><td>Enable collaborative filtering recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
-<tr><td><code>enable_collaborative_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index</td></tr>
-<tr><td><code>collaborative_index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend</td></tr>
-<tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index</td></tr>
+<tr><td><code>enable_collaborative_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>collaborative_index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
 <tr><td><code>enable_click_through_prediction</code></td><td>boolean</td><td><code>false</code></td><td>Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>explore_recommend</code></td><td>map</td><td><code>{ popular = 0.0, latest = 0.0 }</code></td><td>The explore recommendation method is used to inject popular items or latest items into recommended result <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
+<tr><td><code>enable_positive_replacement</code></td><td>boolean</td><td><code>false</code></td><td></td></tr>
+<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td></td></tr>
+<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td></td></tr>
 </tbody></table>
 
                     </main>

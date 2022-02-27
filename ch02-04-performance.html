@@ -137,12 +137,28 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="performance-vs-precision"><a class="header" href="#performance-vs-precision">Performance vs Precision</a></h1>
+<p>In the most ideal situation, a recommender system should recommend to users the items they are most likely to like. However, since computation and storage resources are always limited, recommender systems often have to make tradeoffs between performance and accuracy. In this section, we describe how to configure the tradeoff between Gorse's computational resource usage, storage resource usage, and recommendation accuracy.</p>
+<h2 id="set-ttl-for-items-and-feedback"><a class="header" href="#set-ttl-for-items-and-feedback">Set TTL for Items and Feedback</a></h2>
+<p>By default, Gorse loads all the data in the database as training data. In the configuration file, the number of items and feedbacks read can be limited by <code>item_ttl</code> and <code>positive_feedback_ttl</code>. If the timestamp of an item is more than <code>item_ttl</code> days ago, Gorse does not read this item anymore. If the timestamp of a feedback is more than <code>positive_feedback_ttl</code> days ago, then Gorse will also not read this feedback. The advantages and disadvantages of using TTL are as follows.</p>
+<ul>
+<li><strong>Advantages:</strong> Remove obsolete items and feedbacks to reduce the amount of data Gorse needs to process. Items that are too outdated, such as old news, are not recommended, and user histories that are too old do not reflect current user interests, so removing outdated items and feedback is beneficial to the recommender system.</li>
+<li><strong>Disadvantage:</strong> If the TTL is set decisively, the amount of information obtained during the training will be insufficient.</li>
+</ul>
+<p>The TTL is used to remove obsolete items and feedback, but should be set long enough to prevent loss of information.</p>
 <pre><code class="language-toml"># The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
 positive_feedback_ttl = 0
 
 # The time-to-live (days) of items, 0 means disabled. The default value is 0.
 item_ttl = 0
 </code></pre>
+<h2 id="set-training-and-recommendation-period"><a class="header" href="#set-training-and-recommendation-period">Set Training and Recommendation Period</a></h2>
+<p>There are three loops in the Gorse recommender system, which are</p>
+<ul>
+<li><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>fit_period</code> in the configuration file.</li>
+<li><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</li>
+<li><strong>Recommendation loop:</strong> The worker node checks whether update each user's recommendation results, the check interval is <code>check_recommend_period</code> minutes. The conditions to update a user's recommendation are: the last active time of the user exceeds the last recommendation generated time, or the last recommendation generated time is more than <code>refresh_recommend_period</code> days from now. The interval <code>check_recommend_period</code> for checking recommendation results should be set relatively short, recommended to be around a few minutes, so as to be able to cope with the user's recommendation result consumption.</li>
+</ul>
+<p>Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, <code>check_recommend_period</code> should be small, <code>search_period</code> should be large, and <code>fit_period</code> needs to be set reasonably according to the database load.</p>
 <pre><code class="language-toml"># The time period for model fitting (minutes). The default values is 60.
 fit_period = 360
 
@@ -159,7 +175,7 @@ search_trials = 10
 refresh_recommend_period = 1
 </code></pre>
 <h2 id="enable-clustering-index-for-similar-itemuser-searching"><a class="header" href="#enable-clustering-index-for-similar-itemuser-searching">Enable Clustering Index for Similar Item/User Searching</a></h2>
-<p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is $O(N)$, and the computation complexity to generate similar items for all items is $O(N^2)$. Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from [1].</p>
+<p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is \(O(N)\), and the computation complexity to generate similar items for all items is \(O(N^2)\). Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from<sup class="footnote-reference"><a href="#2">2</a></sup>.</p>
 <p>Similar item (user) index can be switched on and off by <code>enable_item_neighbor_index</code> (<code>enable_user_neighbor_index</code>), which is turned off by default in the current version and considered to be turned on by default in subsequent versions. Similar item (user) index needs to set the parameter K, which is the number of clusters to query. Too small K will cause the index to fail to reach the required recall, while too large K will reduce the performance. The construction process tries to increase K. If the query recall reaches <code>item_neighbor_index_recall</code> (<code>user_neighbor_index_recall</code>), or the growth epochs reaches <code>item_neighbor_index_fit_epoch</code> (<code>user_neighbor_ index_fit_epoch</code>), the build process stops increasing K. </p>
 <pre><code class="language-toml"># Enable approximate item neighbor searching using vector index.
 enable_item_neighbor_index = true
@@ -185,8 +201,10 @@ user_neighbor_index_fit_epoch = 3
 <li><strong>Disadvantages:</strong> Indexing requires extra memory, and if the data is difficult to cluster (e.g. randomly generated data), the indexing recall will be low.</li>
 </ul>
 <p>The recall of similar users index and similar items index can be seen in &quot;User Neighbor Index Recall&quot; and &quot;Item Neighbor Index Recall&quot; in the system status section in the overview page of Gorse dashboard.</p>
+<center><img width="420px" src="img/ch3/neighbor_index_recall.jpeg"></center>
 <h2 id="enable-hnsw-index-for-collaborative-filtering"><a class="header" href="#enable-hnsw-index-for-collaborative-filtering">Enable HNSW Index for Collaborative Filtering</a></h2>
-<p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is $O(MN)$. However, if the number of items and users is large, the overall computation is unacceptable.</p>
+<p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is \(O(MN)\). However, if the number of items and users is large, the overall computation is unacceptable.</p>
+<p>A more efficient approach is to use the vector index HNSW<sup class="footnote-reference"><a href="#3">3</a></sup>. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, <code>ef_construction</code>, to be set. <code>ef_construction</code> that is too small will prevent the vector index from reaching the required recall, and <code>ef_construction</code> that is too large will reduce search performance. The build process tries to keep increasing <code>ef_construction</code>, and stops growing <code>ef_construction</code> if the recall reaches <code>collaborative_index_recall</code>, or if the number of epochs reaches <code>collaborative_index_fit_epoch</code>.</p>
 <pre><code class="language-toml"># Enable approximate collaborative filtering recommend using vector index.
 enable_collaborative_index = false
 
@@ -196,11 +214,23 @@ collaborative_index_recall = 0.9
 # Maximal number of fit epochs for approximate collaborative filtering recommend vector index.
 collaborative_index_fit_epoch = 3
 </code></pre>
+<p>The advantages and disadvantages of using vector indexing for collaborative filtering are as follows.</p>
+<ul>
+<li><strong>Advantages:</strong> Vector indexing can significantly improve the speed of collaborative filtering recommendations and the recall is sufficient in most cases.</li>
+<li><strong>Disadvantages:</strong> Creating HNSW indexes requires additional memory space and can produce relatively low recall in rare cases.</li>
+</ul>
+<p>The HNSW index recall of collaborative filtering corresponds to the &quot;Matching Index Recall&quot; in the system status of the dashboard overview page, if the value is low then consider turning off the index query.</p>
+<center><img width="420px" src="img/ch3/cf_index_recall.jpeg"></center>
 <h2 id="references"><a class="header" href="#references">References</a></h2>
-<ol>
-<li>Auvolat, Alex, et al. &quot;Clustering is efficient for approximate maximum inner product search.&quot; arXiv preprint arXiv:1507.05910 (2015).</li>
-<li>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</li>
-</ol>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Auvolat, Alex, et al. &quot;Clustering is efficient for approximate maximum inner product search.&quot; arXiv preprint arXiv:1507.05910 (2015).</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</p>
+</div>
 
                     </main>
 
