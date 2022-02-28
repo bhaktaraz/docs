@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-recommend.html"><strong aria-hidden="true">1.2.</strong> Recommend using Gorse</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -249,46 +249,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <p><img src="img/dashboard.jpg" alt="dashboard" /></p>
 <h3 id="server-restful-api"><a class="header" href="#server-restful-api">Server RESTful API</a></h3>
 <p><img src="img/swagger.png" alt="swagger" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="recommend-using-gorse"><a class="header" href="#recommend-using-gorse">Recommend using Gorse</a></h1>
-<p>Each component and concept of Gorse will be introduced in this section.</p>
-<h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items, and Feedback</a></h2>
-<p>A recommender system is expected to recommend items to users. To learn the preferences of each user, feedbacks between users and items are fed to the recommender system. In Gorse, there are three types of entities.</p>
-<ul>
-<li><strong>User:</strong> A user is identified by a string identifier.</li>
-</ul>
-<pre><code class="language-go">type User struct {
-  UserId    string
-}
-</code></pre>
-<ul>
-<li><strong>Item:</strong> A item is identified by a string identifier. A timestamp is used to record the freshness of this item. The timestamp could be the last update time, release time, etc. Labels are used to describe characters of this item, eg., tags of a movie.</li>
-</ul>
-<pre><code class="language-go">type Item struct {
-  ItemId    string
-  Timestamp time.Time
-  Labels    []string
-}
-</code></pre>
-<ul>
-<li><strong>Feedback:</strong> A feedback is identified a triple: feedback type, user ID, and item ID. The type of feedback can be positive (like), negative (dislike), or neutral (read). The timestamp record the time that this feedback happened.</li>
-</ul>
-<pre><code class="language-go">type Feedback struct {
-  FeedbackType string
-  UserId       string
-  ItemId       string
-  Timestamp   time.Time
-}
-</code></pre>
-<p>Types of feedbacks are classified into three categories:</p>
-<ol>
-<li><code>positive_feedback_types</code> mean a user favors an item.</li>
-<li><code>click_feedback_types</code> mean a user favors a recommended item. This item must be recommended by Gorse.</li>
-<li><code>read_feedback_type</code> means a user reads an item. However, the real feedback this user has in his/her mind is never known.</li>
-</ol>
-<p>The difference between <code>positive_feedback_types</code> and <code>click_feedback_types</code> is that the item of <code>click_feedback_types</code> must come from recommendations of Gorse. The item of <code>positive_feedback_types</code> could be found by a user through other approaches such as search, direct access, etc. <code>read_feedback_type</code> is a neutral event. Negative feedback can be conduct by {<code>read_feedback_type</code> items} - {<code>positive_feedback_types</code> items}.</p>
-<blockquote>
-<p>There might be an extra field in the defined structure. They are preserved for future usage.</p>
-</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
 <h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
 <p>The main workflow of Gorse is as follows:</p>
 <center><img width=480 src="img/workflow.png"/></center>
@@ -340,72 +301,8 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <li>New feedbacks have been inserted since the timestamp of the offline recommendation.</li>
 </ul>
 <p>There are 4 ranking models (BPR<sup class="footnote-reference"><a href="#5">2</a></sup>/ALS<sup class="footnote-reference"><a href="#3">3</a></sup>/CCD<sup class="footnote-reference"><a href="#4">4</a></sup>) and 1 CTR model (factorization machines<sup class="footnote-reference"><a href="#2">5</a></sup>) in Gorse. They will be applied automatically by the model searcher. In ranking models, items and users are represented as embedding vectors. Since the dot product between two vectors is fast, ranking models are used to find top N items among all items. In CTR models, features from users or items are used in prediction. It's expensive to use CTR models to predict scores of all items.</p>
-<h3 id="online-recommendation"><a class="header" href="#online-recommendation">Online Recommendation</a></h3>
-<p>The online recommendation in the server node consists of three stages:</p>
-<ol>
-<li>Load offline recommendations from the cache, remove read items.</li>
-<li>If the number of offline recommendations is less than required, collect items similar to these items in the user's historical feedbacks. Read items are removed as well.</li>
-<li>If the number of recommendations is still less than required, collect items from <code>fallback_recommend</code> (latest items or popular items). Read items are removed.</li>
-</ol>
-<h2 id="model-update"><a class="header" href="#model-update">Model Update</a></h2>
-<p>There are two kinds of models in Gorse, but the training and hyperparameters optimization procedures are quite the same.</p>
-<h3 id="model-training"><a class="header" href="#model-training">Model Training</a></h3>
-<p>Model training is done by the master node, as well as model search. The master node pulls data from the database and fits the ranking model and CTR model periodically.</p>
-<blockquote>
-<ul>
-<li>For every <code>fit_jobs</code> minutes:
-<ul>
-<li>Pull data from database.
-<ul>
-<li>Train model with hyperparameters found by model search using <code>fit_jobs</code> jobs.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
 <h3 id="model-search"><a class="header" href="#model-search">Model Search</a></h3>
 <p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configure these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">6</a></sup> for hyperparameters optimization. The procedure of model search is as follows:</p>
-<blockquote>
-<ul>
-<li>For every <code>search_period</code> minutes:
-<ul>
-<li>Pull data from database.</li>
-<li>For every recommender models:
-<ul>
-<li>For <code>search_trials</code> trials:
-<ul>
-<li>Sample a hyperparameter combination.</li>
-<li>Train model with sampled hyperparameters by <code>search_epoch</code> epoches and <code>search_jobs</code> jobs.</li>
-<li>Update best model.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h2 id="online-evaluation"><a class="header" href="#online-evaluation">Online Evaluation</a></h2>
-<p>The only method to estimate recommendation performance is online evaluation. The metric of online evaluation in Gorse is click-through-rate: <code>click feedback</code> / <code>read feedback</code>.</p>
-<div class="footnote-definition" id="6"><sup class="footnote-definition-label">1</sup>
-<p>Zhang, Zhenghao, et al. &quot;SANS: Setwise Attentional Neural Similarity Method for Few-Shot Recommendation.&quot; DASFAA (3). 2021.</p>
-</div>
-<div class="footnote-definition" id="5"><sup class="footnote-definition-label">2</sup>
-<p>Rendle, Steffen, et al. &quot;BPR: Bayesian personalized ranking from implicit feedback.&quot; Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence. 2009.</p>
-</div>
-<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
-<p>Hu, Yifan, Yehuda Koren, and Chris Volinsky. &quot;Collaborative filtering for implicit feedback datasets.&quot; <em>2008 Eighth IEEE International Conference on Data Mining</em>. Ieee, 2008.</p>
-</div>
-<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
-<p>He, Xiangnan, et al. &quot;Fast matrix factorization for online recommendation with implicit feedback.&quot; Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval. 2016.</p>
-</div>
-<div class="footnote-definition" id="2"><sup class="footnote-definition-label">5</sup>
-<p>Rendle, Steffen. &quot;Factorization machines.&quot; <em>2010 IEEE International Conference on Data Mining</em>. IEEE, 2010.</p>
-</div>
-<div class="footnote-definition" id="1"><sup class="footnote-definition-label">6</sup>
-<p>Bergstra, James, and Yoshua Bengio. &quot;Random search for hyper-parameter optimization.&quot; Journal of machine learning research 13.2 (2012).</p>
-</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
 <p>Previous section <em><a href="ch01-02-recommend.html">Recommend using Gorse</a></em> is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create a new config file based on <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template"><code>config.toml.template</code></a>.</p>
 <h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
@@ -477,9 +374,21 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
 <tr><td><code>enable_click_through_prediction</code></td><td>boolean</td><td><code>false</code></td><td>Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>explore_recommend</code></td><td>map</td><td><code>{ popular = 0.0, latest = 0.0 }</code></td><td>The explore recommendation method is used to inject popular items or latest items into recommended result <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
-<tr><td><code>enable_positive_replacement</code></td><td>boolean</td><td><code>false</code></td><td></td></tr>
-<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td></td></tr>
-<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td></td></tr>
+<tr><td><code>enable_positive_replacement</code></td><td>boolean</td><td><code>false</code></td><td>Replace historical items back to recommendations <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td>Decay the weights of replaced items from positive feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td>Decay the weights of replaced items from read feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+</tbody></table>
+<h2 id="environment-variables"><a class="header" href="#environment-variables">Environment Variables</a></h2>
+<p>Part of configurations can be overwritten by environment variables.</p>
+<table><thead><tr><th>Configuration</th><th>Environment Variable</th></tr></thead><tbody>
+<tr><td><code>database.cache_store</code></td><td><code>GORSE_CACHE_STORE</code></td></tr>
+<tr><td><code>database.data_store</code></td><td><code>GORSE_DATA_STORE</code></td></tr>
+<tr><td><code>master.port</code></td><td><code>GORSE_MASTER_PORT</code></td></tr>
+<tr><td><code>master.host</code></td><td><code>GORSE_MASTER_HOST</code></td></tr>
+<tr><td><code>master.http_port</code></td><td><code>GORSE_MASTER_HTTP_PORT</code></td></tr>
+<tr><td><code>master.http_host</code></td><td><code>GORSE_MASTER_HTTP_HOST</code></td></tr>
+<tr><td><code>server.n_jobs</code></td><td><code>GORSE_MASTER_JOBS</code></td></tr>
+<tr><td><code>server.api_key</code></td><td><code>GORSE_SERVER_API_KEY</code></td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gitrec-the-live-demo"><a class="header" href="#gitrec-the-live-demo">GitRec, The Live Demo</a></h1>
 <p><a href="https://gitrec.gorse.io/">GitRec</a>, the live demo, is developed to demonstrate the usage of the Gorse recommender system engine. A user logins in via GitHub OAuth, then repositories starred by this user before being imported to Gorse. Gorse recommends repositories to this user based on starred repositories. When this user saw a recommended repository, he or she can press ❤️ to tell GitRec that he or she like this recommendation and press ⏯️ to skip the current recommendation.</p>
@@ -670,7 +579,7 @@ def read_repo(repo_name: str):
 <p>Generating high-quality labels for items is a difficult task, and low-quality labels might harm the accuracy of the recommender system.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="feedback-collection"><a class="header" href="#feedback-collection">Feedback Collection</a></h1>
 <p>In a recommender system, data is the foundation of all recommendation results, and this section will briefly introduce how to collect user data for the Gorse recommender system. The recommender system relies on the feedback between users and items as training data, and the quality of training data determines the quality of recommendations.</p>
-<h2 id="users-items-and-feedback-1"><a class="header" href="#users-items-and-feedback-1">Users, Items, and Feedback</a></h2>
+<h2 id="users-items-and-feedback"><a class="header" href="#users-items-and-feedback">Users, Items, and Feedback</a></h2>
 <p>The recommender system is complex, but to maximize reusability, Gorse has abstracted the data used in a recommender system as a collection of three entities: users, items, and feedback.</p>
 <ul>
 <li><strong>User:</strong> A user entity consists of a user ID and labels describing the user. The user labels can be empty, but these labels help to improve the recommendation accuracy of the recommender system.</li>
@@ -828,10 +737,11 @@ user_neighbor_type = &quot;similar&quot;
 <h2 id="recommendation-strategy"><a class="header" href="#recommendation-strategy">Recommendation Strategy</a></h2>
 <p>Individual recommenders cannot perform the recommendation task well, and multiple recommenders need to be combined. Gorse provides a workflow for generating recommendation results, under which we can draft recommendation strategies that are suitable for specific scenarios. The recommendation process consists of two main components: offline recommendation and online recommendation. The offline recommendation collects recommendations for each user from the full set of items and caches them in Redis. The online recommendation pulls the cached recommendation results, then removes the read content from the recommendation results, and if the cached recommendation results are exhausted, then the recommendation content is generated in real-time using the fallback recommenders.</p>
 <h3 id="offline-strategy"><a class="header" href="#offline-strategy">Offline Strategy</a></h3>
-<p>Offline recommendation consists of three phases.</p>
+<p>Offline recommendation consists of four phases.</p>
 <ul>
 <li><strong>Matching:</strong> Use different full-set recommenders to collect recommended items from all items. There are five types of full-set recommenders: popular recommender, latest recommender, item-based similarity recommender, user-based similarity recommender, and collaborative filtering recommender, which can be set on or off in the configuration file.</li>
 <li><strong>Ranking:</strong> Use the factorization machine model to rank the items collected by the matching phase, currently you can also turn off the click-through rate prediction in the configuration and use random merge.</li>
+<li><strong>Replacement:</strong> In some cases, read items should be recommended to users again but with lower priorities. If <code>enable_replacement</code> is set, read items would be replaced back to recommendations. The priority decay factors for positive feedbacks and read feedbacks are controlled by <code>positive_replacement_decay</code> and <code>read_replacement_decay</code>.</li>
 <li><strong>Exploration:</strong> Recommend content based on user history can be a good idea for users, but it also limits the possibility of users seeing more diverse content. It is also a kind of &quot;exploration and exploitation&quot; problem, where exploitation refers to recommending content based on users' historical behavior, while exploration refers to exposing users to more content beyond their awareness. One of the easiest ways to expose users to content beyond the information cocoon is to insert random items into the recommendation list, and Gorse can be configured to randomly insert the newest or recent popular items into the recommendation list, with their proportion set in the configuration file.</li>
 </ul>
 <pre><code class="language-toml"># Enable latest recommendation during offline recommendation. The default values is false.
@@ -858,6 +768,15 @@ enable_click_through_prediction = true
 #   latest: Recommend latest items to cold-start users.
 # The default values is { popular = 0.0, latest = 0.0 }.
 explore_recommend = { popular = 0.1, latest = 0.2 }
+
+# Replace historical items back to recommendations.
+enable_replacement = false
+
+# Decay the weights of replaced items from positive feedbacks.
+positive_replacement_decay = 0.8
+
+# Decay the weights of replaced items from read feedbacks.
+read_replacement_decay = 0.6
 </code></pre>
 <p>Perhaps the introduction of various recommenders is not intuitive enough, you can preview the recommendation results in the dashboard. The popular items and the latest items can be seen on the landing page of the dashboard.</p>
 <p><img src="img/ch2/latest-and-popular.png" alt="latest-and-popular" /></p>
@@ -915,8 +834,23 @@ item_ttl = 0
 <h2 id="set-training-and-recommendation-period"><a class="header" href="#set-training-and-recommendation-period">Set Training and Recommendation Period</a></h2>
 <p>There are three loops in the Gorse recommender system, which are</p>
 <ul>
-<li><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>fit_period</code> in the configuration file.</li>
-<li><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</li>
+<li>
+<p><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>fit_period</code> in the configuration file.</p>
+</li>
+<li>
+<p><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</p>
+<p>The model tuning loop </p>
+</li>
+</ul>
+<pre><code>for every `search_period` minutes:
+    pull data from database.
+    for every recommendation models:
+        for `search_trials` trials:
+            sample a hyperparameter combination.
+            train model with sampled hyper-parameters by `search_epoch` epoches and `search_jobs` jobs.
+            update best model.
+</code></pre>
+<ul>
 <li><strong>Recommendation loop:</strong> The worker node checks whether update each user's recommendation results, the check interval is <code>check_recommend_period</code> minutes. The conditions to update a user's recommendation are: the last active time of the user exceeds the last recommendation generated time, or the last recommendation generated time is more than <code>refresh_recommend_period</code> days from now. The interval <code>check_recommend_period</code> for checking recommendation results should be set relatively short, recommended to be around a few minutes, so as to be able to cope with the user's recommendation result consumption.</li>
 </ul>
 <p>Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, <code>check_recommend_period</code> should be small, <code>search_period</code> should be large, and <code>fit_period</code> needs to be set reasonably according to the database load.</p>
