@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html" class="active"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html" class="active"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,65 +137,59 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
-<h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
-<p>The main workflow of Gorse is as follows:</p>
-<center><img width=480 src="img/workflow.png"/></center>
-<ol>
-<li>Feedbacks generated by users are collected to the data store.</li>
-<li>Archived feedbacks are pulled to train the recommender model. There are two types of models (ranking model and CTR model) in Gorse, they are treated as one here.</li>
-<li>Offline recommendations are generated in the background from all items and cached.</li>
-<li>Online recommendations are returned to users in real-time based on cached offline recommendations.</li>
-</ol>
-<h2 id="data-storage"><a class="header" href="#data-storage">Data Storage</a></h2>
-<p>There are two types of storage used in Gorse: data store and cache-store.</p>
-<h3 id="data-store"><a class="header" href="#data-store">Data Store</a></h3>
-<p>The <code>data_store</code> is used to store items, users, feedbacks, and measurements. Currently, MySQL and MongoDB are supported as data storage. Other databases will be available once its interface is implemented.</p>
-<p>Unfortunately, there are two challenges in data storage:</p>
-<ol>
-<li>
-<p>What if feedback with an unknown user or item is inserted? There are two options <code>auto_insert_user</code> and <code>auto_insert_item</code> to control feedback insertion. If new users or items insertion is forbidden, feedback with new users or items will be ignored.</p>
-</li>
-<li>
-<p>How to address stale feedback and items? Some items and their feedbacks are short-lived such as news. <code>positive_feedback_ttl</code> and <code>item_ttl</code> are used to ignore stale feedback and items when pulling datasets from a data store.</p>
-</li>
-</ol>
-<h3 id="cache-store"><a class="header" href="#cache-store">Cache-Store</a></h3>
-<p>The <code>cache_store</code> is used to store offline recommendation and temp variables. Only Redis is supported. The latest items, popular items, similar items, and recommended items are cached in Redis. The length of each cached list is <code>cache_size</code>.</p>
-<h2 id="recommendation"><a class="header" href="#recommendation">Recommendation</a></h2>
-<p>Recommended items come from multiple sources through multiple stages. Non-personalized recommendations (popular/latest/similar) are generated by the master node. Offline personalized recommendations are generated by worker nodes while online personalized recommendations are generated by server nodes.</p>
-<h3 id="popular-items"><a class="header" href="#popular-items">Popular Items</a></h3>
-<p>Items with the maximum number of users will be collected. To avoid popular items resist on the top list, <code>popular_window</code> restricts that timestamps of collected items must be after <code>popular_window</code> days ago. There will be no timestamp restriction if <code>popular_window</code> is <code>0</code>.</p>
-<h3 id="latest-items"><a class="header" href="#latest-items">Latest Items</a></h3>
-<p>Items with the latest timestamps are collected. Items won't be added to the latest items collection if their timestamp is empty.</p>
-<h3 id="similar-items"><a class="header" href="#similar-items">Similar Items</a></h3>
-<p>For each item, top n (n equals <code>cache_size</code>) similar items are collected. In the current implementation, the similarity between items is the number of common users of two items<sup class="footnote-reference"><a href="#6">1</a></sup>.</p>
-<h3 id="offline-recommendation"><a class="header" href="#offline-recommendation">Offline Recommendation</a></h3>
-<p>Worker nodes collect top n items from all items and save them to cache. Besides, the latest items are added to address the cold-start problem in the recommender system. When labels of items exist, the CTR prediction model is enabled, vice versa. The procedure of offline recommendation is different depending on whether the CTR mode is enabled.</p>
-<p><strong>If the CTR model is enabled:</strong></p>
-<ol>
-<li>Collect top <code>cache_size</code> items from unseen items of current users using the ranking model.</li>
-<li>Append <code>explore_latest_num</code> latest items to the collection.</li>
-<li>Rerank collected items using the CTR prediction model.</li>
-</ol>
-<p><strong>If the CTR model is disabled:</strong></p>
-<ol>
-<li>Collect top <code>cache_size</code> items from unseen items of current users using the ranking model.</li>
-<li>Insert <code>explore_latest_num</code> latest items to random positions in the collection.</li>
-</ol>
-<p>Offline recommendation cache will be consumed by users and fashion will change. The offline recommendation will be refreshed under one of these two conditions:</p>
-<ul>
-<li>The timestamp of offline recommendation has been <code>refresh_recommend_period</code> days ago.</li>
-<li>New feedbacks have been inserted since the timestamp of the offline recommendation.</li>
-</ul>
-<p>There are 4 ranking models (BPR<sup class="footnote-reference"><a href="#5">2</a></sup>/ALS<sup class="footnote-reference"><a href="#3">3</a></sup>/CCD<sup class="footnote-reference"><a href="#4">4</a></sup>) and 1 CTR model (factorization machines<sup class="footnote-reference"><a href="#2">5</a></sup>) in Gorse. They will be applied automatically by the model searcher. In ranking models, items and users are represented as embedding vectors. Since the dot product between two vectors is fast, ranking models are used to find top N items among all items. In CTR models, features from users or items are used in prediction. It's expensive to use CTR models to predict scores of all items.</p>
-<h3 id="model-search"><a class="header" href="#model-search">Model Search</a></h3>
-<p>There are many hyperparameters for each recommendation model in Gorse. However, it is hard to configure these hyperparameters manually even for machine learning experts. To help users get rid of hyperparameters tuning, Gorse integrates random search<sup class="footnote-reference"><a href="#1">6</a></sup> for hyperparameters optimization. The procedure of model search is as follows:</p>
+<p>RESTful APIs provided by the Gorse server are listed in this section. For more detailed information, please browse the interactive API document at <code>http://&lt;server node IP&gt;:&lt;server node port&gt;/apidocs</code>.</p>
+<h2 id="item-apis"><a class="header" href="#item-apis">Item APIs</a></h2>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>POST</td><td>/item</td><td>Insert an item.<br>Overwrite if the item exists.</td></tr>
+<tr><td>GET</td><td>/item/{item-id}</td><td>Get an item.</td></tr>
+<tr><td>PATCH</td><td>/item/{item-id}</td><td>Modify an item.</td></tr>
+<tr><td>DELETE</td><td>/item/{item-id}</td><td>Delete an item and its feedbacks.</td></tr>
+<tr><td>POST</td><td>/items</td><td>Insert items. Overwrite if items exist.</td></tr>
+<tr><td>GET</td><td>/items</td><td>Get items.</td></tr>
+<tr><td>PUT</td><td>/item/{item-id}/category/{category}</td><td>Append a category to an item.</td></tr>
+<tr><td>DELETE</td><td>/item/{item-id}/category/{category}</td><td>Delete a category from an item.</td></tr>
+</tbody></table>
+<h2 id="user-apis"><a class="header" href="#user-apis">User APIs</a></h2>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>POST</td><td>/user</td><td>Insert a user. Overwrite if the user exists.</td></tr>
+<tr><td>GET</td><td>/user/{user-id}</td><td>Get a user.</td></tr>
+<tr><td>PATCH</td><td>/user/{user-id}</td><td>Modify a user.</td></tr>
+<tr><td>DELETE</td><td>/user/{user-id}</td><td>Delete a user and his or her feedbacks.</td></tr>
+<tr><td>GET</td><td>/users</td><td>Get users.</td></tr>
+</tbody></table>
+<h2 id="feedback-apis"><a class="header" href="#feedback-apis">Feedback APIs</a></h2>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>POST</td><td>/feedback</td><td>Insert feedbacks.<br>Ignore if exists.</td></tr>
+<tr><td>PUT</td><td>/feedback</td><td>Insert feedbacks.<br>Overwrite if exists.</td></tr>
+<tr><td>GET</td><td>/feedback</td><td>Get feedbacks.</td></tr>
+<tr><td>GET</td><td>/feedback/{feedback-type}</td><td>Get feedbacks with<br>feedback type.</td></tr>
+<tr><td>GET</td><td>/feedback/{user-id}/{item-id}</td><td>Get feedbacks between<br>a user and a item.</td></tr>
+<tr><td>DELETE</td><td>/feedback/{user-id}/{item-id}</td><td>Delete feedbacks between<br>a user and a item.</td></tr>
+<tr><td>GET</td><td>/feedback/{feedback-type}/{user-id}/{item-id}</td><td>Get feedbacks between<br>a user and a item<br>with feedback type..</td></tr>
+<tr><td>DELETE</td><td>/feedback/{feedback-type}/{user-id}/{item-id}</td><td>Delete feedbacks between<br>a user and a item<br>with feedback type..</td></tr>
+<tr><td>GET</td><td>/user/{user-id}/feedback</td><td>Get feedback by user id.</td></tr>
+<tr><td>GET</td><td>/user/{user-id}/feedback/{feedback-type}</td><td>Get feedbacks by user id<br>with feedback type.</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/feedback</td><td>Get feedback by item id.</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/feedback/{feedback-type}</td><td>Get feedbacks by item id<br>with feedback type.</td></tr>
+</tbody></table>
+<h2 id="recommendation-apis"><a class="header" href="#recommendation-apis">Recommendation APIs</a></h2>
+<table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/popular</td><td>Get popular items.</td></tr>
+<tr><td>GET</td><td>/popular/{category}</td><td>Get popular items in category.</td></tr>
+<tr><td>GET</td><td>/latest</td><td>Get latest items.</td></tr>
+<tr><td>GET</td><td>/latest/{category}</td><td>Get latest items in category.</td></tr>
+<tr><td>GET</td><td>/item/{item-id}</td><td>Get neighbors of an item.</td></tr>
+<tr><td>GET</td><td>/item/{item-id}/{category}</td><td>Get neighbors of an item in category.</td></tr>
+<tr><td>GET</td><td>/user/{user-id}</td><td>Get neighbors of a user.</td></tr>
+<tr><td>GET</td><td>/recommend/{user-id}</td><td>Get recommendations for a user.</td></tr>
+<tr><td>GET</td><td>/recommend/{user-id}/{category}</td><td>Get recommendations for a user<br>in category.</td></tr>
+</tbody></table>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="ch01-01-installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="ch01-01-deploy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                             <a rel="next" href="ch01-03-config.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
@@ -207,7 +201,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="ch01-01-installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="ch01-01-deploy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     <a rel="next" href="ch01-03-config.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">

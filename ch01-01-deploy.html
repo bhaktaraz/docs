@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation - Gorse Document</title>
+        <title>Deploy - Gorse Document</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html" class="active"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html" class="active"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -136,9 +136,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+                        <h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
 <p>Gorse can be set up via Docker Compose or manually.</p>
-<h2 id="setup-gorse-with-docker-compose"><a class="header" href="#setup-gorse-with-docker-compose">Setup Gorse with Docker Compose</a></h2>
+<h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
 <p>The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.</p>
 <table><thead><tr><th>Docker Image</th><th>Image Size</th></tr></thead><tbody>
 <tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master" alt="gorse-master" /></a></td></tr>
@@ -163,7 +163,7 @@
 <pre><code class="language-bash">docker-compose restart
 </code></pre>
 <p>These images tagged with the <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
-<h2 id="setup-gorse-manually"><a class="header" href="#setup-gorse-manually">Setup Gorse Manually</a></h2>
+<h2 id="deploy-gorse-manually"><a class="header" href="#deploy-gorse-manually">Deploy Gorse Manually</a></h2>
 <p>Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the <a href="https://github.com/zhenghaoz/gorse/releases">release</a> page. Due to the demand for large memories, 64-bit machines are highly recommended to deploy Gorse.</p>
 <p>Gorse depends on the following software:</p>
 <table><thead><tr><th>Software</th><th>Role</th></tr></thead><tbody>
@@ -217,18 +217,6 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
     --http-host 127.0.0.1 --http-port 8089 -j 4
 </code></pre>
 <p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for metrics reporting of this worker node. <code>-j</code> is the number of working threads.</p>
-<h2 id="play-with-gorse"><a class="header" href="#play-with-gorse">Play with Gorse</a></h2>
-<p>There are HTTP entries provided by Gorse:</p>
-<table><thead><tr><th>Entry</th><th>Link</th></tr></thead><tbody>
-<tr><td>Master Dashboard</td><td>http://127.0.0.1:8088/</td></tr>
-<tr><td>Server RESTful API</td><td>http://127.0.0.1:8087/apidocs</td></tr>
-<tr><td>Server Prometheus Metrics</td><td>http://127.0.0.1:8087/metrics</td></tr>
-<tr><td>Worker Prometheus Metrics</td><td>http://127.0.0.1:8089/metrics</td></tr>
-</tbody></table>
-<h3 id="master-dashboard"><a class="header" href="#master-dashboard">Master Dashboard</a></h3>
-<p><img src="img/dashboard.jpg" alt="dashboard" /></p>
-<h3 id="server-restful-api"><a class="header" href="#server-restful-api">Server RESTful API</a></h3>
-<p><img src="img/swagger.png" alt="swagger" /></p>
 
                     </main>
 
