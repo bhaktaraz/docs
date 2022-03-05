@@ -156,9 +156,116 @@
 <p>In addition, the administrator can perform system monitoring, data import and export, and system status checking via the dashboard on the master node.</p>
 <center><img width=480 src="img/architecture.png"/></center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-1-quick-start"><a class="header" href="#chapter-1-quick-start">Chapter 1: Quick Start</a></h1>
+<p>This guide walks you through the quickest way to setup a recommender system for GitHub repositories. Make sure you have installed following softwares at the beginning: </p>
+<ul>
+<li><a href="https://docs.docker.com/get-docker/">Docker</a>, nodes will run in containers.</li>
+<li><a href="https://docs.docker.com/compose/install/">Docker Compose</a>, nodes will be orchestrated by Docker Compose.</li>
+</ul>
 <h2 id="setup-gorse"><a class="header" href="#setup-gorse">Setup Gorse</a></h2>
+<p>There is an example <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml">docker-compose.yml</a> consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.</p>
+<ul>
+<li>Download <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml">docker-compose.yml</a> and the config file <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">config.toml</a>. The config file is explained in <a href="ch01-03-config.html">Section 1.3 Configuration</a>.</li>
+</ul>
+<pre><code class="language-bash"># Create a new directory
+mkdir gorse
+cd gorse
+
+# Download docker-compose.yml and config.tom
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/master/docker/docker-compose.yml
+wget https://raw.githubusercontent.com/zhenghaoz/gorse/master/docker/config.toml
+</code></pre>
+<ul>
+<li>Setup the Gorse cluster using Docker Compose.</li>
+</ul>
+<pre><code class="language-bash">docker-compose up -d
+</code></pre>
+<details>
+<summary>Expected outputs:</summary>
+<pre><code>Creating network &quot;gorse_default&quot; with the default driver
+Creating gorse_worker_1 ... done
+Creating gorse_master_1 ... done
+Creating gorse_mysql_1  ... done
+Creating gorse_server_1 ... done
+Creating gorse_redis_1  ... done
+</code></pre>
+</details>
+<ul>
+<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and star records.</li>
+</ul>
+<pre><code class="language-bash"># Download sample data.
+wget https://cdn.gorse.io/example/github.sql
+
+# Import sample data.
+mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse &lt; github.sql
+</code></pre>
+<ul>
+<li>Restart the master node to apply imported data.</li>
+</ul>
+<pre><code class="language-bash">docker-compose restart
+</code></pre>
+<details>
+<summary>Expected outputs:</summary>
+<pre><code>Restarting gorse_redis_1  ... done
+Restarting gorse_mysql_1  ... done
+Restarting gorse_master_1 ... done
+Restarting gorse_server_1 ... done
+Restarting gorse_worker_1 ... done
+</code></pre>
+</details>
 <h2 id="get-recommendation"><a class="header" href="#get-recommendation">Get Recommendation</a></h2>
-<h2 id="further-readings"><a class="header" href="#further-readings">Further Readings</a></h2>
+<p>Gorse generate recommendations for users after feedbacks from users are inserted.</p>
+<ul>
+<li>Open <a href="http://127.0.0.1:8088">http://127.0.0.1:8088</a> in browser and log in with default user name <code>admin</code> and password <code>password</code>. The dashboard summarizes all status and data in Gorse. Read <a href="ch02-05-dashboard.html">Section 2.5 Gorse Dashboard</a> for more information.</li>
+</ul>
+<p><img src="img/ch3/gorse-dashboard-overview.png" alt="" /></p>
+<ul>
+<li>Wait for all tasks <em>except &quot;Searching collaborative filtering model&quot; and &quot;Searching click-through prediction model&quot;</em> completed.</li>
+</ul>
+<p><img src="/img/ch3/gorse-dashboard-tasks.png" alt="" /></p>
+<ul>
+<li>Suppose Bob is a frontend developers who starred several frontend repositories in GitHub. We insert his star feedback to Gorse via the RESTful API. <a href="ch01-02-restful-api.html">Section 1.2</a> lists RESTful APIs available in Gorse.</li>
+</ul>
+<pre><code class="language-bash">read -d '' JSON &lt;&lt; EOF
+[
+    { \&quot;FeedbackType\&quot;: \&quot;star\&quot;, \&quot;UserId\&quot;: \&quot;bob\&quot;, \&quot;ItemId\&quot;: \&quot;vuejs:vue\&quot;, \&quot;Timestamp\&quot;: \&quot;2022-02-24\&quot; },
+    { \&quot;FeedbackType\&quot;: \&quot;star\&quot;, \&quot;UserId\&quot;: \&quot;bob\&quot;, \&quot;ItemId\&quot;: \&quot;d3:d3\&quot;, \&quot;Timestamp\&quot;: \&quot;2022-02-25\&quot; },
+    { \&quot;FeedbackType\&quot;: \&quot;star\&quot;, \&quot;UserId\&quot;: \&quot;bob\&quot;, \&quot;ItemId\&quot;: \&quot;dogfalo:materialize\&quot;, \&quot;Timestamp\&quot;: \&quot;2022-02-26\&quot; },
+    { \&quot;FeedbackType\&quot;: \&quot;star\&quot;, \&quot;UserId\&quot;: \&quot;bob\&quot;, \&quot;ItemId\&quot;: \&quot;mozilla:pdf.js\&quot;, \&quot;Timestamp\&quot;: \&quot;2022-02-27\&quot; },
+    { \&quot;FeedbackType\&quot;: \&quot;star\&quot;, \&quot;UserId\&quot;: \&quot;bob\&quot;, \&quot;ItemId\&quot;: \&quot;moment:moment\&quot;, \&quot;Timestamp\&quot;: \&quot;2022-02-28\&quot; }
+]
+EOF
+
+curl -X POST http://127.0.0.1:8087/api/feedback \
+   -H 'Content-Type: application/json' \
+   -d &quot;$JSON&quot;
+</code></pre>
+<details>
+<summary>Expected outputs:</summary>
+<pre><code class="language-json">{
+ &quot;RowAffected&quot;: 5
+}
+</code></pre>
+</details>
+<ul>
+<li>Fetch 10 recommended items from Gorse. We can found frontend related repositories are recommended for Bob.</li>
+</ul>
+<pre><code class="language-bash">curl http://127.0.0.1:8087/api/recommend/bob?n=10
+</code></pre>
+<p>Expected outputs:</p>
+<pre><code class="language-json">[
+ &quot;mbostock:d3&quot;,
+ &quot;nt1m:material-framework&quot;,
+ &quot;mdbootstrap:vue-bootstrap-with-material-design&quot;,
+ &quot;justice47:f2-vue&quot;,
+ &quot;10clouds:cyclejs-cookie&quot;,
+ &quot;academicpages:academicpages.github.io&quot;,
+ &quot;accenture:alexia&quot;,
+ &quot;addyosmani:tmi&quot;,
+ &quot;1wheel:d3-starterkit&quot;,
+ &quot;acdlite:redux-promise&quot;
+]
+</code></pre>
+<p>A complete example to build a recommender system is discussed in <a href="ch01-04-demo.html">Section 1.5 GitRec, The Live Demo</a>, which is useful to learn Gorse.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
 <p>Gorse can be set up via Docker Compose or manually.</p>
 <h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
@@ -186,62 +293,21 @@
 <pre><code class="language-bash">docker-compose restart
 </code></pre>
 <p>These images tagged with the <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
-<h2 id="deploy-gorse-manually"><a class="header" href="#deploy-gorse-manually">Deploy Gorse Manually</a></h2>
-<p>Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the <a href="https://github.com/zhenghaoz/gorse/releases">release</a> page. Due to the demand for large memories, 64-bit machines are highly recommended to deploy Gorse.</p>
-<p>Gorse depends on the following software:</p>
-<table><thead><tr><th>Software</th><th>Role</th></tr></thead><tbody>
-<tr><td><em>Redis</em></td><td>used to store caches.</td></tr>
-<tr><td><em>MySQL/MongoDB</em></td><td>used to store data.</td></tr>
-</tbody></table>
-<ul>
-<li>Install Gorse</li>
-</ul>
-<p><strong>Option 1:</strong> Download binary distributions (Linux)</p>
-<pre><code class="language-bash">wget https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_linux_amd64.zip
-unzip gorse_linux_amd64.zip
-</code></pre>
-<p>For Windows and MacOS (Intel Chip or Apple Silicon), download <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_windows_amd64.zip">gorse_windows_amd64.zip</a>, <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_amd64.zip">gorse_darwin_amd64.zip</a> or <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_arm64.zip">gorse_darwin_arm64.zip</a> respectively.</p>
-<p><strong>Option 2:</strong> Build executable files via <code>go get</code></p>
-<pre><code class="language-bash">go get github.com/zhenghaoz/gorse/...
-</code></pre>
-<p>Built binaries locate at <code>$(go env GOPATH)/bin</code>.</p>
-<ul>
-<li>Configuration</li>
-</ul>
-<p>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a> in the working directory. Set <code>cache_store</code> and <code>data_store</code> in the configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a>.</p>
-<pre><code class="language-toml"># This section declares settings for the database.
-[database]
-
-# database for caching (support Redis only)
-cache_store = &quot;redis://localhost:6379&quot;
-
-# database for persist data (support MySQL/MongoDB)
-data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
-</code></pre>
-<ul>
-<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import it to the MySQL instance.</li>
-</ul>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -u root gorse &lt; github.sql
-</code></pre>
-<ul>
-<li>Start the master node</li>
-</ul>
-<pre><code class="language-bash">./gorse-master -c config.toml
-</code></pre>
-<p><code>-c</code> specifies the path of the configuration file.</p>
-<ul>
-<li>Start the server node and worker node</li>
-</ul>
-<pre><code class="language-bash">./gorse-server --master-host 127.0.0.1 --master-port 8086 \
-    --http-host 127.0.0.1 --http-port 8087
-</code></pre>
-<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for RESTful APIs and metrics reporting of this server node.</p>
-<pre><code class="language-bash">./gorse-worker --master-host 127.0.0.1 --master-port 8086 \
-    --http-host 127.0.0.1 --http-port 8089 -j 4
-</code></pre>
-<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for metrics reporting of this worker node. <code>-j</code> is the number of working threads.</p>
+<h2 id="deploy-gorse-in-kubernetes-experimental"><a class="header" href="#deploy-gorse-in-kubernetes-experimental">Deploy Gorse in Kubernetes (Experimental)</a></h2>
+<p>Coming soon.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
 <p>RESTful APIs provided by the Gorse server are listed in this section. For more detailed information, please browse the interactive API document at <code>http://&lt;server node IP&gt;:&lt;server node port&gt;/apidocs</code>.</p>
+<h2 id="authorization"><a class="header" href="#authorization">Authorization</a></h2>
+<p>By default, there is no authorization required for RESTful APIs. Authorization can be enabled by set <code>api_key</code> in config file:</p>
+<pre><code class="language-toml">api_key = &quot;*****&quot;    # secret key for RESTful APIs (SSL required)
+</code></pre>
+<p>The API key is passed through <code>X-API-Key</code> header.</p>
+<pre><code class="language-bash">curl -H &quot;X-API-Key: *****&quot;  http://127.0.0.1:8087/api/recommend/bob?n=10
+</code></pre>
+<h2 id="default-length-of-returned-list"><a class="header" href="#default-length-of-returned-list">Default Length of Returned List</a></h2>
+<p>There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:</p>
+<pre><code class="language-toml">default_n = 10  # default number of returned items
+</code></pre>
 <h2 id="item-apis"><a class="header" href="#item-apis">Item APIs</a></h2>
 <table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
 <tr><td>POST</td><td>/item</td><td>Insert an item.<br>Overwrite if the item exists.</td></tr>
@@ -289,7 +355,7 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <tr><td>GET</td><td>/recommend/{user-id}/{category}</td><td>Get recommendations for a user<br>in category.</td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
-<p>Previous section <em><a href="ch01-02-recommend.html">Recommend using Gorse</a></em> is helpful to understand configurations introduced in this section. These configuration items without default values must be filled. It's highly recommended to create a new config file based on <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template"><code>config.toml.template</code></a>.</p>
+<p>These configuration items without default values must be filled. It's highly recommended to create a new config file based on <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template"><code>config.toml.template</code></a>.</p>
 <h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
 <p>Configurations under <code>[database]</code> are used to define behaviors on the database and data.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
@@ -326,8 +392,8 @@ data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
 <h2 id="server"><a class="header" href="#server"><code>[server]</code></a></h2>
 <p>Configurations under <code>[server]</code> are used to define behaviors of the server node.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>default_n</code></td><td>integer</td><td><code>10</code></td><td>Default number of returned items</td></tr>
-<tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required)</td></tr>
+<tr><td><code>default_n</code></td><td>integer</td><td><code>10</code></td><td>Default number of returned items <a href="ch01-02-restful-api.html#authorization">(1.2)</a></td></tr>
+<tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required) <a href="ch01-02-restful-api.html#default-length-of-returned-list">(1.2)</a></td></tr>
 </tbody></table>
 <h2 id="recommend"><a class="header" href="#recommend"><code>[recommend]</code></a></h2>
 <p>Configurations under <code>[recommend]</code> are used to define behaviors of recommendation.</p>
@@ -913,7 +979,7 @@ collaborative_index_fit_epoch = 3
 <p>Malkov, Yu A., and Dmitry A. Yashunin. &quot;Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.&quot; IEEE transactions on pattern analysis and machine intelligence 42.4 (2018): 824-836.</p>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gorse-dashboard"><a class="header" href="#gorse-dashboard">Gorse Dashboard</a></h1>
-<p>Gorse's master node provides the Gorse Dashboard, which can be accessed through port 8088 of the master node. The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.</p>
+<p>Gorse's master node provides the Gorse Dashboard, which can be accessed through HTTP port (the default values is <code>8088</code>)) of the master node. The HTTP port is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>. The dashboard allows you to observe the current status of the recommender system, preview user recommendation results, and import and export data.</p>
 <h2 id="login"><a class="header" href="#login">Login</a></h2>
 <p>The default configuration allows access to the console without logging in. In the configuration file, the username and password to log in to the dashboard can be set.</p>
 <pre><code class="language-toml">dashboard_user_name = &quot;admin&quot;   # dashboard user name
@@ -974,7 +1040,7 @@ dashboard_password = &quot;password&quot; # dashboard password
 <li><strong>Prometheus</strong> scrapes metrics from Gorse nodes.</li>
 <li><strong>Grafana</strong> visualizes logs from <strong>Loki</strong> and metrics from <strong>Prometheus</strong> in dashboards.</li>
 </ul>
-<p><a href="ch03-01-logging.html">Section 3.1</a> introduces how to monitor logs from Gorse recommender system. <a href="ch03-02-metrics.html">Section 3.2</a> shows how to monitoring metrics exported by Gorse.</p>
+<p><a href="ch03-01-logging.html">Section 3.1 Log Monitoring</a> introduces how to monitor logs from Gorse recommender system. <a href="ch03-02-metrics.html">Section 3.2 Metrics Monitoring</a> shows how to monitoring metrics exported by Gorse.</p>
 <img src="img/ch3/monitoring.png" width="600">
 <div style="break-before: page; page-break-before: always;"></div><h1 id="log-monitoring"><a class="header" href="#log-monitoring">Log Monitoring</a></h1>
 <p>The mainstream log monitoring solutions are ELK and Loki. Loki is chosen in this section because it is more lightweight compared to ELK. The log collection and monitoring process is as follows.</p>
@@ -1154,7 +1220,7 @@ scrape_configs:
 <p>Log entries such as database temporarily connection lost, network temporarily timeout, etc. are expected. If an error log is generated that is not expected, welcome to paste it on <a href="https://github.com/zhenghaoz/gorse/issues">GitHub Issues</a>.</p>
 <p><img src="/img/ch3/dashboard-logs-preview.jpeg" alt="dashboard-logs-preview" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="metrics-monitoring"><a class="header" href="#metrics-monitoring">Metrics Monitoring</a></h1>
-<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code>.</p>
+<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code>. The HTTP port for the master node is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>.</p>
 <p>The Prometheus configuration file for scraping Gorse metrics is as follows.</p>
 <pre><code class="language-yaml">scrape_configs:
   - job_name:       'gorse'

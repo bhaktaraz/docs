@@ -163,60 +163,8 @@
 <pre><code class="language-bash">docker-compose restart
 </code></pre>
 <p>These images tagged with the <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
-<h2 id="deploy-gorse-manually"><a class="header" href="#deploy-gorse-manually">Deploy Gorse Manually</a></h2>
-<p>Binary distributions have been provided for 64-bit Windows/Linux/Mac OS on the <a href="https://github.com/zhenghaoz/gorse/releases">release</a> page. Due to the demand for large memories, 64-bit machines are highly recommended to deploy Gorse.</p>
-<p>Gorse depends on the following software:</p>
-<table><thead><tr><th>Software</th><th>Role</th></tr></thead><tbody>
-<tr><td><em>Redis</em></td><td>used to store caches.</td></tr>
-<tr><td><em>MySQL/MongoDB</em></td><td>used to store data.</td></tr>
-</tbody></table>
-<ul>
-<li>Install Gorse</li>
-</ul>
-<p><strong>Option 1:</strong> Download binary distributions (Linux)</p>
-<pre><code class="language-bash">wget https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_linux_amd64.zip
-unzip gorse_linux_amd64.zip
-</code></pre>
-<p>For Windows and MacOS (Intel Chip or Apple Silicon), download <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_windows_amd64.zip">gorse_windows_amd64.zip</a>, <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_amd64.zip">gorse_darwin_amd64.zip</a> or <a href="https://github.com/zhenghaoz/gorse/releases/latest/download/gorse_darwin_arm64.zip">gorse_darwin_arm64.zip</a> respectively.</p>
-<p><strong>Option 2:</strong> Build executable files via <code>go get</code></p>
-<pre><code class="language-bash">go get github.com/zhenghaoz/gorse/...
-</code></pre>
-<p>Built binaries locate at <code>$(go env GOPATH)/bin</code>.</p>
-<ul>
-<li>Configuration</li>
-</ul>
-<p>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a> in the working directory. Set <code>cache_store</code> and <code>data_store</code> in the configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template">config.toml</a>.</p>
-<pre><code class="language-toml"># This section declares settings for the database.
-[database]
-
-# database for caching (support Redis only)
-cache_store = &quot;redis://localhost:6379&quot;
-
-# database for persist data (support MySQL/MongoDB)
-data_store = &quot;mysql://root@tcp(localhost:3306)/gorse?parseTime=true&quot;
-</code></pre>
-<ul>
-<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import it to the MySQL instance.</li>
-</ul>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -u root gorse &lt; github.sql
-</code></pre>
-<ul>
-<li>Start the master node</li>
-</ul>
-<pre><code class="language-bash">./gorse-master -c config.toml
-</code></pre>
-<p><code>-c</code> specifies the path of the configuration file.</p>
-<ul>
-<li>Start the server node and worker node</li>
-</ul>
-<pre><code class="language-bash">./gorse-server --master-host 127.0.0.1 --master-port 8086 \
-    --http-host 127.0.0.1 --http-port 8087
-</code></pre>
-<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for RESTful APIs and metrics reporting of this server node.</p>
-<pre><code class="language-bash">./gorse-worker --master-host 127.0.0.1 --master-port 8086 \
-    --http-host 127.0.0.1 --http-port 8089 -j 4
-</code></pre>
-<p><code>--master-host</code> and <code>--master-port</code> are the RPC host and port of the master node. <code>--http-host</code> and <code>--http-port</code> are the HTTP host and port for metrics reporting of this worker node. <code>-j</code> is the number of working threads.</p>
+<h2 id="deploy-gorse-in-kubernetes-experimental"><a class="header" href="#deploy-gorse-in-kubernetes-experimental">Deploy Gorse in Kubernetes (Experimental)</a></h2>
+<p>Coming soon.</p>
 
                     </main>
 

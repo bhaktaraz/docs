@@ -138,6 +138,17 @@
                     <main>
                         <h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
 <p>RESTful APIs provided by the Gorse server are listed in this section. For more detailed information, please browse the interactive API document at <code>http://&lt;server node IP&gt;:&lt;server node port&gt;/apidocs</code>.</p>
+<h2 id="authorization"><a class="header" href="#authorization">Authorization</a></h2>
+<p>By default, there is no authorization required for RESTful APIs. Authorization can be enabled by set <code>api_key</code> in config file:</p>
+<pre><code class="language-toml">api_key = &quot;*****&quot;    # secret key for RESTful APIs (SSL required)
+</code></pre>
+<p>The API key is passed through <code>X-API-Key</code> header.</p>
+<pre><code class="language-bash">curl -H &quot;X-API-Key: *****&quot;  http://127.0.0.1:8087/api/recommend/bob?n=10
+</code></pre>
+<h2 id="default-length-of-returned-list"><a class="header" href="#default-length-of-returned-list">Default Length of Returned List</a></h2>
+<p>There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:</p>
+<pre><code class="language-toml">default_n = 10  # default number of returned items
+</code></pre>
 <h2 id="item-apis"><a class="header" href="#item-apis">Item APIs</a></h2>
 <table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
 <tr><td>POST</td><td>/item</td><td>Insert an item.<br>Overwrite if the item exists.</td></tr>
