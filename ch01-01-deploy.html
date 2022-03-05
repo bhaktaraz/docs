@@ -137,32 +137,171 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
-<p>Gorse can be set up via Docker Compose or manually.</p>
-<h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
 <p>The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.</p>
-<table><thead><tr><th>Docker Image</th><th>Image Size</th></tr></thead><tbody>
-<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master" alt="gorse-master" /></a></td></tr>
-<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-server" alt="gorse-server" /></a></td></tr>
-<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker" alt="gorse-worker" /></a></td></tr>
+<table><thead><tr><th>Docker Image</th><th>Version</th><th>Size</th><th>Pulls</th></tr></thead><tbody>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master">zhenghaoz/gorse-master</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-master?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master?sort=semver" alt="gorse-master" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-master" alt="Docker Pulls" /></td></tr>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server">zhenghaoz/gorse-server</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-server?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-server?sort=semver" alt="gorse-server" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-server" alt="Docker Pulls" /></td></tr>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker">zhenghaoz/gorse-worker</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-worker?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker?sort=semver" alt="gorse-worker" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker" alt="Docker Pulls" /></td></tr>
 </tbody></table>
-<p>There is an example <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml">docker-compose.yml</a> consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.</p>
+<h2 id="prerequisite"><a class="header" href="#prerequisite">Prerequisite</a></h2>
+<p>Gorse depends on following software:</p>
 <ul>
-<li>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">config.toml</a> (Docker Compose version) in the working directory.</li>
-<li>Setup the Gorse cluster using Docker Compose.</li>
+<li><em>Redis</em> is used to store caches.</li>
+<li>One of <em>MySQL/PostgresSQL/ClickHouse/MongoDB</em> is used to store data.</li>
 </ul>
-<pre><code class="language-bash">docker-compose up -d
+<p>The minimal versions of dependent software are as follows:</p>
+<table><thead><tr><th>Software</th><th>Minimal Version</th><th>Compatible Product</th></tr></thead><tbody>
+<tr><td>Redis</td><td>5.0</td><td></td></tr>
+<tr><td>MySQL</td><td>5.7</td><td>MariaDB &gt;= 10.2</td></tr>
+<tr><td>PostgresSQL</td><td>10.0</td><td></td></tr>
+<tr><td>ClickHouse</td><td>21.10</td><td></td></tr>
+<tr><td>MongoDB</td><td>4.0</td><td></td></tr>
+</tbody></table>
+<h2 id="command-line-flags"><a class="header" href="#command-line-flags">Command Line Flags</a></h2>
+<p>Command line flags are useful when deploy the Gorse cluster.</p>
+<ul>
+<li>Flags of the master node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>-c,--config</code></td><td></td><td>configuration file path</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<ul>
+<li>Flags of the server node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>--master-host</code></td><td><code>127.0.0.1</code></td><td>host of master node</td></tr>
+<tr><td><code>--master-port</code></td><td><code>8086</code></td><td>port of master port</td></tr>
+<tr><td><code>--http-host</code></td><td><code>127.0.0.1</code></td><td>host for RESTful APIs and<br>Prometheus metrics export</td></tr>
+<tr><td><code>--http-port</code></td><td><code>8087</code></td><td>port for RESTful APIs and<br>Prometheus metrics export</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<ul>
+<li>Flags of the worker node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>--master-host</code></td><td><code>127.0.0.1</code></td><td>host of master node</td></tr>
+<tr><td><code>--master-port</code></td><td><code>8086</code></td><td>port of master port</td></tr>
+<tr><td><code>--http-host</code></td><td><code>127.0.0.1</code></td><td>host for Prometheus metrics export</td></tr>
+<tr><td><code>--http-port</code></td><td><code>8089</code></td><td>port for Prometheus metrics export</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>-j,--jobs</code></td><td><code>1</code></td><td>number of working jobs</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
+<p>docker-compose.yaml for a minimal Gorse cluster is as follows:</p>
+<pre><code class="language-yaml">version: &quot;3&quot;
+services:
+  redis:
+    image: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+
+  mysql:
+    image: mysql/mysql-server
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: gorse
+      MYSQL_USER: gorse
+      MYSQL_PASSWORD: gorse_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  worker:
+    image: zhenghaoz/gorse-worker
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    command: &gt;
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - worker_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  server:
+    image: zhenghaoz/gorse-server
+    restart: unless-stopped
+    ports:
+      - 8087:8087
+    command: &gt;
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - server_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  master:
+    image: zhenghaoz/gorse-master
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+      - 8088:8088
+    command: &gt;
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      - ./config.toml:/etc/gorse/config.toml
+      - gorse_log:/var/log/gorse
+      - master_data:/var/lib/gorse
+    depends_on:
+      - redis
+      - mysql
+
+volumes:
+  mysql_data:
+  worker_data:
+  server_data:
+  master_data:
+  gorse_log:
 </code></pre>
 <ul>
-<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import it to the MySQL instance.</li>
+<li>The master node loads the config file from <code>/etc/gorse/config.toml</code> (mounted to <code>./config.toml</code>), writes the log file to <code>/var/log/gorse/master.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/master_cache.data</code> (mounted in &quot;master_data&quot; volume). The addresses of Redis and MySQL are specified in configuration file <a href="ch01-03-config.html#database">(1.3)</a> or by environment variables <a href="ch01-03-config.html#environment-variables">(1.3)</a>.</li>
 </ul>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -u root -proot_pass gorse &lt; github.sql
+<pre><code class="language-toml"># The database for caching, support Redis only:
+#   redis://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/&lt;db_number&gt;
+cache_store = &quot;redis://redis:6379&quot;
+
+# The database for persist data, support MySQL, Postgres, ClickHouse and MongoDB:
+#   mysql://[username[:password]@][protocol[(address)]]/dbname[?param1=value1&amp;...&amp;paramN=valueN]
+#   postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full
+#   clickhouse://user:password@host[:port]/database?param1=value1&amp;...&amp;paramN=valueN
+#   mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
+data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true&quot;
 </code></pre>
 <ul>
-<li>Restart the master node to apply imported data.</li>
+<li>
+<p>The server node synchronizes with the master node at port <code>8086</code>, writes the log file to <code>/var/log/gorse/server.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/server_cache.data</code> (mounted in &quot;server_data&quot; volume). The entrypoint for RESTful APIs and Prometheus metrics export is <code>worker:8087</code>.</p>
+</li>
+<li>
+<p>The worker node synchronizes with the master node at port <code>8086</code>, writes the log file to <code>/var/log/gorse/worker.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/worker_cache.data</code> (mounted in &quot;worker_data&quot; volume). The entrypoint for Prometheus metrics export is <code>worker:8089</code>.</p>
+</li>
 </ul>
-<pre><code class="language-bash">docker-compose restart
-</code></pre>
-<p>These images tagged with the <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
 <h2 id="deploy-gorse-in-kubernetes-experimental"><a class="header" href="#deploy-gorse-in-kubernetes-experimental">Deploy Gorse in Kubernetes (Experimental)</a></h2>
 <p>Coming soon.</p>
 

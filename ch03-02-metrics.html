@@ -137,7 +137,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="metrics-monitoring"><a class="header" href="#metrics-monitoring">Metrics Monitoring</a></h1>
-<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code>. The HTTP port for the master node is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>.</p>
+<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code> <a href="ch01-01-deploy.html#command-line-flags">(1.1)</a>. The HTTP port for the master node is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>.</p>
 <p>The Prometheus configuration file for scraping Gorse metrics is as follows.</p>
 <pre><code class="language-yaml">scrape_configs:
   - job_name:       'gorse'

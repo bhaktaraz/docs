@@ -267,32 +267,171 @@ curl -X POST http://127.0.0.1:8087/api/feedback \
 </code></pre>
 <p>A complete example to build a recommender system is discussed in <a href="ch01-04-demo.html">Section 1.5 GitRec, The Live Demo</a>, which is useful to learn Gorse.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
-<p>Gorse can be set up via Docker Compose or manually.</p>
-<h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
 <p>The best practice to manage Gorse nodes is using orchestration tools such as Docker Compose, etc. There are Docker images of the master node, the server node, and the worker node.</p>
-<table><thead><tr><th>Docker Image</th><th>Image Size</th></tr></thead><tbody>
-<tr><td>gorse-master</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master" alt="gorse-master" /></a></td></tr>
-<tr><td>gorse-server</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-server" alt="gorse-server" /></a></td></tr>
-<tr><td>gorse-worker</td><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker"><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker" alt="gorse-worker" /></a></td></tr>
+<table><thead><tr><th>Docker Image</th><th>Version</th><th>Size</th><th>Pulls</th></tr></thead><tbody>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-master">zhenghaoz/gorse-master</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-master?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-master?sort=semver" alt="gorse-master" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-master" alt="Docker Pulls" /></td></tr>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-server">zhenghaoz/gorse-server</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-server?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-server?sort=semver" alt="gorse-server" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-server" alt="Docker Pulls" /></td></tr>
+<tr><td><a href="https://hub.docker.com/repository/docker/zhenghaoz/gorse-worker">zhenghaoz/gorse-worker</a></td><td><img src="https://img.shields.io/docker/v/zhenghaoz/gorse-worker?sort=semver" alt="Docker Image Version (latest semver)" /></td><td><img src="https://img.shields.io/docker/image-size/zhenghaoz/gorse-worker?sort=semver" alt="gorse-worker" /></td><td><img src="https://img.shields.io/docker/pulls/zhenghaoz/gorse-worker" alt="Docker Pulls" /></td></tr>
 </tbody></table>
-<p>There is an example <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/docker-compose.yml">docker-compose.yml</a> consists of a master node, a server node and a worker node, a Redis instance, and a MySQL instance.</p>
+<h2 id="prerequisite"><a class="header" href="#prerequisite">Prerequisite</a></h2>
+<p>Gorse depends on following software:</p>
 <ul>
-<li>Create a configuration file <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">config.toml</a> (Docker Compose version) in the working directory.</li>
-<li>Setup the Gorse cluster using Docker Compose.</li>
+<li><em>Redis</em> is used to store caches.</li>
+<li>One of <em>MySQL/PostgresSQL/ClickHouse/MongoDB</em> is used to store data.</li>
 </ul>
-<pre><code class="language-bash">docker-compose up -d
+<p>The minimal versions of dependent software are as follows:</p>
+<table><thead><tr><th>Software</th><th>Minimal Version</th><th>Compatible Product</th></tr></thead><tbody>
+<tr><td>Redis</td><td>5.0</td><td></td></tr>
+<tr><td>MySQL</td><td>5.7</td><td>MariaDB &gt;= 10.2</td></tr>
+<tr><td>PostgresSQL</td><td>10.0</td><td></td></tr>
+<tr><td>ClickHouse</td><td>21.10</td><td></td></tr>
+<tr><td>MongoDB</td><td>4.0</td><td></td></tr>
+</tbody></table>
+<h2 id="command-line-flags"><a class="header" href="#command-line-flags">Command Line Flags</a></h2>
+<p>Command line flags are useful when deploy the Gorse cluster.</p>
+<ul>
+<li>Flags of the master node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>-c,--config</code></td><td></td><td>configuration file path</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<ul>
+<li>Flags of the server node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>--master-host</code></td><td><code>127.0.0.1</code></td><td>host of master node</td></tr>
+<tr><td><code>--master-port</code></td><td><code>8086</code></td><td>port of master port</td></tr>
+<tr><td><code>--http-host</code></td><td><code>127.0.0.1</code></td><td>host for RESTful APIs and<br>Prometheus metrics export</td></tr>
+<tr><td><code>--http-port</code></td><td><code>8087</code></td><td>port for RESTful APIs and<br>Prometheus metrics export</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<ul>
+<li>Flags of the worker node.</li>
+</ul>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>-v,--version</code></td><td></td><td>print Gorse version</td></tr>
+<tr><td><code>--master-host</code></td><td><code>127.0.0.1</code></td><td>host of master node</td></tr>
+<tr><td><code>--master-port</code></td><td><code>8086</code></td><td>port of master port</td></tr>
+<tr><td><code>--http-host</code></td><td><code>127.0.0.1</code></td><td>host for Prometheus metrics export</td></tr>
+<tr><td><code>--http-port</code></td><td><code>8089</code></td><td>port for Prometheus metrics export</td></tr>
+<tr><td><code>--debug</code></td><td></td><td>use debug log mode</td></tr>
+<tr><td><code>-j,--jobs</code></td><td><code>1</code></td><td>number of working jobs</td></tr>
+<tr><td><code>--log-path</code></td><td></td><td>path of log file</td></tr>
+<tr><td><code>--cache-path</code></td><td><code>worker_cache.data</code></td><td>path of cache file</td></tr>
+</tbody></table>
+<h2 id="deploy-gorse-in-docker-compose"><a class="header" href="#deploy-gorse-in-docker-compose">Deploy Gorse in Docker Compose</a></h2>
+<p>docker-compose.yaml for a minimal Gorse cluster is as follows:</p>
+<pre><code class="language-yaml">version: &quot;3&quot;
+services:
+  redis:
+    image: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+
+  mysql:
+    image: mysql/mysql-server
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: gorse
+      MYSQL_USER: gorse
+      MYSQL_PASSWORD: gorse_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  worker:
+    image: zhenghaoz/gorse-worker
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    command: &gt;
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - worker_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  server:
+    image: zhenghaoz/gorse-server
+    restart: unless-stopped
+    ports:
+      - 8087:8087
+    command: &gt;
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
+    volumes:
+      - gorse_log:/var/log/gorse
+      - server_data:/var/lib/gorse
+    depends_on:
+      - master
+
+  master:
+    image: zhenghaoz/gorse-master
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+      - 8088:8088
+    command: &gt;
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      - ./config.toml:/etc/gorse/config.toml
+      - gorse_log:/var/log/gorse
+      - master_data:/var/lib/gorse
+    depends_on:
+      - redis
+      - mysql
+
+volumes:
+  mysql_data:
+  worker_data:
+  server_data:
+  master_data:
+  gorse_log:
 </code></pre>
 <ul>
-<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import it to the MySQL instance.</li>
+<li>The master node loads the config file from <code>/etc/gorse/config.toml</code> (mounted to <code>./config.toml</code>), writes the log file to <code>/var/log/gorse/master.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/master_cache.data</code> (mounted in &quot;master_data&quot; volume). The addresses of Redis and MySQL are specified in configuration file <a href="ch01-03-config.html#database">(1.3)</a> or by environment variables <a href="ch01-03-config.html#environment-variables">(1.3)</a>.</li>
 </ul>
-<pre><code class="language-bash">mysql -h 127.0.0.1 -u root -proot_pass gorse &lt; github.sql
+<pre><code class="language-toml"># The database for caching, support Redis only:
+#   redis://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/&lt;db_number&gt;
+cache_store = &quot;redis://redis:6379&quot;
+
+# The database for persist data, support MySQL, Postgres, ClickHouse and MongoDB:
+#   mysql://[username[:password]@][protocol[(address)]]/dbname[?param1=value1&amp;...&amp;paramN=valueN]
+#   postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full
+#   clickhouse://user:password@host[:port]/database?param1=value1&amp;...&amp;paramN=valueN
+#   mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
+data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true&quot;
 </code></pre>
 <ul>
-<li>Restart the master node to apply imported data.</li>
+<li>
+<p>The server node synchronizes with the master node at port <code>8086</code>, writes the log file to <code>/var/log/gorse/server.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/server_cache.data</code> (mounted in &quot;server_data&quot; volume). The entrypoint for RESTful APIs and Prometheus metrics export is <code>worker:8087</code>.</p>
+</li>
+<li>
+<p>The worker node synchronizes with the master node at port <code>8086</code>, writes the log file to <code>/var/log/gorse/worker.log</code> (mounted in &quot;gorse_log&quot; volume) and writes the cache file to <code>/var/lib/gorse/worker_cache.data</code> (mounted in &quot;worker_data&quot; volume). The entrypoint for Prometheus metrics export is <code>worker:8089</code>.</p>
+</li>
 </ul>
-<pre><code class="language-bash">docker-compose restart
-</code></pre>
-<p>These images tagged with the <code>latest</code> tag are built from the master branch. The <code>tag</code> should be fixed to a specified version in production.</p>
 <h2 id="deploy-gorse-in-kubernetes-experimental"><a class="header" href="#deploy-gorse-in-kubernetes-experimental">Deploy Gorse in Kubernetes (Experimental)</a></h2>
 <p>Coming soon.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
@@ -452,19 +591,19 @@ curl -X POST http://127.0.0.1:8087/api/feedback \
 <li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and shows them to users. When a user press ❤️, the <code>like</code> feedback type will be inserted to Gorse. When ⏯️ pressed, <code>view</code> feedback type will be inserted to Gorse.</li>
 </ul>
 <h2 id="configuration-1"><a class="header" href="#configuration-1">Configuration</a></h2>
-<p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for reading events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events don't happen in GitRec, it won't be added to <code>click_feedback_types</code>.</p>
+<p>In GitRec, there are three types of feedbacks: <code>&quot;read&quot;</code>, <code>&quot;star&quot;</code> and <code>&quot;like&quot;</code>. <code>&quot;read&quot;</code> is the feedback type for reading events (a user skip a recommended repository). <code>&quot;like&quot;</code> is the feedback type for user press ❤️. <code>&quot;star&quot;</code> is the feedback type for user starred repositories. In <a href="https://github.com/zhenghaoz/gitrec/blob/master/etc/gorse/config.toml">etc/gorse/config.toml</a>, we add <code>&quot;like&quot;</code> and <code>&quot;star&quot;</code> to <code>positive_feedback_types</code>, and <code>&quot;read&quot;</code> to <code>read_feedback_types</code>.</p>
 <pre><code class="language-toml"># feedback type for positive event
 positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
 
-# feedback type for read event
-read_feedback_type = &quot;read&quot;
+# The feedback types for read events.
+read_feedback_types = [&quot;read&quot;]
 </code></pre>
 <p>Other settings are the same as <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">docker/config.toml</a>.</p>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
 <p>This project consists of frontend, backend, and crawlers. In this section, only these codes that interact with Gorse are introduced. Other codes are available in the <a href="https://github.com/zhenghaoz/gitrec">GitRec repository</a>.</p>
 <ol>
-<li>
-<p>First thing is to wrap Gorse API as a python module. It sends HTTP requests and handles responses using <code>requests</code>.</p>
+<li>First thing is to wrap Gorse API as a python module (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/gorse.py">backend/gorse.py</a>). It sends HTTP requests and handles responses using <code>requests</code>.</li>
+</ol>
 <pre><code class="language-python">from collections import namedtuple
 from datetime import datetime
 from typing import List
@@ -520,26 +659,26 @@ class Gorse:
             return r.json()
         raise GorseException(r.status_code, r.text)
 </code></pre>
-</li>
-<li>
-<p>In the code of trending crawler, insert trending repositories as new items.</p>
+<ol start="2">
+<li>In the code of trending crawler (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/crawler_trending.py">backend/crawler_trending.py</a>), insert trending repositories as new items.</li>
+</ol>
 <pre><code class="language-python">if __name__ == &quot;__main__&quot;:
     trending_repos = get_trending()
     for trending_repo in trending_repos:
         gorse_client.insert_item(get_repo_info(trending_repo))
 </code></pre>
-</li>
-<li>
-<p>In the code of starred repositories crawler, insert user starred repositories as <code>star</code> feedbacks.</p>
+<ol start="3">
+<li>In the code of starred repositories crawler (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/crawler_starred.py">backend/crawler_starred.py</a>), insert user starred repositories as <code>star</code> feedbacks.</li>
+</ol>
 <pre><code class="language-python">@app.task
 def pull(token: str):
     g = GraphQLGitHub(token)
     stars = g.get_viewer_starred()
     gorse_client.insert_feedbacks(stars)
 </code></pre>
-</li>
-<li>
-<p>In the code of the web service backend, pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</p>
+<ol start="4">
+<li>In the code of the web service backend (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/app.py">backend/app.py</a>), pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</li>
+</ol>
 <pre><code class="language-python">@app.route(&quot;/api/repo&quot;)
 def get_repo():
     repo_id = gorse_client.get_recommend(session[&quot;user_id&quot;])[0]
@@ -564,10 +703,8 @@ def read_repo(repo_name: str):
     except gorse.GorseException as e:
         return Response(e.message, status=e.status_code)
 </code></pre>
-</li>
-</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-build-recommender"><a class="header" href="#chapter-2-build-recommender">Chapter 2: Build Recommender</a></h1>
-<p>[Overview]</p>
+<p>Coming soon.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="item-management"><a class="header" href="#item-management">Item Management</a></h1>
 <p>Items are the main characters of the recommender system. This section will introduce how to manage items in Gorse, including controlling the visibility of items, describing items to the recommender system, etc.</p>
 <h2 id="item-properties"><a class="header" href="#item-properties">Item Properties</a></h2>
@@ -1058,8 +1195,12 @@ services:
     ports:
       - 8089:8089
     command: &gt;
-      --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8089
-      --log-path /var/log/gorse/worker.log --cache-path /var/lib/gorse/worker_cache.data
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8089
+      --log-path /var/log/gorse/worker.log 
+      --cache-path /var/lib/gorse/worker_cache.data
     volumes:
       - gorse_log:/var/log/gorse
       - worker_data:/var/lib/gorse
@@ -1072,8 +1213,12 @@ services:
     ports:
       - 8087:8087
     command: &gt;
-      --master-host master --master-port 8086 --http-host 0.0.0.0 --http-port 8087
-      --log-path /var/log/gorse/server.log --cache-path /var/lib/gorse/server_cache.data
+      --master-host master 
+      --master-port 8086 
+      --http-host 0.0.0.0 
+      --http-port 8087
+      --log-path /var/log/gorse/server.log 
+      --cache-path /var/lib/gorse/server_cache.data
     volumes:
       - gorse_log:/var/log/gorse
       - server_data:/var/lib/gorse
@@ -1086,7 +1231,10 @@ services:
     ports:
       - 8086:8086
       - 8088:8088
-    command: -c /etc/gorse/config.toml --log-path /var/log/gorse/master.log --cache-path /var/lib/gorse/master_cache.data
+    command: &gt;
+      -c /etc/gorse/config.toml 
+      --log-path /var/log/gorse/master.log 
+      --cache-path /var/lib/gorse/master_cache.data
     volumes:
       - ./etc/gorse/config.toml:/etc/gorse/config.toml
       - gorse_log:/var/log/gorse
@@ -1220,7 +1368,7 @@ scrape_configs:
 <p>Log entries such as database temporarily connection lost, network temporarily timeout, etc. are expected. If an error log is generated that is not expected, welcome to paste it on <a href="https://github.com/zhenghaoz/gorse/issues">GitHub Issues</a>.</p>
 <p><img src="/img/ch3/dashboard-logs-preview.jpeg" alt="dashboard-logs-preview" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="metrics-monitoring"><a class="header" href="#metrics-monitoring">Metrics Monitoring</a></h1>
-<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code>. The HTTP port for the master node is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>.</p>
+<p>Gorse nodes export Prometheus metrics, and Prometheus can scrape real-time metrics via HTTP from each node. The default HTTP port for worker nodes is <code>8089</code>, the default HTTP port for server nodes is <code>8087</code>, and the default HTTP port for master nodes is <code>8088</code>. The HTTP port for worker and server nodes can be set via the command line option <code>--http-port</code> <a href="ch01-01-deploy.html#command-line-flags">(1.1)</a>. The HTTP port for the master node is specified in configuration file <a href="ch01-03-config.html#master">(1.3)</a>.</p>
 <p>The Prometheus configuration file for scraping Gorse metrics is as follows.</p>
 <pre><code class="language-yaml">scrape_configs:
   - job_name:       'gorse'

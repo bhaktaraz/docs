@@ -147,19 +147,19 @@
 <li><strong>Recommendation and feedbacks</strong>: GitRec web service pulls recommendations from Gorse and shows them to users. When a user press ❤️, the <code>like</code> feedback type will be inserted to Gorse. When ⏯️ pressed, <code>view</code> feedback type will be inserted to Gorse.</li>
 </ul>
 <h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
-<p>In GitRec, there are three types of feedbacks: <code>read</code>, <code>star</code> and <code>like</code>. <code>read</code> is the feedback type for reading events (a user skip a recommended repository). <code>like</code> is the feedback type for user press ❤️. <code>star</code> is the feedback type for user starred repositories. Since <code>star</code> events don't happen in GitRec, it won't be added to <code>click_feedback_types</code>.</p>
+<p>In GitRec, there are three types of feedbacks: <code>&quot;read&quot;</code>, <code>&quot;star&quot;</code> and <code>&quot;like&quot;</code>. <code>&quot;read&quot;</code> is the feedback type for reading events (a user skip a recommended repository). <code>&quot;like&quot;</code> is the feedback type for user press ❤️. <code>&quot;star&quot;</code> is the feedback type for user starred repositories. In <a href="https://github.com/zhenghaoz/gitrec/blob/master/etc/gorse/config.toml">etc/gorse/config.toml</a>, we add <code>&quot;like&quot;</code> and <code>&quot;star&quot;</code> to <code>positive_feedback_types</code>, and <code>&quot;read&quot;</code> to <code>read_feedback_types</code>.</p>
 <pre><code class="language-toml"># feedback type for positive event
 positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
 
-# feedback type for read event
-read_feedback_type = &quot;read&quot;
+# The feedback types for read events.
+read_feedback_types = [&quot;read&quot;]
 </code></pre>
 <p>Other settings are the same as <a href="https://github.com/zhenghaoz/gorse/blob/master/docker/config.toml">docker/config.toml</a>.</p>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
 <p>This project consists of frontend, backend, and crawlers. In this section, only these codes that interact with Gorse are introduced. Other codes are available in the <a href="https://github.com/zhenghaoz/gitrec">GitRec repository</a>.</p>
 <ol>
-<li>
-<p>First thing is to wrap Gorse API as a python module. It sends HTTP requests and handles responses using <code>requests</code>.</p>
+<li>First thing is to wrap Gorse API as a python module (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/gorse.py">backend/gorse.py</a>). It sends HTTP requests and handles responses using <code>requests</code>.</li>
+</ol>
 <pre><code class="language-python">from collections import namedtuple
 from datetime import datetime
 from typing import List
@@ -215,26 +215,26 @@ class Gorse:
             return r.json()
         raise GorseException(r.status_code, r.text)
 </code></pre>
-</li>
-<li>
-<p>In the code of trending crawler, insert trending repositories as new items.</p>
+<ol start="2">
+<li>In the code of trending crawler (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/crawler_trending.py">backend/crawler_trending.py</a>), insert trending repositories as new items.</li>
+</ol>
 <pre><code class="language-python">if __name__ == &quot;__main__&quot;:
     trending_repos = get_trending()
     for trending_repo in trending_repos:
         gorse_client.insert_item(get_repo_info(trending_repo))
 </code></pre>
-</li>
-<li>
-<p>In the code of starred repositories crawler, insert user starred repositories as <code>star</code> feedbacks.</p>
+<ol start="3">
+<li>In the code of starred repositories crawler (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/crawler_starred.py">backend/crawler_starred.py</a>), insert user starred repositories as <code>star</code> feedbacks.</li>
+</ol>
 <pre><code class="language-python">@app.task
 def pull(token: str):
     g = GraphQLGitHub(token)
     stars = g.get_viewer_starred()
     gorse_client.insert_feedbacks(stars)
 </code></pre>
-</li>
-<li>
-<p>In the code of the web service backend, pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</p>
+<ol start="4">
+<li>In the code of the web service backend (<a href="https://github.com/zhenghaoz/gitrec/blob/master/backend/app.py">backend/app.py</a>), pull recommendations from Gorse, insert <code>like</code> and <code>read</code> into Gorse.</li>
+</ol>
 <pre><code class="language-python">@app.route(&quot;/api/repo&quot;)
 def get_repo():
     repo_id = gorse_client.get_recommend(session[&quot;user_id&quot;])[0]
@@ -259,8 +259,6 @@ def read_repo(repo_name: str):
     except gorse.GorseException as e:
         return Response(e.message, status=e.status_code)
 </code></pre>
-</li>
-</ol>
 
                     </main>
 
