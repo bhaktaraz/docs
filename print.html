@@ -498,15 +498,15 @@ data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
 <h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
 <p>Configurations under <code>[database]</code> are used to define behaviors on the database and data.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>data_store</code></td><td>string</td><td></td><td>Database for data store (supports MySQL/MongoDB)</td></tr>
-<tr><td><code>cache_store</code></td><td>string</td><td></td><td>Database for cache store (supports Redis)</td></tr>
+<tr><td><code>data_store</code></td><td>string</td><td></td><td>Database for data store (supports MySQL/PostgresSQL/ClickHouse/MongoDB) <a href="chapter_2.html">(2)</a></td></tr>
+<tr><td><code>cache_store</code></td><td>string</td><td></td><td>Database for cache store (supports Redis) <a href="chapter_2.html">(2)</a></td></tr>
 <tr><td><code>auto_insert_user</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new users when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
 <tr><td><code>auto_insert_item</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new items when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
 <tr><td><code>cache_size</code></td><td>string</td><td><code>100</code></td><td>Number of cached elements in cache store</td></tr>
 <tr><td><code>positive_feedback_types</code></td><td>string</td><td></td><td>Types of positive feedback <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
 <tr><td><code>read_feedback_type</code></td><td>string</td><td></td><td>Type of feedback for read events <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
-<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of positive feedback</td></tr>
-<tr><td><code>item_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of items</td></tr>
+<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of positive feedback <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
+<tr><td><code>item_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of items <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
 </tbody></table>
 <p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
@@ -514,17 +514,17 @@ data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
 <li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
 <li>PostgresSQL: <code>postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full</code></li>
 <li>ClickHouse: <code>clickhouse://user:password@host[:port]/database?param1=value1&amp;...&amp;paramN=valueN</code></li>
-<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
+<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code> or <code>mongodb+srv://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
 </ul>
 <h2 id="master"><a class="header" href="#master"><code>[master]</code></a></h2>
 <p>Configurations under <code>[master]</code> are used to define behaviors of the master node.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for gRPC service (metadata exchange)</td></tr>
-<tr><td><code>port</code></td><td>integer</td><td><code>8086</code></td><td>Master node listening port for gRPC service (metadata exchange)</td></tr>
-<tr><td><code>http_host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for HTTP service (dashboard)</td></tr>
-<tr><td><code>http_port</code></td><td>integer</td><td><code>8088</code></td><td>Master node listening port for HTTP service (dashboard)</td></tr>
+<tr><td><code>host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for gRPC service (metadata exchange) <a href="chapter_2.html">(2)</a></td></tr>
+<tr><td><code>port</code></td><td>integer</td><td><code>8086</code></td><td>Master node listening port for gRPC service (metadata exchange) <a href="chapter_2.html">(2)</a></td></tr>
+<tr><td><code>http_host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for HTTP service (dashboard <a href="ch02-05-dashboard.html">(2.5)</a>)</td></tr>
+<tr><td><code>http_port</code></td><td>integer</td><td><code>8088</code></td><td>Master node listening port for HTTP service (dashboard <a href="ch02-05-dashboard.html">(2.5)</a>)</td></tr>
 <tr><td><code>n_jobs</code></td><td>integer</td><td><code>1</code></td><td>Number of working threads for the master node</td></tr>
-<tr><td><code>meta_timeout</code></td><td>integer</td><td><code>60</code></td><td>Metadata timeout in seconds</td></tr>
+<tr><td><code>meta_timeout</code></td><td>integer</td><td><code>60</code></td><td>Metadata timeout in seconds <a href="chapter_2.html">(2)</a></td></tr>
 <tr><td><code>dashboard_user_name</code></td><td>string</td><td></td><td>Username login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
 <tr><td><code>dashboard_password</code></td><td>string</td><td></td><td>Password login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
 </tbody></table>
@@ -704,7 +704,24 @@ def read_repo(repo_name: str):
         return Response(e.message, status=e.status_code)
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2-build-recommender"><a class="header" href="#chapter-2-build-recommender">Chapter 2: Build Recommender</a></h1>
-<p>Coming soon.</p>
+<p>Recommender systems are complex. The overall workflow in Gorse is as follows:</p>
+<center><img width="500" src="img/ch2/overview.png"></center>
+<ul>
+<li>Users, items and feedbacks are stored in <strong>database</strong> (a.k.a. <code>data_store</code> in config file). <a href="ch02-01-items.html">Section 2.1 Item Management</a> introduces how to manage items in Gorse. Feedbacks are required to generate personalized recommendations for user, which is discussed in <a href="http://%5B::1%5D:3000/ch02-02-feedback.html">Section 2.2 Feedback Collection</a>.</li>
+<li>Latest items, popular items, user neighbors, item neighbors, recommendations and meta data are store in <strong>cache</strong> (a.k.a <code>cache_store</code> in config file).</li>
+<li>The <strong>master node</strong> loads data from database. In the process of loading data, popular items and latest items are write to cache. Then, the master node search neighbors and training recommendation models. In background, random search is used to find the optimal recommendation model for current data. The <strong>worker nodes</strong> pull recommendation models from the master node and generate recommendations for each user. The <strong>server nodes</strong> provides RESTful APis. 
+<ul>
+<li><a href="ch02-03-strategy.html">Section 2.3 Recommendation Strategies</a> shows how to define recommendation behaviors. </li>
+<li><a href="ch02-04-performance.html">Section 2.4 Performance vs Precision</a> discusses how to trade off between system performance and recommendation precision. </li>
+<li>The server nodes and worker nodes synchronize meta information from the master node. The address adn timeout of meta communication are specified in config file.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-toml">port = 8086                     # master port
+host = &quot;0.0.0.0&quot;                # master host
+meta_timeout = 10               # cluster meta timeout (second)
+</code></pre>
+<p>All data and status can be viewed in Gorse dashboard (read <a href="ch02-05-dashboard.html">Section 2.5 Gorse Dashboard</a> for more information).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="item-management"><a class="header" href="#item-management">Item Management</a></h1>
 <p>Items are the main characters of the recommender system. This section will introduce how to manage items in Gorse, including controlling the visibility of items, describing items to the recommender system, etc.</p>
 <h2 id="item-properties"><a class="header" href="#item-properties">Item Properties</a></h2>

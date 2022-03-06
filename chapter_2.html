@@ -137,7 +137,24 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chapter-2-build-recommender"><a class="header" href="#chapter-2-build-recommender">Chapter 2: Build Recommender</a></h1>
-<p>Coming soon.</p>
+<p>Recommender systems are complex. The overall workflow in Gorse is as follows:</p>
+<center><img width="500" src="img/ch2/overview.png"></center>
+<ul>
+<li>Users, items and feedbacks are stored in <strong>database</strong> (a.k.a. <code>data_store</code> in config file). <a href="ch02-01-items.html">Section 2.1 Item Management</a> introduces how to manage items in Gorse. Feedbacks are required to generate personalized recommendations for user, which is discussed in <a href="http://%5B::1%5D:3000/ch02-02-feedback.html">Section 2.2 Feedback Collection</a>.</li>
+<li>Latest items, popular items, user neighbors, item neighbors, recommendations and meta data are store in <strong>cache</strong> (a.k.a <code>cache_store</code> in config file).</li>
+<li>The <strong>master node</strong> loads data from database. In the process of loading data, popular items and latest items are write to cache. Then, the master node search neighbors and training recommendation models. In background, random search is used to find the optimal recommendation model for current data. The <strong>worker nodes</strong> pull recommendation models from the master node and generate recommendations for each user. The <strong>server nodes</strong> provides RESTful APis. 
+<ul>
+<li><a href="ch02-03-strategy.html">Section 2.3 Recommendation Strategies</a> shows how to define recommendation behaviors. </li>
+<li><a href="ch02-04-performance.html">Section 2.4 Performance vs Precision</a> discusses how to trade off between system performance and recommendation precision. </li>
+<li>The server nodes and worker nodes synchronize meta information from the master node. The address adn timeout of meta communication are specified in config file.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-toml">port = 8086                     # master port
+host = &quot;0.0.0.0&quot;                # master host
+meta_timeout = 10               # cluster meta timeout (second)
+</code></pre>
+<p>All data and status can be viewed in Gorse dashboard (read <a href="ch02-05-dashboard.html">Section 2.5 Gorse Dashboard</a> for more information).</p>
 
                     </main>
 
