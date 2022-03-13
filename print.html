@@ -458,6 +458,10 @@ data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
 <p>There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:</p>
 <pre><code class="language-toml">default_n = 10  # default number of returned items
 </code></pre>
+<h2 id="clock-error"><a class="header" href="#clock-error">Clock Error</a></h2>
+<p>Gorse use timestamps to invalid recommended items and etc.. However, clocks on different nodes might differ from each other. The maximal clock error is specified in config file to ensure the system works properly.</p>
+<pre><code class="language-toml">epsilon_time = 5    # clock error in the cluster in seconds
+</code></pre>
 <h2 id="item-apis"><a class="header" href="#item-apis">Item APIs</a></h2>
 <table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
 <tr><td>POST</td><td>/item</td><td>Insert an item.<br>Overwrite if the item exists.</td></tr>
@@ -544,6 +548,7 @@ data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>default_n</code></td><td>integer</td><td><code>10</code></td><td>Default number of returned items <a href="ch01-02-restful-api.html#authorization">(1.2)</a></td></tr>
 <tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required) <a href="ch01-02-restful-api.html#default-length-of-returned-list">(1.2)</a></td></tr>
+<tr><td><code>epsilon_time</code></td><td>integer</td><td><code>5</code></td><td>clock error in the cluster in seconds <a href="ch01-02-restful-api.html#clock-error">(1.2)</a></td></tr>
 </tbody></table>
 <h2 id="recommend"><a class="header" href="#recommend"><code>[recommend]</code></a></h2>
 <p>Configurations under <code>[recommend]</code> are used to define behaviors of recommendation.</p>

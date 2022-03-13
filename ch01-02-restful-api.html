@@ -163,6 +163,10 @@
 <p>There are RESTful APIs returns collections (users, items or feedbacks). The default number of returned elements is specified in configuration file:</p>
 <pre><code class="language-toml">default_n = 10  # default number of returned items
 </code></pre>
+<h2 id="clock-error"><a class="header" href="#clock-error">Clock Error</a></h2>
+<p>Gorse use timestamps to invalid recommended items and etc.. However, clocks on different nodes might differ from each other. The maximal clock error is specified in config file to ensure the system works properly.</p>
+<pre><code class="language-toml">epsilon_time = 5    # clock error in the cluster in seconds
+</code></pre>
 <h2 id="item-apis"><a class="header" href="#item-apis">Item APIs</a></h2>
 <table><thead><tr><th>Method</th><th>URL</th><th>Description</th></tr></thead><tbody>
 <tr><td>POST</td><td>/item</td><td>Insert an item.<br>Overwrite if the item exists.</td></tr>
