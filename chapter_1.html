@@ -185,13 +185,26 @@ Creating gorse_redis_1  ... done
 </code></pre>
 </details>
 <ul>
-<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and star records.</li>
+<li>Download the SQL file <a href="https://cdn.gorse.io/example/github.sql">github.sql</a> and import to the MySQL instance. This dataset consists of GitHub users, GitHub repositories and interactions between users and repositories.</li>
 </ul>
 <pre><code class="language-bash"># Download sample data.
 wget https://cdn.gorse.io/example/github.sql
 
 # Import sample data.
 mysql -h 127.0.0.1 -u gorse -pgorse_pass gorse &lt; github.sql
+</code></pre>
+<p>There are three kinds of interactions (called &quot;feedbacks&quot; in Gorse) between users and repositories in this dataset.</p>
+<table><thead><tr><th>Feedback Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>star</td><td>A user &quot;starred&quot; a repository in GitHub</td></tr>
+<tr><td>read</td><td>A user read a repository in <a href="https://gitrec.gorse.io/">GitRec</a></td></tr>
+<tr><td>like</td><td>A user &quot;liked&quot; a repository in <a href="https://gitrec.gorse.io/">GitRec</a></td></tr>
+</tbody></table>
+<p>In the configuration file, &quot;read&quot; belongs to <code>read_feedback_types</code> while &quot;star&quot; and “like” belong to <code>positive_feedback_types</code>.</p>
+<pre><code class="language-toml"># The feedback types for positive events.
+positive_feedback_types = [&quot;star&quot;,&quot;like&quot;]
+
+# The feedback types for read events.
+read_feedback_types = [&quot;read&quot;]
 </code></pre>
 <ul>
 <li>Restart the master node to apply imported data.</li>
