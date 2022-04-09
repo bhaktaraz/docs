@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html" class="active"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html" class="active"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-performance.html"><strong aria-hidden="true">4.1.</strong> Benchmark</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,7 +166,9 @@
 </code></pre>
 <h3 id="popular-recommender"><a class="header" href="#popular-recommender">Popular Recommender</a></h3>
 <p>Popular recommender shows the recent popular items to users, most typically Twitter trending. In Gorse, the <code>popular_window</code> in the configuration file corresponds to the window of popular items, the following example is to recommend popular items within one year (a bit too long).</p>
-<pre><code class="language-toml">popular_window = 365
+<pre><code class="language-toml">[recommend.popular]
+
+popular_window = 4320h
 </code></pre>
 <p>A popular recommender is not suitable to be used alone, otherwise, it would result in new items not being exposed. Many sites display content with a combination of popular and latest recommendations, such as calculating a score based on popularity and freshness and finally sorting by score.</p>
 <h3 id="item-based-similarity-recommender"><a class="header" href="#item-based-similarity-recommender">Item-based Similarity Recommender</a></h3>
@@ -177,13 +179,15 @@
 <li><strong>Related:</strong> Calculates similarity based on user overlap between items.</li>
 <li><strong>Automatic:</strong> Prefer to use labels to calculate similarity, if there are no labels then use users to calculate similarity.</li>
 </ul>
-<pre><code class="language-toml"># The type of neighbors for items. There are three types:
-#   similar: Neighbors are found by some common labels.
-#   related: Neighbors are found by some common users.
-#   auto: If an item has labels, neighbors are found by some common labels.
-#         If this item has no labels, neighbors are found by some common users.
+<pre><code class="language-toml">[recommend.item_neighbors]
+
+# The type of neighbors for items. There are three types:
+#   similar: Neighbors are found by number of common labels.
+#   related: Neighbors are found by number of common users.
+#   auto: If a item have labels, neighbors are found by number of common labels.
+#         If this item have no labels, neighbors are found by number of common users.
 # The default value is &quot;auto&quot;.
-item_neighbor_type = &quot;similar&quot;
+neighbor_type = &quot;similar&quot;
 </code></pre>
 <p>It is recommended to choose <code>similar</code> or <code>auto</code> because item-based similarity recommender using <code>related</code> recommends similarly to collaborative filtering recommenders. The advantage of item-based similarity (labels-based) recommender is that it can quickly recommend a new item to users who are interested in such items based on the labels. Of course, this recommender requires accurate labels for the items, and invalid labels are counterproductive.</p>
 <h3 id="user-based-similarity-recommender"><a class="header" href="#user-based-similarity-recommender">User-based Similarity Recommender</a></h3>
@@ -194,13 +198,15 @@ item_neighbor_type = &quot;similar&quot;
 <li><strong>Related:</strong> Calculates similarity based on historical item overlap between users.</li>
 <li><strong>Automatic:</strong> Prioritizes the use of user labels, if there are no labels then the similarity is calculated using historical items.</li>
 </ul>
-<pre><code class="language-toml"># The type of neighbors for users. There are three types:
-#   similar: Neighbors are found by some common labels.
-#   related: Neighbors are found by some common liked items.
-#   auto: If a user has labels, neighbors are found by some common labels.
-#         If this user has no labels, neighbors are found by some common liked items.
+<pre><code class="language-toml">[recommend.user_neighbors]
+
+# The type of neighbors for users. There are three types:
+#   similar: Neighbors are found by number of common labels.
+#   related: Neighbors are found by number of common liked items.
+#   auto: If a user have labels, neighbors are found by number of common labels.
+#         If this user have no labels, neighbors are found by number of common liked items.
 # The default value is &quot;auto&quot;.
-user_neighbor_type = &quot;similar&quot;
+neighbor_type = &quot;similar&quot;
 </code></pre>
 <p>It is recommended to choose <code>similar</code> or <code>auto</code> because user-based Similarity Recommender using <code>related</code> is similar to collaborative filtering recommender. The recommender is friendly to new users. With user labels, recommendations can be generated based on similar users' preferences even if the user does not have any history.</p>
 <h3 id="collaborative-filtering-recommender"><a class="header" href="#collaborative-filtering-recommender">Collaborative Filtering Recommender</a></h3>
@@ -218,7 +224,9 @@ user_neighbor_type = &quot;similar&quot;
 <li><strong>Replacement:</strong> In some cases, read items should be recommended to users again but with lower priorities. If <code>enable_replacement</code> is set, read items would be replaced back to recommendations. The priority decay factors for positive feedbacks and read feedbacks are controlled by <code>positive_replacement_decay</code> and <code>read_replacement_decay</code>.</li>
 <li><strong>Exploration:</strong> Recommend content based on user history can be a good idea for users, but it also limits the possibility of users seeing more diverse content. It is also a kind of &quot;exploration and exploitation&quot; problem, where exploitation refers to recommending content based on users' historical behavior, while exploration refers to exposing users to more content beyond their awareness. One of the easiest ways to expose users to content beyond the information cocoon is to insert random items into the recommendation list, and Gorse can be configured to randomly insert the newest or recent popular items into the recommendation list, with their proportion set in the configuration file.</li>
 </ul>
-<pre><code class="language-toml"># Enable latest recommendation during offline recommendation. The default values is false.
+<pre><code class="language-toml">[recommend.offline]
+
+# Enable latest recommendation during offline recommendation. The default values is false.
 enable_latest_recommend = true
 
 # Enable popular recommendation during offline recommendation. The default values is false.
@@ -242,6 +250,8 @@ enable_click_through_prediction = true
 #   latest: Recommend latest items to cold-start users.
 # The default values is { popular = 0.0, latest = 0.0 }.
 explore_recommend = { popular = 0.1, latest = 0.2 }
+
+[recommend.replacement]
 
 # Replace historical items back to recommendations.
 enable_replacement = false
@@ -269,7 +279,9 @@ read_replacement_decay = 0.6
 <li><strong>Remove reads:</strong> The read items in the recommendation result cache need to be removed.</li>
 <li><strong>Fallback:</strong> There might be a situation where the cached recommendation results are drained out but new offline recommendations haven't been generated, then the fallback recommenders are needed to generate the recommendation content in real-time. The fallback recommenders can be configured in the configuration file with priority from head to tail, and if the front recommender is no longer able to generate a recommendation, then continue to try the backward recommender.</li>
 </ul>
-<pre><code class="language-toml"># The fallback recommendation method for cold-start users:
+<pre><code class="language-toml">[recommend.online]
+
+# The fallback recommendation method for cold-start users:
 #   item_based: Recommend similar items to cold-start users.
 #   popular: Recommend popular items to cold-start users.
 #   latest: Recommend latest items to cold-start users.
@@ -277,7 +289,9 @@ read_replacement_decay = 0.6
 fallback_recommend = [&quot;item_based&quot;, &quot;latest&quot;]
 </code></pre>
 <p>The fallback version of item-based similarity recommendation limit the number of feedbacks used. Only most recent <code>num_feedback_fallback_item_based</code> items are used which is set by configuration.</p>
-<pre><code class="language-toml"># The number of feedback used in fallback item-based similar recommendation. The default values is 10.
+<pre><code class="language-toml">[recommend.online]
+
+# The number of feedback used in fallback item-based similar recommendation. The default values is 10.
 num_feedback_fallback_item_based = 10
 </code></pre>
 <h2 id="references"><a class="header" href="#references">References</a></h2>

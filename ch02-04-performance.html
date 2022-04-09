@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html" class="active"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html" class="active"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-performance.html"><strong aria-hidden="true">4.1.</strong> Benchmark</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -159,7 +159,9 @@
 <li><strong>Disadvantage:</strong> If the TTL is set decisively, the amount of information obtained during the training will be insufficient.</li>
 </ul>
 <p>The TTL is used to remove obsolete items and feedback, but should be set long enough to prevent loss of information.</p>
-<pre><code class="language-toml"># The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
+<pre><code class="language-toml">[recommend.data_source]
+
+# The time-to-live (days) of positive feedback, 0 means disabled. The default value is 0.
 positive_feedback_ttl = 0
 
 # The time-to-live (days) of items, 0 means disabled. The default value is 0.
@@ -169,10 +171,10 @@ item_ttl = 0
 <p>There are three loops in the Gorse recommender system, which are</p>
 <ul>
 <li>
-<p><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>fit_period</code> in the configuration file.</p>
+<p><strong>Model training loop:</strong> The master node loads data, uses the latest data to train the recommendation model, and updates the latest items, popular items, similar items, similar users, etc. The interval of the model training loop corresponds to <code>model_fit_period</code> in the configuration file.</p>
 </li>
 <li>
-<p><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</p>
+<p><strong>Model tuning loop:</strong> the master node loads data and uses random search<sup class="footnote-reference"><a href="#1">1</a></sup> to find the best hyper-parameters for the recommendation model. The loop interval is set by <code>model_search_period</code>, and the interval of the model tuning loop can be set longer. The optimal model hyper-parameters are relatively stable unless the dataset changes dramatically.</p>
 <p>The model tuning loop </p>
 </li>
 </ul>
@@ -187,42 +189,53 @@ item_ttl = 0
 <ul>
 <li><strong>Recommendation loop:</strong> The worker node checks whether update each user's recommendation results, the check interval is <code>check_recommend_period</code> minutes. The conditions to update a user's recommendation are: the last active time of the user exceeds the last recommendation generated time, or the last recommendation generated time is more than <code>refresh_recommend_period</code> days from now. The interval <code>check_recommend_period</code> for checking recommendation results should be set relatively short, recommended to be around a few minutes, so as to be able to cope with the user's recommendation result consumption.</li>
 </ul>
-<p>Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, <code>check_recommend_period</code> should be small, <code>search_period</code> should be large, and <code>fit_period</code> needs to be set reasonably according to the database load.</p>
-<pre><code class="language-toml"># The time period for model fitting (minutes). The default values is 60.
-fit_period = 360
+<p>Too long a interval will result in outdated models and recommendation results, and too short a interval will result in high database and cache load. In summary, <code>check_recommend_period</code> should be small, <code>model_search_period</code> should be large, and <code>model_fit_period</code> needs to be set reasonably according to the database load.</p>
+<pre><code class="language-toml">[recommend.collaborative]
 
-# The time period for model searching (minutes). The default values is 100.
-search_period = 60
+# The time period for model fitting. The default value is &quot;60m&quot;.
+model_fit_period = &quot;60m&quot;
 
-# The number of epochs for model searching. The default values is 100.
-search_epoch = 100
+# The time period for model searching. The default value is &quot;360m&quot;.
+model_search_period = &quot;360m&quot;
 
-# The number of trials for model searching. The default values is 10.
-search_trials = 10
+# The number of epochs for model searching. The default value is 100.
+model_search_epoch = 100
 
-# The time period to refresh recommendation for inactive users (days). The default values is 5.
-refresh_recommend_period = 1
+# The number of trials for model searching. The default value is 10.
+model_search_trials = 10
+
+[recommend.offline]
+
+# The time period to check recommendation for users. The default values is 1m.
+check_recommend_period = &quot;1m&quot;
+
+# The time period to refresh recommendation for inactive users. The default values is 120h.
+refresh_recommend_period = &quot;24h&quot;
 </code></pre>
 <h2 id="enable-clustering-index-for-similar-itemuser-searching"><a class="header" href="#enable-clustering-index-for-similar-itemuser-searching">Enable Clustering Index for Similar Item/User Searching</a></h2>
 <p>Gorse searches similar items for each item and similar users for each user. Assuming there are N items, the computation complexity to search similar items for an item is \(O(N)\), and the computation complexity to generate similar items for all items is \(O(N^2)\). Gorse provides a cluster-based index to speed up the searching of similar items and similar users. The index of similar items (users) first clusters items (users) according to their similarity, that is, the most similar items (users) are grouped into multiple clusters. When searching similar items (users), first find the K clusters whose centroids are most similar to the current item (user), and then search similar items (users) within the K clusters, the idea of clustering index is derived from<sup class="footnote-reference"><a href="#2">2</a></sup>.</p>
-<p>Similar item (user) index can be switched on and off by <code>enable_item_neighbor_index</code> (<code>enable_user_neighbor_index</code>), which is turned off by default in the current version and considered to be turned on by default in subsequent versions. Similar item (user) index needs to set the parameter K, which is the number of clusters to query. Too small K will cause the index to fail to reach the required recall, while too large K will reduce the performance. The construction process tries to increase K. If the query recall reaches <code>item_neighbor_index_recall</code> (<code>user_neighbor_index_recall</code>), or the growth epochs reaches <code>item_neighbor_index_fit_epoch</code> (<code>user_neighbor_ index_fit_epoch</code>), the build process stops increasing K. </p>
-<pre><code class="language-toml"># Enable approximate item neighbor searching using vector index.
-enable_item_neighbor_index = true
+<p>Similar item (user) index can be switched on and off by <code>enable_index</code>, which is turned off by default in the current version and considered to be turned on by default in subsequent versions. Similar item (user) index needs to set the parameter K, which is the number of clusters to query. Too small K will cause the index to fail to reach the required recall, while too large K will reduce the performance. The construction process tries to increase K. If the query recall reaches <code>index_recall</code>, or the growth epochs reaches <code>index_fit_epoch</code>, the build process stops increasing K. </p>
+<pre><code class="language-toml">[recommend.item_neighbors]
 
-# Minimal recall for approximate item neighbor searching.
-item_neighbor_index_recall = 0.8
+# Enable approximate item neighbor searching using vector index. The default value is true.
+enable_index = true
 
-# Maximal number of fit epochs for approximate item neighbor searching vector index.
-item_neighbor_index_fit_epoch = 3
+# Minimal recall for approximate item neighbor searching. The default value is 0.8.
+index_recall = 0.8
 
-# Enable approximate user neighbor searching using vector index.
-enable_user_neighbor_index = true
+# Maximal number of fit epochs for approximate item neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
 
-# Minimal recall for approximate user neighbor searching.
-user_neighbor_index_recall = 0.8
+[recommend.user_neighbors]
 
-# Maximal number of fit epochs for approximate user neighbor searching vector index.
-user_neighbor_index_fit_epoch = 3
+# Enable approximate user neighbor searching using vector index. The default value is true.
+enable_index = true
+
+# Minimal recall for approximate user neighbor searching. The default value is 0.8.
+index_recall = 0.8
+
+# Maximal number of fit epochs for approximate user neighbor searching vector index. The default value is 3.
+index_fit_epoch = 3
 </code></pre>
 <p>The advantages and disadvantages of using similar item/user indexing are as follows. </p>
 <ul>
@@ -233,15 +246,17 @@ user_neighbor_index_fit_epoch = 3
 <center><img width="420px" src="img/ch3/neighbor_index_recall.jpeg"></center>
 <h2 id="enable-hnsw-index-for-collaborative-filtering"><a class="header" href="#enable-hnsw-index-for-collaborative-filtering">Enable HNSW Index for Collaborative Filtering</a></h2>
 <p>Collaborative filtering models in Gorse represent users and items as embedding vectors. For each user, items with large dot products of embedding vectors with the user are filtered as recommended items. Therefore, the most intuitive way to search for recommended items is to scan all items, calculate the dot product of embedding vectors during the scanning process, and select the top several items with the largest dot products as the recommended result. Assuming that there are N users and M items, the computational complexity to generate recommendation results for all users is \(O(MN)\). However, if the number of items and users is large, the overall computation is unacceptable.</p>
-<p>A more efficient approach is to use the vector index HNSW<sup class="footnote-reference"><a href="#3">3</a></sup>. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, <code>ef_construction</code>, to be set. <code>ef_construction</code> that is too small will prevent the vector index from reaching the required recall, and <code>ef_construction</code> that is too large will reduce search performance. The build process tries to keep increasing <code>ef_construction</code>, and stops growing <code>ef_construction</code> if the recall reaches <code>collaborative_index_recall</code>, or if the number of epochs reaches <code>collaborative_index_fit_epoch</code>.</p>
-<pre><code class="language-toml"># Enable approximate collaborative filtering recommend using vector index.
-enable_collaborative_index = false
+<p>A more efficient approach is to use the vector index HNSW<sup class="footnote-reference"><a href="#3">3</a></sup>. The HNSW index creates a navigation graph for all item vectors. The results from HNSW are not accurate, but the small loss in recall is worth the large performance gain. The HNSW requires a parameter, <code>ef_construction</code>, to be set. <code>ef_construction</code> that is too small will prevent the vector index from reaching the required recall, and <code>ef_construction</code> that is too large will reduce search performance. The build process tries to keep increasing <code>ef_construction</code>, and stops growing <code>ef_construction</code> if the recall reaches <code>index_recall</code>, or if the number of epochs reaches <code>index_fit_epoch</code>.</p>
+<pre><code class="language-toml">[recommend.collaborative]
 
-# Minimal recall for approximate collaborative filtering recommend.
-collaborative_index_recall = 0.9
+# Enable approximate collaborative filtering recommend using vector index. The default value is true.
+enable_index = true
 
-# Maximal number of fit epochs for approximate collaborative filtering recommend vector index.
-collaborative_index_fit_epoch = 3
+# Minimal recall for approximate collaborative filtering recommend. The default value is 0.9.
+index_recall = 0.9
+
+# Maximal number of fit epochs for approximate collaborative filtering recommend vector index. The default value is 3.
+index_fit_epoch = 3
 </code></pre>
 <p>The advantages and disadvantages of using vector indexing for collaborative filtering are as follows.</p>
 <ul>

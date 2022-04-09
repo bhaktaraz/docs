@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html" class="active"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1: Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-deploy.html"><strong aria-hidden="true">1.1.</strong> Deploy</a></li><li class="chapter-item expanded "><a href="ch01-02-restful-api.html"><strong aria-hidden="true">1.2.</strong> RESTful APIs</a></li><li class="chapter-item expanded "><a href="ch01-03-config.html" class="active"><strong aria-hidden="true">1.3.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="ch01-04-demo.html"><strong aria-hidden="true">1.4.</strong> GitRec, The Live Demo</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2: Build Recommender</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-items.html"><strong aria-hidden="true">2.1.</strong> Item Management</a></li><li class="chapter-item expanded "><a href="ch02-02-feedback.html"><strong aria-hidden="true">2.2.</strong> Feedback Collection</a></li><li class="chapter-item expanded "><a href="ch02-03-strategy.html"><strong aria-hidden="true">2.3.</strong> Recommendation Strategies</a></li><li class="chapter-item expanded "><a href="ch02-04-performance.html"><strong aria-hidden="true">2.4.</strong> Performance vs Precision</a></li><li class="chapter-item expanded "><a href="ch02-05-dashboard.html"><strong aria-hidden="true">2.5.</strong> Gorse Dashboard</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3: Monitoring</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-logging.html"><strong aria-hidden="true">3.1.</strong> Log Monitoring</a></li><li class="chapter-item expanded "><a href="ch03-02-metrics.html"><strong aria-hidden="true">3.2.</strong> Metrics Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Chapter 4: Developer's Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch04-01-performance.html"><strong aria-hidden="true">4.1.</strong> Benchmark</a></li></ol></li><li class="chapter-item expanded "><a href="faq.html">FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -153,78 +153,103 @@
                         <h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
 <p>These configuration items without default values must be filled. It's highly recommended to create a new config file based on <a href="https://github.com/zhenghaoz/gorse/blob/master/config/config.toml.template"><code>config.toml.template</code></a>.</p>
 <h2 id="database"><a class="header" href="#database"><code>[database]</code></a></h2>
-<p>Configurations under <code>[database]</code> are used to define behaviors on the database and data.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>data_store</code></td><td>string</td><td></td><td>Database for data store (supports MySQL/PostgresSQL/ClickHouse/MongoDB) <a href="chapter_2.html">(2)</a></td></tr>
 <tr><td><code>cache_store</code></td><td>string</td><td></td><td>Database for cache store (supports Redis) <a href="chapter_2.html">(2)</a></td></tr>
-<tr><td><code>auto_insert_user</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new users when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
-<tr><td><code>auto_insert_item</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new items when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
-<tr><td><code>cache_size</code></td><td>string</td><td><code>100</code></td><td>Number of cached elements in cache store</td></tr>
-<tr><td><code>positive_feedback_types</code></td><td>string</td><td></td><td>Types of positive feedback <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
-<tr><td><code>read_feedback_type</code></td><td>string</td><td></td><td>Type of feedback for read events <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
-<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of positive feedback <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
-<tr><td><code>item_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of items <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
 </tbody></table>
 <p>The DSN (Database Source Name) format of the <code>data_store</code> and <code>cache_store</code> is as follows.</p>
 <ul>
-<li>Redis: <code>redis://hostname:port</code></li>
+<li>Redis: <code>redis://&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/&lt;db_number&gt;</code></li>
 <li>MySQL: <code>mysql://[username[:password]@][protocol[(hostname:port)]]/database[?config1=value1&amp;...configN=valueN]</code></li>
 <li>PostgresSQL: <code>postgres://bob:secret@1.2.3.4:5432/mydb?sslmode=verify-full</code></li>
 <li>ClickHouse: <code>clickhouse://user:password@host[:port]/database?param1=value1&amp;...&amp;paramN=valueN</code></li>
-<li>MongoDB: <code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code> or <code>mongodb+srv://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
+<li>MongoDB: Supports a DNS-constructed seed list by the DNS SRV record. 
+<ul>
+<li><code>mongodb://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
+<li><code>mongodb+srv://[username:password@]hostname1[:port1][,... hostnameN[:portN]]][/[database][?options]]</code></li>
+</ul>
+</li>
 </ul>
 <h2 id="master"><a class="header" href="#master"><code>[master]</code></a></h2>
-<p>Configurations under <code>[master]</code> are used to define behaviors of the master node.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for gRPC service (metadata exchange) <a href="chapter_2.html">(2)</a></td></tr>
+<tr><td><code>host</code></td><td>string</td><td><code>&quot;0.0.0.0&quot;</code></td><td>Master node listening host for gRPC service (metadata exchange) <a href="chapter_2.html">(2)</a></td></tr>
 <tr><td><code>port</code></td><td>integer</td><td><code>8086</code></td><td>Master node listening port for gRPC service (metadata exchange) <a href="chapter_2.html">(2)</a></td></tr>
-<tr><td><code>http_host</code></td><td>string</td><td><code>&quot;127.0.0.1&quot;</code></td><td>Master node listening host for HTTP service (dashboard <a href="ch02-05-dashboard.html">(2.5)</a>)</td></tr>
+<tr><td><code>http_host</code></td><td>string</td><td><code>&quot;0.0.0.0&quot;</code></td><td>Master node listening host for HTTP service (dashboard <a href="ch02-05-dashboard.html">(2.5)</a>)</td></tr>
 <tr><td><code>http_port</code></td><td>integer</td><td><code>8088</code></td><td>Master node listening port for HTTP service (dashboard <a href="ch02-05-dashboard.html">(2.5)</a>)</td></tr>
 <tr><td><code>n_jobs</code></td><td>integer</td><td><code>1</code></td><td>Number of working threads for the master node</td></tr>
-<tr><td><code>meta_timeout</code></td><td>integer</td><td><code>60</code></td><td>Metadata timeout in seconds <a href="chapter_2.html">(2)</a></td></tr>
+<tr><td><code>meta_timeout</code></td><td>integer</td><td><code>10s</code></td><td>Metadata timeout <a href="chapter_2.html">(2)</a></td></tr>
 <tr><td><code>dashboard_user_name</code></td><td>string</td><td></td><td>Username login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
 <tr><td><code>dashboard_password</code></td><td>string</td><td></td><td>Password login dashboard <a href="ch02-05-dashboard.html#login">(2.5)</a></td></tr>
 </tbody></table>
 <h2 id="server"><a class="header" href="#server"><code>[server]</code></a></h2>
-<p>Configurations under <code>[server]</code> are used to define behaviors of the server node.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>default_n</code></td><td>integer</td><td><code>10</code></td><td>Default number of returned items <a href="ch01-02-restful-api.html#authorization">(1.2)</a></td></tr>
 <tr><td><code>api_key</code></td><td>string</td><td></td><td>Secret key for RESTful APIs (SSL required) <a href="ch01-02-restful-api.html#default-length-of-returned-list">(1.2)</a></td></tr>
-<tr><td><code>epsilon_time</code></td><td>integer</td><td><code>5</code></td><td>clock error in the cluster in seconds <a href="ch01-02-restful-api.html#clock-error">(1.2)</a></td></tr>
+<tr><td><code>clock_error</code></td><td>integer</td><td><code>5s</code></td><td>clock error in the cluster <a href="ch01-02-restful-api.html#clock-error">(1.2)</a></td></tr>
+<tr><td><code>auto_insert_user</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new users when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
+<tr><td><code>auto_insert_item</code></td><td>boolean</td><td><code>true</code></td><td>Automatically insert new items when inserting new feedback <a href="ch02-02-feedback.html#users-items-and-feedback">(2.2)</a></td></tr>
 </tbody></table>
 <h2 id="recommend"><a class="header" href="#recommend"><code>[recommend]</code></a></h2>
-<p>Configurations under <code>[recommend]</code> are used to define behaviors of recommendation.</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>popular_window</code></td><td>integer</td><td><code>180</code></td><td>Time window of popular items in days <a href="ch02-03-strategy.html#latest-recommender">(2.3)</a></td></tr>
-<tr><td><code>fit_period</code></td><td>integer</td><td><code>60</code></td><td>Period of model training in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>search_period</code></td><td>integer</td><td><code>180</code></td><td>Period of model search in minutes <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>check_recommend_period</code></td><td>integer</td><td><code>1</code></td><td>Period to check recommendation for users in minute <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>5</code></td><td>Period to refresh offline recommendation cache in days <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
-<tr><td><code>fallback_recommend</code></td><td>strings</td><td><code>[&quot;latest&quot;]</code></td><td>Source of recommendation when personalized recommendation exhausted <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
-<tr><td><code>num_feedback_fallback_item_based</code></td><td>integer</td><td><code>10</code></td><td>The number of feedback used in fallback item-based similar recommendation <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
-<tr><td><code>item_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for items <a href="ch02-03-strategy.html#item-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_item_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
-<tr><td><code>item_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
-<tr><td><code>item_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
-<tr><td><code>user_neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for users <a href="ch02-03-strategy.html#user-based-similarity-recommender">(2.3)</a></td></tr>
-<tr><td><code>enable_user_neighbor_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
-<tr><td><code>user_neighbor_index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
-<tr><td><code>user_neighbor_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>cache_size</code></td><td>string</td><td><code>100</code></td><td>Number of cached elements in cache store</td></tr>
+</tbody></table>
+<h3 id="recommenddata_source"><a class="header" href="#recommenddata_source"><code>[recommend.data_source]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>positive_feedback_types</code></td><td>string</td><td></td><td>Types of positive feedback <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
+<tr><td><code>read_feedback_types</code></td><td>string</td><td></td><td>Type of feedback for read events <a href="ch02-02-feedback.html#define-positive-feedback-and-read-feedback">(2.2)</a></td></tr>
+<tr><td><code>positive_feedback_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of positive feedback <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
+<tr><td><code>item_ttl</code></td><td>string</td><td><code>0</code></td><td>Time-to-live of items <a href="ch02-04-performance.html#set-ttl-for-items-and-feedback">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommendpopular"><a class="header" href="#recommendpopular"><code>[recommend.popular]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>popular_window</code></td><td>integer</td><td><code>4320h</code></td><td>Time window of popular items in days <a href="ch02-03-strategy.html#latest-recommender">(2.3)</a></td></tr>
+</tbody></table>
+<h3 id="recommenduser_neighbors"><a class="header" href="#recommenduser_neighbors"><code>[recommend.user_neighbors]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for users <a href="ch02-03-strategy.html#user-based-similarity-recommender">(2.3)</a></td></tr>
+<tr><td><code>enable_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate item neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate item neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommenditem_neighbors"><a class="header" href="#recommenditem_neighbors"><code>[recommend.item_neighbors]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>neighbor_type</code></td><td>string</td><td><code>&quot;auto&quot;</code></td><td>The type of neighbors for items <a href="ch02-03-strategy.html#item-based-similarity-recommender">(2.3)</a></td></tr>
+<tr><td><code>enable_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate item neighbor searching using vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>index_recall</code></td><td>float</td><td><code>0.8</code></td><td>Minimal recall for approximate user neighbor searching <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+<tr><td><code>index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate user neighbor searching vector index <a href="ch02-04-performance.html#enable-clustering-index-for-similar-itemuser-searching">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommendcollaborative"><a class="header" href="#recommendcollaborative"><code>[recommend.collaborative]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>model_fit_period</code></td><td>integer</td><td><code>60m</code></td><td>Period of model training <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>model_search_period</code></td><td>integer</td><td><code>360m</code></td><td>Period of model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>model_search_epoch</code></td><td>integer</td><td><code>100</code></td><td>Number of training epochs for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>model_search_trials</code></td><td>integer</td><td><code>10</code></td><td>Number of trials for each model in model search <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>enable_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+<tr><td><code>index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommendreplacement"><a class="header" href="#recommendreplacement"><code>[recommend.replacement]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>enable_replacement</code></td><td>boolean</td><td><code>false</code></td><td>Replace historical items back to recommendations <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td>Decay the weights of replaced items from positive feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td>Decay the weights of replaced items from read feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommendoffline"><a class="header" href="#recommendoffline"><code>[recommend.offline]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>check_recommend_period</code></td><td>integer</td><td><code>1m</code></td><td>Period to check recommendation for users <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
+<tr><td><code>refresh_recommend_period</code></td><td>integer</td><td><code>24h</code></td><td>Period to refresh offline recommendation cache <a href="ch02-04-performance.html#set-training-and-recommendation-period">(2.4)</a></td></tr>
 <tr><td><code>enable_latest_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable latest recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_popular_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable popular recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_user_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable user-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_item_based_recommend</code></td><td>boolean</td><td><code>false</code></td><td>Enable item-based similarity recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>enable_collaborative_recommend</code></td><td>boolean</td><td><code>true</code></td><td>Enable collaborative filtering recommendation during offline recommendation <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
-<tr><td><code>enable_collaborative_index</code></td><td>boolean</td><td><code>false</code></td><td>Enable approximate collaborative filtering recommend using vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
-<tr><td><code>collaborative_index_recall</code></td><td>float</td><td><code>0.9</code></td><td>Minimal recall for approximate collaborative filtering recommend <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
-<tr><td><code>collaborative_index_fit_epoch</code></td><td>integer</td><td><code>3</code></td><td>Maximal number of fit epochs for approximate collaborative filtering recommend vector index <a href="ch02-04-performance.html#enable-hnsw-index-for-collaborative-filtering">(2.4)</a></td></tr>
 <tr><td><code>enable_click_through_prediction</code></td><td>boolean</td><td><code>false</code></td><td>Enable click-though rate prediction during offline recommendation. Otherwise, results from multi-way recommendation would be merged randomly <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
 <tr><td><code>explore_recommend</code></td><td>map</td><td><code>{ popular = 0.0, latest = 0.0 }</code></td><td>The explore recommendation method is used to inject popular items or latest items into recommended result <a href="ch02-03-strategy.html#offline-strategy">(2.3)</a></td></tr>
-<tr><td><code>enable_positive_replacement</code></td><td>boolean</td><td><code>false</code></td><td>Replace historical items back to recommendations <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
-<tr><td><code>positive_replacement_decay</code></td><td>float</td><td><code>0.8</code></td><td>Decay the weights of replaced items from positive feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
-<tr><td><code>read_replacement_decay</code></td><td>float</td><td><code>0.6</code></td><td>Decay the weights of replaced items from read feedbacks <a href="ch02-03-strategy.html#offline-strategy">(2.4)</a></td></tr>
+</tbody></table>
+<h3 id="recommendonline"><a class="header" href="#recommendonline"><code>[recommend.online]</code></a></h3>
+<table><thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>fallback_recommend</code></td><td>strings</td><td><code>[&quot;latest&quot;]</code></td><td>Source of recommendation when personalized recommendation exhausted <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
+<tr><td><code>num_feedback_fallback_item_based</code></td><td>integer</td><td><code>10</code></td><td>The number of feedback used in fallback item-based similar recommendation <a href="ch02-03-strategy.html#online-strategy">(2.3)</a></td></tr>
 </tbody></table>
 <h2 id="environment-variables"><a class="header" href="#environment-variables">Environment Variables</a></h2>
 <p>Part of configurations can be overwritten by environment variables.</p>
