@@ -458,6 +458,13 @@ data_store = &quot;mysql://gorse:gorse_pass@tcp(mysql:3306)/gorse?parseTime=true
 </ul>
 <h2 id="deploy-gorse-in-kubernetes-experimental"><a class="header" href="#deploy-gorse-in-kubernetes-experimental">Deploy Gorse in Kubernetes (Experimental)</a></h2>
 <p>Coming soon.</p>
+<h2 id="version-compatibility"><a class="header" href="#version-compatibility">Version Compatibility</a></h2>
+<p>The version release of Gorse follows <a href="https://semver.org/">semantic versioning</a> from v0.4.0.</p>
+<ol>
+<li>Major version is set to 0 during incubating stage.</li>
+<li>Minor version Y (0.Y.z) indicates there are break changes which are incompatible with lower minor versions or larger minor versions. To upgrade or downgrade between minor versions, additional operations are required, eg., refactor config file or change database schema.</li>
+<li>Patch version Z (0.y.Z) is used for bug fixes and incremental features. Lower patch version can be upgrade to larger patch version seamlessly. When downgrade patch version, there are no side effects except losing bug fixes and new features in the larger patch version.</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="restful-apis"><a class="header" href="#restful-apis">RESTful APIs</a></h1>
 <p>RESTful APIs provided by the Gorse server are listed in this section. For more detailed information, please browse the interactive API document at <code>http://&lt;server node IP&gt;:&lt;server node port&gt;/apidocs</code>.</p>
 <h2 id="authorization"><a class="header" href="#authorization">Authorization</a></h2>
